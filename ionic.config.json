@@ -1,0 +1,6 @@
+{
+  "name": "checkpoint-frontend",
+  "integrations": {},
+  "type": "angular-standalone",
+  "innerHTMLTemplatesEnabled": true
+}

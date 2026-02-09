@@ -1,0 +1,93 @@
+# Compiled output
+/dist
+/tmp
+/out-tsc
+/bazel-out
+/www
+
+# Node
+/node_modules
+npm-debug.log
+yarn-error.log
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Angular
+.angular/cache
+.sass-cache/
+connect.lock
+coverage/
+libpeerconnection.log
+testem.log
+typings/
+
+# Ionic/Capacitor
+.ionic
+/ios/App/App/public
+/ios/App/build
+/ios/App/Pods
+/ios/DerivedData
+/ios/.xcode.env
+/android/app/build
+/android/app/capacitor.settings.gradle
+/android/app/release
+/android/app/src/main/assets/public
+/android/build
+/android/capacitor-cordova-android-plugins
+/android/.gradle
+/android/gradle
+/android/local.properties
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+environment.local.ts
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Firebase
+.firebase
+*-debug.log
+.runtimeconfig.json
+firebase-debug.log
+
+# Log files
+*.log
+logs
+
+# Testing
+/coverage
+/.nyc_output
+
+# Production
+/build
+
+# Misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+.eslintcache
+package-lock.json.bak
+yarn.lock.bak
+.gradle

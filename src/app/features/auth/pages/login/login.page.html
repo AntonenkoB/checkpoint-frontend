@@ -1,0 +1,110 @@
+<div class="login">
+  <div class="logo-wrap">
+    <div class="logo" [innerHTML]="LOGO_SVG"></div>
+  </div>
+
+  <div class="name-wrap">
+    @if (authStep() === EAuthStep.Identifier) {
+      <ion-item>
+        <ion-input
+            fill="solid"
+            class="name"
+            type="text"
+            [helperText]="' '"
+            [value]="name()"
+            [errorText]="checkUserFailure() ?? '' | translate"
+            [placeholder]="'login.creative-name' | translate"
+            [class.ion-touched]="!!checkUserFailure()"
+            [class.ion-invalid]="!!checkUserFailure()"
+            (ionInput)="changeName($event.detail.value ?? '')"
+        ></ion-input>
+      </ion-item>
+    }
+
+    @if (authStep() === EAuthStep.Password) {
+      <ion-item>
+        <ion-input
+            fill="solid"
+            class="name"
+            type="password"
+            [helperText]="' '"
+            [value]="password()"
+            [errorText]="loginFailure() ?? '' | translate"
+            [placeholder]="'login.password' | translate"
+            [class.ion-touched]="!!loginFailure()"
+            [class.ion-invalid]="!!loginFailure()"
+            (ionInput)="changePassword($event.detail.value ?? '')"
+        >
+          <ion-input-password-toggle
+              noRipple
+              slot="end"
+              showIcon="my-eye-off"
+              hideIcon="my-eye"
+          />
+        </ion-input>
+      </ion-item>
+
+      @if (!platform.is('capacitor')) {
+        <ion-checkbox
+            class="save-me"
+            labelPlacement="end"
+            cpCustomCheckbox
+            (ionChange)="repeat.set($event.detail.checked)"
+        >{{ "login.remember-me" | translate }}</ion-checkbox>
+      }
+
+      <div class="forgot-password-wrap">
+        <div class="forgot-password" (click)="forgotPassword()">{{ "login.reset-password" | translate }}</div>
+      </div>
+    }
+
+    @if (authStep() === EAuthStep.CreatePassword) {
+      <ion-item>
+        <ion-input
+            fill="solid"
+            class="name"
+            type="password"
+            [class.ion-touched]="!!createPassword().password"
+            [class.ion-invalid]="!!createPassword().password"
+            [placeholder]="'login.new-password' | translate"
+            (ionInput)="savePassword(($event.detail.value) ?? '')"
+        >
+          <ion-input-password-toggle
+              noRipple
+              slot="end"
+              showIcon="my-eye-off"
+              hideIcon="my-eye"
+          />
+        </ion-input>
+      </ion-item>
+
+      @if (!platform.is('capacitor')) {
+        <ion-checkbox
+            cpCustomCheckbox
+            class="save-me"
+            labelPlacement="end"
+        >{{ "login.remember-me" | translate }}</ion-checkbox>
+      }
+    }
+
+    @if (authStep() === EAuthStep.ForgotPassword) {
+      <ion-item>
+        <ion-input
+            fill="solid"
+            class="name"
+            type="email"
+            [helperText]="' '"
+            [value]="email()"
+            [errorText]="forgotPasswordFailure() ?? '' | translate"
+            [placeholder]="'Email'"
+            [class.ion-touched]="!!forgotPasswordFailure()"
+            [class.ion-invalid]="!!forgotPasswordFailure()"
+            (ionInput)="changeEmail($event.detail.value ?? '')"
+        ></ion-input>
+      </ion-item>
+    }
+
+    <ion-button class="send" (click)="send()">{{ "login.continue" | translate }}</ion-button>
+  </div>
+</div>
+

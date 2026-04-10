@@ -1,0 +1,87 @@
+@use '../../../../../scss/mixins/app-padding' as *;
+:host {
+  display: block;
+  margin: 0;
+  --ripple-color: transparent !important;
+  @include app-padding;
+
+
+  .login {
+    height: 100vh;
+    padding: 20px;
+
+    @media (min-width: 480px) {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  .logo-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 0 80px;
+    width: 100%;
+  }
+
+  .logo {
+    height: 136px;
+
+    svg {
+      fill: var(--color-text-primary);
+      stroke: var(--color-text-primary);
+    }
+  }
+
+  .name-wrap {
+    max-width: 400px;
+    margin: 0 auto;
+
+    @media (min-width: 480px) {
+      min-width: 400px;
+    }
+  }
+
+  .name {
+    font: var(--font-open-16-regular);
+    width: 100%;
+  }
+
+  .save-me {
+    --size: 24px;
+    margin-top: 4px;
+    font: var(--font-open-16-regular);
+    width: 100%;
+
+    .label-text-wrapper {
+      margin-inline-start: 12px;
+    }
+  }
+
+  .forgot-password-wrap {
+    font: var(--font-open-16-regular);
+    padding-top: 24px;
+    text-align: left;
+    width: 100%;
+  }
+
+  .forgot-password {
+    cursor: pointer;
+  }
+
+  .forgot {
+    cursor: pointer;
+    display: inline-block;
+    font: var(--font-open-16-regular);
+    padding: 6px 6px 6px 0;
+  }
+
+  .send {
+    display: block;
+    margin-top: 60px;
+    margin-bottom: 264px;
+    width: 100%;
+  }
+}

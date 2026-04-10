@@ -1,0 +1,47 @@
+@use '../../../../../scss/mixins/app-padding' as *;
+
+:host {
+  align-items: center;
+  background-color: var(--color-background-primary);
+  @include app-padding;
+
+  .user-create-content {
+    max-width: 420px;
+  }
+
+  .user-create {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+  }
+
+  .header-avatar {
+    height: 50px;
+    width: 50px;
+  }
+
+  .title {
+    font: var(--font-alumi-32-bold);
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1 1 auto;
+    padding-top: var(--spacing-40);
+  }
+
+  .select-teacher {
+    height: 100%;
+  }
+
+  .add-teacher {
+    cursor: pointer;
+  }
+
+  .submit {
+    margin-top: 40px;
+  }
+}

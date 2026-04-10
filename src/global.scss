@@ -8,6 +8,15 @@
  * For more information on global stylesheets, visit the documentation:
  * https://ionicframework.com/docs/layout/global-stylesheets
  */
+
+/* custom ionic scss  */
+@use "./scss/colors" as *;
+@use "./scss/fonts" as *;
+
+@use "./scss/ionic/ionic-variables.scss" as *;
+@use "./scss/ionic/ionic-theme-dark.scss" as *;
+@use "./scss/ionic/ionic-overrides.scss" as *;
+
 /* Core CSS required for Ionic components to work properly */
 @import "@ionic/angular/css/core.css";
 
@@ -33,20 +42,25 @@
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import '@ionic/angular/css/palettes/dark.system.css';
-
-:root {
-  --ion-color-primary: #E5A344;
-  //--highlight-color: #2234a8 !important;
-  //--highlight-color-focused: #2234a8 !important;
-
-  --sh-safe-area-top: var(--safe-area-inset-top, env(safe-area-inset-top));
-  --sh-safe-area-bottom: var(--safe-area-inset-bottom, env(safe-area-inset-bottom));
-}
+//@import '@ionic/angular/css/palettes/dark.system.css';
 
 html {
-  --ion-font-family: "Alumni Sans SC", sans-serif !important;
-  padding-top: var(--sh-safe-area-top);
-  padding-bottom: var(--sh-safe-area-bottom);
   font-family: "Alumni Sans SC", sans-serif;
+  //background-color: var(--color-background-primary);
+}
+
+img[fill] {
+  position: static !important; /* Вимикає автоматичний absolute */
+  //width: auto !important;
+  //height: auto !important;
+  //inset: unset !important;
+}
+
+.error-text {
+  color: var(--color-red);
+  font: var(--font-open-12-regular);
+}
+input {
+  pointer-events: auto !important;
+  opacity: 1 !important;
 }

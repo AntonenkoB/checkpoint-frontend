@@ -91,3 +91,7 @@ testem.log
 package-lock.json.bak
 yarn.lock.bak
 .gradle
+
+
+# Custom
+my-readme.md

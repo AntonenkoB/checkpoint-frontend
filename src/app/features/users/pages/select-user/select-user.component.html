@@ -1,0 +1,19 @@
+<div class="select-teacher">
+  <cp-header-secondary
+      [title]="'users.select-teacher-title' | translate"
+      (close)="close.emit()"
+  ></cp-header-secondary>
+
+  <div class="teacher-list">
+    @for (teacher of selectTeacherFacade.teachersList(); track teacher.id) {
+      <cp-user-item
+          class="teacher"
+          [user]="teacher"
+          [isSelect]="selectedTeacher().includes(teacher.id)"
+          (click)="toggleTeacher(teacher.id)"
+      ></cp-user-item>
+    }
+  </div>
+
+  <ion-button (click)="save.emit(selectedTeacher())">{{ "common.add" | translate }}</ion-button>
+</div>

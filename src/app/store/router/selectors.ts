@@ -1,0 +1,15 @@
+import { RouterReducerState, getRouterSelectors } from '@ngrx/router-store';
+import { AppState } from '../app-store';
+
+export const {
+  selectCurrentRoute,    // select the current route
+  selectFragment,        // select the current route fragment
+  selectQueryParams,     // select the current route query params
+  selectQueryParam,      // factory function to select a query param
+  selectRouteParams,     // select the current route params
+  selectRouteParam,      // factory function to select a route param
+  selectRouteData,       // select the current route data
+  selectUrl,             // select the current url
+} = getRouterSelectors();
+
+export const selectRouterState = (state: AppState): RouterReducerState => state.router;

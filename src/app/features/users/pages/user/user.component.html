@@ -1,0 +1,130 @@
+<ion-content [fullscreen]="true" class="user-create-content">
+  <div class="user-create">
+    <cp-header-secondary [title]="userTitle() | translate" (close)="userFacade.close()"></cp-header-secondary>
+
+    <form class="form" [formRoot]="userForm" (ngSubmit)="onSubmit()">
+      <ion-list lines="none">
+        <ion-item>
+          <ion-input
+              fill="solid"
+              type="email"
+              placeholder="Email"
+              [value]="userForm.email().value()"
+              [helperText]="' '"
+              [errorText]="userForm.email().errors()[0]?.message ?? ' ' | translate"
+              (ionInput)="userForm.email().value.set($any($event).detail.value)"
+              (ionFocus)="ionFocus('email')"
+              (ionBlur)="ionBlur('email')"
+              [class.ion-touched]="isTouched('email')"
+              [class.ion-invalid]="isTouched('email') && userForm.email().invalid()"
+          ></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input
+              fill="solid"
+              type="text"
+              [placeholder]="'profile.creative-name' | translate"
+              [value]="userForm.creative_name().value()"
+              [errorText]="userForm.creative_name().errors()[0]?.message ?? ' ' | translate"
+              (ionInput)="userForm.creative_name().value.set($any($event).detail.value)"
+              (ionFocus)="ionFocus('creative_name')"
+              (ionBlur)="ionBlur('creative_name')"
+              [class.ion-touched]="isTouched('creative_name')"
+              [class.ion-invalid]="isTouched('creative_name') && userForm.creative_name().invalid()"
+          ></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input
+              fill="solid"
+              type="text"
+              [placeholder]="'profile.first-name' | translate"
+              [value]="userForm.first_name().value()"
+              [errorText]="userForm.first_name().errors()[0]?.message ?? ' ' | translate"
+              (ionInput)="userForm.first_name().value.set($any($event).detail.value)"
+              (ionFocus)="ionFocus('first_name')"
+              (ionBlur)="ionBlur('first_name')"
+              [class.ion-touched]="isTouched('first_name')"
+              [class.ion-invalid]="isTouched('first_name') && userForm.first_name().invalid()"
+          ></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input
+              fill="solid"
+              type="text"
+              [placeholder]="'profile.last-name' | translate"
+              [value]="userForm.last_name().value()"
+              [errorText]="userForm.last_name().errors()[0]?.message ?? ' ' | translate"
+              (ionInput)="userForm.last_name().value.set($any($event).detail.value)"
+              (ionFocus)="ionFocus('last_name')"
+              (ionBlur)="ionBlur('last_name')"
+              [class.ion-touched]="isTouched('last_name')"
+              [class.ion-invalid]="isTouched('last_name') && userForm.last_name().invalid()"
+          ></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input
+              fill="solid"
+              type="text"
+              [placeholder]="'profile.phone' | translate"
+              [value]="userForm.phone().value()"
+              [errorText]="userForm.phone().errors()[0]?.message ?? ' ' | translate"
+              (ionInput)="userForm.phone().value.set($any($event).detail.value)"
+              (ionFocus)="ionFocus('phone')"
+              (ionBlur)="ionBlur('phone')"
+              [class.ion-touched]="isTouched('phone')"
+              [class.ion-invalid]="isTouched('phone') && userForm.phone().invalid()"
+          ></ion-input>
+        </ion-item>
+
+        @if (!userForm.temporary_password().hidden()) {
+          <ion-item>
+            <ion-input
+                fill="solid"
+                type="password"
+                [placeholder]="'profile.password' | translate"
+                [value]="userForm.temporary_password().value()"
+                [errorText]="userForm.temporary_password().errors()[0]?.message ?? ' ' | translate"
+                (ionInput)="userForm.temporary_password().value.set($any($event).detail.value)"
+                (ionFocus)="ionFocus('password')"
+                (ionBlur)="ionBlur('password')"
+                [class.ion-touched]="isTouched('password')"
+                [class.ion-invalid]="isTouched('password') && userForm.temporary_password().invalid()"
+            >
+              <ion-input-password-toggle
+                  noRipple
+                  slot="end"
+                  showIcon="my-eye-off"
+                  hideIcon="my-eye"
+              />
+            </ion-input>
+          </ion-item>
+        }
+
+        @if (userFacade.roleCreate() === EUserRole.Student) {
+          @for (selectedTeacher of attachUser(); track selectedTeacher.id) {
+            <ion-item>
+              <cp-user-item [user]="selectedTeacher" [showDelete]="true" (delete)="deleteTeacher(selectedTeacher.id)"></cp-user-item>
+            </ion-item>
+          }
+
+          <ion-item>
+            <cp-user-item id="open-teachers-modal" class="add-teacher"></cp-user-item>
+          </ion-item>
+
+          <ion-modal id="teachers-modal" #modal trigger="open-teachers-modal" [initialBreakpoint]="1" [breakpoints]="[0, 1]">
+            <ng-template>
+              <cp-select-teacher class="select-teacher" [choseTeachers]="attachUser()" (save)="updateTeachers($event)" (close)="modal.dismiss()"></cp-select-teacher>
+            </ng-template>
+          </ion-modal>
+        }
+      </ion-list>
+    </form>
+
+    <ion-button class="submit" (click)="onSubmit()">{{ "common.add" | translate }}</ion-button>
+  </div>
+  <cp-loader [isLoad]="!userFacade.userLoading()"></cp-loader>
+</ion-content>

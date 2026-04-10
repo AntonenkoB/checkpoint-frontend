@@ -1,0 +1,32 @@
+<div class="user-wrap">
+  <div class="user-list-header">
+    <cp-tabs [tabList]="USER_ROLE_TABS" [activeTab]="activeTab()" (segmentChange)="tabChange($event)"></cp-tabs>
+    <cp-avatar class="header-avatar" [src]="profile()?.avatar ?? ''" (click)="userListFacade.goToProfile()"></cp-avatar>
+  </div>
+
+  <div class="user-list">
+    @if (userListFacade.userList().length > 0) {
+      <ion-content>
+        @for (user of userListFacade.userList(); track user.id) {
+          <cp-user-item class="user-item" [user]="user" (click)="userListFacade.goToUser(user.id, this.activeTab())"></cp-user-item>
+        }
+        <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+          <ion-infinite-scroll-content loadingSpinner="crescent"></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+      </ion-content>
+    } @else {
+      <cp-empty-state class="empty-state"></cp-empty-state>
+    }
+
+    <cp-loader [isLoad]="!isReady()"></cp-loader>
+  </div>
+
+  <div class="buttons">
+    <ion-button (click)="userListFacade.create(this.activeTab())">{{ USER_ACTIONS_BTN[activeTab()] | translate }}
+    </ion-button>
+  </div>
+</div>
+
+
+
+

@@ -1,0 +1,4 @@
+@mixin app-padding() {
+  padding-top: var(--cp-safe-area-top);
+  padding-bottom: var(--cp-safe-area-bottom);
+}

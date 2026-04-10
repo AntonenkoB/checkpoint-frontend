@@ -1,0 +1,123 @@
+<ion-content [fullscreen]="true" class="profile">
+  <div class="profile-container">
+    <div class="profile-wrap">
+      <cp-header-secondary [title]="'profile.title' | translate" (close)="profileFacade.close()"></cp-header-secondary>
+
+      <div class="theme-title">{{ 'profile.theme.title' | translate }}</div>
+      <ion-segment class="theme-btn btn-with-border" (ionChange)="changeTheme($event)" [value]="profile()?.theme">
+        @for (tab of THEME_ACTIONS; track tab.value) {
+          <ion-segment-button class="segment-button" [value]="tab.value">
+            <ion-label>{{ tab.title | translate }}</ion-label>
+          </ion-segment-button>
+        }
+      </ion-segment>
+
+      <div class="avatar-title">{{ "profile.add-avatar" | translate }}</div>
+
+      <div class="avatar-wrap">
+        @if (profile()?.avatar) {
+          <div class="event-avatar add-avatar" (click)="onPickPhoto()">
+            <ion-img class="add-avatar-icon" [src]="profile()?.avatar" alt=" "></ion-img>
+          </div>
+
+          <div class="event-avatar delete-avatar" (click)="profileFacade.deleteAvatar()">
+            <div class="delete-avatar-icon icon" [innerHTML]="DELETE_SVG"></div>
+          </div>
+        } @else {
+          <div class="event-avatar add-avatar" (click)="onPickPhoto()">
+            <div class="delete-avatar-icon icon" [innerHTML]="PLUS_SVG"></div>
+          </div>
+        }
+      </div>
+
+      <form class="form" [formRoot]="userForm">
+        <ion-list lines="none">
+          <ion-item>
+            <ion-input
+                fill="solid"
+                type="email"
+                placeholder="Email"
+                [value]="userForm.email().value()"
+                [helperText]="' '"
+                [errorText]="userForm.email().errors()[0]?.message ?? ' ' | translate"
+                [class.ion-touched]="isTouched('email')"
+                [class.ion-invalid]="isTouched('email') && userForm.email().invalid()"
+                (ionInput)="userForm.email().value.set($any($event).detail.value)"
+                (ionFocus)="ionFocus('email')"
+                (ionBlur)="ionBlur('email')"
+            ></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-input
+                fill="solid"
+                type="text"
+                [placeholder]="'profile.creative-name' | translate"
+                [value]="userForm.creative_name().value()"
+                [errorText]="userForm.creative_name().errors()[0]?.message ?? ' ' | translate"
+                [class.ion-touched]="isTouched('creative_name')"
+                [class.ion-invalid]="isTouched('creative_name') && userForm.creative_name().invalid()"
+                (ionInput)="userForm.creative_name().value.set($any($event).detail.value)"
+                (ionFocus)="ionFocus('creative_name')"
+                (ionBlur)="ionBlur('creative_name')"
+            ></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-input
+                fill="solid"
+                type="text"
+                [placeholder]="'profile.first-name' | translate"
+                [value]="userForm.first_name().value()"
+                [errorText]="userForm.first_name().errors()[0]?.message ?? ' ' | translate"
+                [class.ion-touched]="isTouched('first_name')"
+                [class.ion-invalid]="isTouched('first_name') && userForm.first_name().invalid()"
+                (ionInput)="userForm.first_name().value.set($any($event).detail.value)"
+                (ionFocus)="ionFocus('first_name')"
+                (ionBlur)="ionBlur('first_name')"
+            ></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-input
+                fill="solid"
+                type="text"
+                [placeholder]="'profile.last-name' | translate"
+                [value]="userForm.last_name().value()"
+                [errorText]="userForm.last_name().errors()[0]?.message ?? ' ' | translate"
+                [class.ion-touched]="isTouched('last_name')"
+                [class.ion-invalid]="isTouched('last_name') && userForm.last_name().invalid()"
+                (ionInput)="userForm.last_name().value.set($any($event).detail.value)"
+                (ionFocus)="ionFocus('last_name')"
+                (ionBlur)="ionBlur('last_name')"
+            ></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-input
+                fill="solid"
+                type="tel"
+                [placeholder]="'profile.phone' | translate"
+                [value]="userForm.phone().value()"
+                [errorText]="userForm.phone().errors()[0]?.message ?? ' ' | translate"
+                [class.ion-touched]="isTouched('phone')"
+                [class.ion-invalid]="isTouched('phone') && userForm.phone().invalid()"
+                (ionInput)="userForm.phone().value.set($any($event).detail.value)"
+                (ionFocus)="ionFocus('phone')"
+                (ionBlur)="ionBlur('phone')"
+            ></ion-input>
+          </ion-item>
+        </ion-list>
+
+        <ion-button class="submit" (click)="onSubmit()">{{ 'common.save' | translate }}</ion-button>
+      </form>
+
+      <div class="exit" (click)="profileFacade.logout()">{{ 'profile.exit' | translate }}</div> <br/>
+      <div class="delete">{{ 'profile.delete' | translate }}</div>
+    </div>
+  </div>
+
+  <cp-loader [isLoad]="!profileFacade.profileLoading()"></cp-loader>
+</ion-content>
+
+

@@ -1,0 +1,65 @@
+{
+  "common": {
+    "add": "Додати",
+    "save": "Зберегти",
+    "logout": "Вийти",
+    "delete-profile": "Видалити профіль",
+    "to": "до"
+  },
+  "errors": {
+    "required": "Обов'язкове поле",
+    "email": "Невірний формат email",
+    "min2": "Мінімум 2 символи",
+    "min8": "Мінімум 8 символів",
+    "format-phone": "Невірний формат телефону"
+  },
+  "login": {
+    "creative-name": "Творче імʼя",
+    "password": "Пароль",
+    "new-password": "Новий пароль",
+    "remember-me": "Запамʼятати мої дані для входу",
+    "continue": "Продовжити",
+    "login": "Увійти",
+    "no-exist-user": "Користувача не знайдено",
+    "invalid-password": "Неправильний пароль",
+    "reset-password": "Відновити пароль"
+  },
+  "lessonTypes": {
+    "lesson": "Урок",
+    "independent": "Самостійне"
+  },
+  "users": {
+    "add-student-title": "Додайте учня",
+    "add-teacher-title": "Додайте вчителя",
+    "add-admin-title": "Додайте адміна",
+    "update-student-title": "Редагування учня",
+    "update-teacher-title": "Редагування вчителя",
+    "update-admin-title": "Редагування адміна",
+    "select-teacher-title": "Виберіть вчителя",
+    "add-student-btn": "Додати учня",
+    "add-teacher-btn": "Додати вчителя",
+    "add-admin-btn": "Додати адміна",
+    "student": "Учні",
+    "teacher": "Вчителі",
+    "admin": "Адміни",
+    "owner": "Власник"
+  },
+  "profile": {
+    "title": "Профіль",
+    "add-avatar": "Додайте аватарку",
+    "creative-name": "Творче імʼя",
+    "first-name": "Справжнє імʼя",
+    "last-name": "Прізвище",
+    "phone": "Номер телефону",
+    "chose-teacher": "Виберіть вчителя",
+    "exit": "Вийти",
+    "delete": "Видалити профіль",
+    "password": "Пароль",
+    "theme": {
+      "title": "Кольорова тема застосунку",
+      "system": "Системна",
+      "light": "Світла",
+      "dark": "Темна"
+    }
+  }
+}

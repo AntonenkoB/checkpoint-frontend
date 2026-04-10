@@ -1,0 +1,90 @@
+@use '../../../../../scss/mixins/app-padding' as *;
+
+:host {
+  background-color: var(--color-background-primary);
+  @include app-padding;
+
+  .profile-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .profile-wrap {
+    flex: 1 1 auto;
+    max-width: 440px;
+    position: relative;
+  }
+
+  .title {
+    font: var(--font-alumi-32-bold);
+  }
+
+  .theme-title {
+    padding-top: var(--spacing-24);
+    font: var(--font-open-16-regular);
+  }
+
+  .theme-btn {
+    padding-top: var(--spacing-8);
+  }
+
+  .segment-button {
+    min-width: 106px;
+  }
+
+  .avatar-title {
+    padding-top: var(--spacing-40);
+    font: var(--font-open-16-regular);
+  }
+
+  .avatar-wrap {
+    align-items: center;
+    display: flex;
+    gap: 30px;
+    padding-top: var(--spacing-16);
+
+    .icon {
+      height: 24px;
+      width: 24px;
+    }
+  }
+
+  .event-avatar {
+    align-items: center;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+
+    &.add-avatar {
+      cursor: pointer;
+      border: 1px solid var(--color-border-primary);
+    }
+
+    &.delete-avatar {
+      cursor: pointer;
+      height: 40px;
+      width: 40px;
+    }
+  }
+
+  .form {
+    padding-top: var(--spacing-40);
+  }
+
+  .submit {
+    padding-top: var(--spacing-40);
+  }
+
+  .exit,
+  .delete {
+    display: inline-block;
+    cursor: pointer;
+    font: var(--font-open-16-regular);
+    margin-top: 35px;
+    padding: 5px 0 5px 5px;
+  }
+}

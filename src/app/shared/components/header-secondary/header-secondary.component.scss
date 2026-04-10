@@ -1,0 +1,11 @@
+:host {
+  .head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .title {
+    font: var(--font-alumi-32-black);
+  }
+}

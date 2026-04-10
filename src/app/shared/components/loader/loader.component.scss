@@ -1,0 +1,26 @@
+:host {
+  .loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    color: var(--color-text-primary);
+    background-color: var(--color-background-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    z-index: 483647;
+
+    &.is-load {
+      animation: fadeIn 300ms ease-in forwards;
+    }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 1; }
+    to { opacity: 0; display: none }
+  }
+}

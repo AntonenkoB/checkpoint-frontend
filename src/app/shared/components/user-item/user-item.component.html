@@ -1,0 +1,19 @@
+<div class="user">
+  <cp-avatar class="avatar" [src]="user()?.avatar ?? ''"></cp-avatar>
+  <div class="user-info">
+    @if (user()) {
+      <div class="creative-name">{{getCreativeName()}}</div>
+      <div class="name">{{getName()}}</div>
+    } @else {
+      <div class="add-user">+ {{"users.add-teacher-btn" | translate}}</div>
+    }
+  </div>
+
+  @if (isSelect()) {
+    <div class="icon" [innerHTML]="CHECK_THIN_SVG"></div>
+  }
+
+  @if (showDelete()) {
+    <div class="icon delete" [innerHTML]="CLOSE_SVG" (click)="delete.emit(user()?.id)"></div>
+  }
+</div>

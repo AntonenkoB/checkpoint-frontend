@@ -1,0 +1,54 @@
+:host {
+
+  .avatar-upload {
+    height: 100%;
+    padding: var(--spacing-16);
+  }
+
+  .description {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    font: var(--font-open-16-regular);
+    text-align: center;
+  }
+
+  .cropper-wrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+  }
+
+  .cropper {
+    display: flex;
+    align-items: center;
+    flex: 1 1 auto;
+  }
+
+  image-cropper {
+    max-height: 400px;
+    width: 100%;
+  }
+
+  .avatar-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    height: 100%;
+  }
+
+  .actions {
+    display: flex;
+    gap: 12px;
+    padding: 16px;
+    justify-content: flex-end;
+  }
+
+  .error {
+    font: var(--font-open-13-regular);
+    padding: var(--spacing-16);
+  }
+}

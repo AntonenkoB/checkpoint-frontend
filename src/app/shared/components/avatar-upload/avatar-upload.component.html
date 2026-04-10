@@ -1,0 +1,46 @@
+<div class="avatar-upload">
+  @if (!imageFile()) {
+    <div class="avatar-info">
+      <div class="description">Оберіть фото формату JPG, PNG, WEBP <br> з максимальним розміром 2MB</div>
+      <ion-button fill="outline" (click)="triggerFileInput()">Обрати фото</ion-button>
+    </div>
+  }
+
+  @if (imageFile()) {
+    <div class="cropper-wrap">
+      <div class="cropper">
+        <image-cropper
+            [imageFile]="imageFile()!"
+            [maintainAspectRatio]="true"
+            [aspectRatio]="1"
+            [roundCropper]="true"
+            [resizeToWidth]="200"
+            format="webp"
+            (imageCropped)="onImageCropped($event)"
+            (loadImageFailed)="onLoadImageFailed()"
+        />
+      </div>
+
+      <div class="actions">
+        <ion-button fill="outline" (click)="imageFile.set(null)">
+          Очистити
+        </ion-button>
+        <ion-button (click)="onConfirm()">
+          Зберегти
+        </ion-button>
+      </div>
+    </div>
+  }
+
+  @if (error()) {
+    <p class="error">{{ error() }}</p>
+  }
+
+  <input
+      #fileInput
+      type="file"
+      accept="image/jpeg,image/png,image/webp"
+      style="display: none"
+      (change)="onFileChange($event)"
+  />
+</div>

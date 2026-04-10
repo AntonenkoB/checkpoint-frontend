@@ -1,0 +1,15 @@
+:host {
+  .empty-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    color: var(--color-text-primary);
+
+    img {
+      min-height: 100%;
+      max-width: 230px;
+    }
+  }
+}

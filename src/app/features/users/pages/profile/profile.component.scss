@@ -1,18 +1,19 @@
-@use '../../../../../scss/mixins/app-padding' as *;
-
 :host {
   background-color: var(--color-background-primary);
-  @include app-padding;
+  display: block;
+  height: 100%;
 
-  .profile-container {
+  .profile {
     display: flex;
-    justify-content: center;
-    width: 100%;
+    flex-direction: column;
+    position: relative;
+    padding-bottom: var(--cp-safe-area-bottom);
+    height: 100%;
   }
 
   .profile-wrap {
     flex: 1 1 auto;
-    max-width: 440px;
+    overflow: auto;
     position: relative;
   }
 

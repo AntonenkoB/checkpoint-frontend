@@ -1,8 +1,16 @@
 :host {
+  .close-modal {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding-top: calc(var(--spacing-16) + var(--cp-safe-area-top));
+    padding-right: var(--spacing-20);
+    z-index: 2;
+  }
 
   .avatar-upload {
     height: 100%;
-    padding: var(--spacing-16);
+    position: relative;
   }
 
   .description {
@@ -43,8 +51,9 @@
   .actions {
     display: flex;
     gap: 12px;
-    padding: 16px;
+    padding: var(--spacing-20);
     justify-content: flex-end;
+    width: 100%;
   }
 
   .error {

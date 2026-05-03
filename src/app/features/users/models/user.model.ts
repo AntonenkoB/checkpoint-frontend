@@ -16,6 +16,18 @@ export enum EUserRole {
   Student = 'student',
 }
 
+export enum EHeaderMenu {
+  Admin = 'admin',
+  Teacher = 'teacher',
+  Student = 'student',
+  Schedule = 'schedule',
+}
+
+export enum ERateTabs {
+  Price = 'price',
+  Salary = 'salary',
+}
+
 export interface IUser {
   id: number;
   creative_name: string;
@@ -58,18 +70,63 @@ export interface IUserUpdate {
   teacher_ids?: number[];
 }
 
-export const USER_ROLE_TABS = (): IOptions<EUserRole>[] => [
+export const ADMIN_TABS = (): IOptions<EHeaderMenu>[] => [
   {
-    value: EUserRole.Student,
+    value: EHeaderMenu.Student,
     title: "users.student"
   },
   {
-    value: EUserRole.Teacher,
+    value: EHeaderMenu.Teacher,
     title: "users.teacher"
   },
   {
-    value: EUserRole.Admin,
+    value: EHeaderMenu.Admin,
     title: "users.admin"
+  },
+  {
+    value: EHeaderMenu.Schedule,
+    title: "schedule.title"
+  }
+]
+
+export const TEACHER_TABS = (): IOptions<EHeaderMenu>[] => [
+  {
+    value: EHeaderMenu.Student,
+    title: "users.student"
+  },
+  {
+    value: EHeaderMenu.Schedule,
+    title: "schedule.title"
+  }
+]
+
+export const USER_ROLE_TABS = (): IOptions<EHeaderMenu>[] => [
+  {
+    value: EHeaderMenu.Student,
+    title: "users.student"
+  },
+  {
+    value: EHeaderMenu.Teacher,
+    title: "users.teacher"
+  },
+  {
+    value: EHeaderMenu.Admin,
+    title: "users.admin"
+  },
+  {
+    value: EHeaderMenu.Schedule,
+    title: "schedule.title"
+  }
+]
+
+export const SETTING_RATES_TABS = (): IOptions<ERateTabs>[] => [
+  {
+    value: ERateTabs.Price,
+    title: "rates.price-title"
+  },
+  {
+    value: ERateTabs.Salary,
+    title: "rates.salary-title"
   }
 ]
 
@@ -103,23 +160,75 @@ export const THEME_ACTIONS = (): IOptions<ETheme>[] => [
   }
 ]
 
-export const USER_CREATE_BTN = (): Record<EUserRole, string> => ({
-  [EUserRole.Student]: "users.add-student-btn",
-  [EUserRole.Teacher]: "users.add-teacher-btn",
-  [EUserRole.Admin]: "users.add-admin-btn",
-  [EUserRole.Owner]: "users.add-admin-btn",
+export const USER_CREATE_BTN = (): Record<EHeaderMenu, string> => ({
+  [EHeaderMenu.Student]: "users.add-student-btn",
+  [EHeaderMenu.Teacher]: "users.add-teacher-btn",
+  [EHeaderMenu.Admin]: "users.add-admin-btn",
+  [EHeaderMenu.Schedule]: "schedule.btn-change-schedule",
 });
 
-export const USER_CREATE_TITLE = (): Record<EUserRole, string> => ({
-  [EUserRole.Student]: "users.add-student-title",
-  [EUserRole.Teacher]: "users.add-teacher-title",
-  [EUserRole.Admin]: "users.add-admin-title",
-  [EUserRole.Owner]: "users.admin",
+export const USER_CREATE_TITLE = (): Record<EHeaderMenu, string> => ({
+  [EHeaderMenu.Student]: "users.add-student-title",
+  [EHeaderMenu.Teacher]: "users.add-teacher-title",
+  [EHeaderMenu.Admin]: "users.add-admin-title",
+  [EHeaderMenu.Schedule]: "users.admin",
 });
 
-export const USER_UPDATE_TITLE = (): Record<EUserRole, string> => ({
-  [EUserRole.Student]: "users.update-student-title",
-  [EUserRole.Teacher]: "users.update-teacher-title",
-  [EUserRole.Admin]: "users.update-admin-title",
-  [EUserRole.Owner]: "users.admin",
+export const USER_UPDATE_TITLE = (): Record<EHeaderMenu, string> => ({
+  [EHeaderMenu.Student]: "users.update-student-title",
+  [EHeaderMenu.Teacher]: "users.update-teacher-title",
+  [EHeaderMenu.Admin]: "users.update-admin-title",
+  [EHeaderMenu.Schedule]: "users.admin",
 });
+
+
+export const MONTH_LIST = (): IOptions<any>[] => [
+  {
+    value: 'Квітень',
+    title: 'Квітень'
+  },
+  {
+    value: 'Березень',
+    title: 'Березень'
+  },
+  {
+    value: 'Лютий',
+    title: 'Лютий'
+  },
+  {
+    value: 'Січень',
+    title: 'Січень'
+  },
+  {
+    value: 'Грудень',
+    title: 'Грудень'
+  },
+  {
+    value: 'Листопад',
+    title: 'Листопад'
+  },
+  {
+    value: 'Жовтень',
+    title: 'Жовтень'
+  },
+  {
+    value: 'Вересень',
+    title: 'Вересень'
+  },
+  {
+    value: 'Серпень',
+    title: 'Серпень'
+  },
+  {
+    value: 'Липень',
+    title: 'Липень'
+  },
+  {
+    value: 'Червень',
+    title: 'Червень'
+  },
+  {
+    value: 'Травень',
+    title: 'Травень'
+  },
+]

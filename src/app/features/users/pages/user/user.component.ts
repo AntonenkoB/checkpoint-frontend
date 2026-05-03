@@ -28,6 +28,7 @@ import {SelectUserComponent} from "../select-user/select-user.component";
 import {ERoutParams} from "@models/router.model";
 import {TranslateService} from "@shared/services/translate.service";
 import {LoaderComponent} from "@shared/components/loader/loader.component";
+import {PhoneMaskDirective} from "@shared/directives/phone-mask";
 
 @Component({
   selector: 'cp-user-create',
@@ -50,6 +51,7 @@ import {LoaderComponent} from "@shared/components/loader/loader.component";
     IonModal,
     SelectUserComponent,
     LoaderComponent,
+    PhoneMaskDirective,
   ],
   providers: [UserFacade]
 })
@@ -60,9 +62,21 @@ export class UserComponent {
   public translateService = inject(TranslateService);
   public USER_CREATE_TITLE = USER_CREATE_TITLE();
   public USER_UPDATE_TITLE = USER_UPDATE_TITLE();
+  public eUserRole = EUserRole;
   public user = signal(this.userFacade.user());
+  public profile = computed(() => this.userFacade.profile());
+  public isUpdate = computed(() => this.userFacade.selectRouteParams()[ERoutParams.UserId]);
+  public userTitle = computed(() => {
+    if (this.isUpdate()) {
+      return this.translateService.instant(this.USER_UPDATE_TITLE[this.userFacade.menuActive()])
+    } else {
+      return this.translateService.instant(this.USER_CREATE_TITLE[this.userFacade.menuActive()])
+    }
+  });
+  public attachUser = signal<IUser[]>([]);
+
   public userModel = signal({
-    role: EUserRole.Student,
+    role: this.userFacade.roleCreate(),
     email: '',
     creative_name: '',
     first_name: '',
@@ -71,16 +85,6 @@ export class UserComponent {
     temporary_password: 'checkpoint',  // transfer to back
     teacher_ids: [] as number[],
   });
-  public EUserRole = EUserRole;
-  public isUpdate = computed(() => this.userFacade.selectRouteParams()[ERoutParams.UserId]);
-  public userTitle = computed(() => {
-    if (this.isUpdate()) {
-      return this.translateService.instant(this.USER_UPDATE_TITLE[this.userFacade.roleCreate() as EUserRole])
-    } else {
-      return this.translateService.instant(this.USER_CREATE_TITLE[this.userFacade.roleCreate() as EUserRole])
-    }
-  });
-  public attachUser = signal<IUser[]>([]);
 
   constructor() {
     addIcons({...FORM_PASSWORD_ICONS, ...FORM_SELECT_ICONS});
@@ -90,6 +94,11 @@ export class UserComponent {
         this.user.set(this.userFacade.user())
         this.attachUser.set(this.user()?.teachers as IUser[] ?? []);
         this.updateForm();
+      } else {
+        this.userModel.update(model => ({
+          ...model,
+          role: this.userFacade.roleCreate()
+        }));
       }
     });
   }
@@ -120,7 +129,7 @@ export class UserComponent {
     minLength(controls.last_name, 2, { message: 'errors.min2' });
 
     required(controls.phone, { message: 'errors.required' });
-    pattern(controls.phone, /^\+?\d{9,15}$/, { message: 'errors.format-phone' });
+    pattern(controls.phone, /^\+380 \d{2} \d{3} \d{2} \d{2}$/, { message: 'errors.format-phone' });
 
     required(controls.temporary_password, { message: 'errors.required' });
     minLength(controls.temporary_password, 8, { message: 'errors.min8' });
@@ -158,6 +167,7 @@ export class UserComponent {
 
   private submissionPayload = computed(() => {
     const values = this.userForm().value();
+    values.phone = values.phone.replace(/\D/g, '');
     const payload: Record<string, any> = { ...values };
 
     if (this.isUpdate()) {

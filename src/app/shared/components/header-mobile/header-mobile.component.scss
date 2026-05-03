@@ -1,0 +1,19 @@
+:host {
+  display: block;
+  width: 100%;
+  padding-top: calc(var(--spacing-8) + var(--cp-safe-area-top));
+
+  .header-mobile {
+    align-items: center;
+    display: flex;
+    gap: var(--spacing-20);
+    justify-content: space-between;
+    max-width: 488px;
+  }
+
+  .header-avatar {
+    cursor: pointer;
+    height: 50px;
+    width: 50px;
+  }
+}

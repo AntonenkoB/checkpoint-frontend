@@ -1,0 +1,36 @@
+:host {
+  height: 100%;
+  background-color: var(--color-background-primary);
+
+  .payment-success {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .payment-success-header {
+    padding-top: var(--spacing-16);
+  }
+
+  .payment-success-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1 1 auto;
+  }
+
+  .title {
+    font: var(--font-alumi-48-black);
+    padding-bottom: var(--spacing-40);
+  }
+
+  .description {
+    font: var(--font-open-16-regular);
+    padding-bottom: var(--spacing-16);
+  }
+
+  .btn-wrap {
+    padding-top: var(--spacing-40);
+    padding-bottom: 120px;
+  }
+}

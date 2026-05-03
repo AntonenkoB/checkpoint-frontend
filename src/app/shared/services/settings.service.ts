@@ -32,4 +32,20 @@ export class SettingsService {
 
     await Preferences.set({ key: 'app_settings', value: JSON.stringify(current) });
   }
+
+  public getCurrentSettings(): IAppSettings {
+    return {
+      lang: this.lang(),
+      theme: this.theme(),
+      repeat: this.repeat(),
+    };
+  }
+
+  async clearSettings() {
+    this.lang.set(ELang.UA);
+    this.theme.set(ETheme.Light);
+    this.repeat.set(!Capacitor.isNativePlatform());
+    
+    await Preferences.remove({ key: 'app_settings' });
+  }
 }

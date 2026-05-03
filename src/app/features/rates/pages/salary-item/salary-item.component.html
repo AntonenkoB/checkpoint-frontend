@@ -1,0 +1,68 @@
+<div class="salary-item">
+  <div class="container">
+    <cp-header-secondary [title]="'Зарплата'" (close)="ratesFacade.goToSalaryList()"></cp-header-secondary>
+    <cp-user-item class="teacher" [user]="ratesFacade.studentsList()[2]"></cp-user-item>
+  </div>
+
+  <div class="month-tabs">
+    <cp-tabs
+        [bntStyle]="'btn-fill'"
+        [tabList]="MONTH_LIST"
+        [activeTab]="MONTH_LIST[0].value"
+    ></cp-tabs>
+  </div>
+
+  <div class="container">
+    <div class="rates-info">
+      <div class="rates-info-item">
+        <div class="rates-info-price-wrap">
+          <div class="rates-info-name">{{ "rates.salary.total-revenue" | translate}}</div>
+          <div class="rates-info-price">11 234 ₴</div>
+        </div>
+        <div class="rates-info-price-wrap">
+          <div class="rates-info-name">{{ "rates.salary.salary-teacher" | translate}}</div>
+          <div class="rates-info-price">1 234 ₴</div>
+        </div>
+        <div class="rates-info-price-wrap">
+          <div class="rates-info-name">{{ "rates.salary.salary-school" | translate}}</div>
+          <div class="rates-info-price">1 234 ₴</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ion-content class="salary-payout">
+      <div class="container">
+        <div class="salary-payout-item">
+          <div class="salary-payout-top">
+            <div class="info">17 березня, 12:00</div>
+            <div class="total">{{ "rates.receipt-teacher" | translate}} 500 ₴</div>
+          </div>
+          <div class="salary-payout-bottom">
+            <div class="info">Тарас Шевченко</div>
+            <div class="total">оплата 1500 ₴</div>
+          </div>
+        </div>
+        <div class="salary-payout-item">
+          <div class="salary-payout-top">
+            <div class="info">17 березня, 12:00</div>
+            <div class="total">{{ "rates.receipt-teacher" | translate}} 500 ₴</div>
+          </div>
+          <div class="salary-payout-bottom">
+            <div class="info">Тарас Шевченко</div>
+            <div class="total">{{ "rates.payment" | translate}} 1500 ₴</div>
+          </div>
+        </div>
+        <div class="salary-payout-item">
+          <div class="salary-payout-top">
+            <div class="info">17 березня, 12:00</div>
+            <div class="total">{{ "rates.receipt-teacher" | translate}} 500 ₴</div>
+          </div>
+          <div class="salary-payout-bottom">
+            <div class="info">Тарас Шевченко</div>
+            <div class="total">{{ "rates.receipt-teacher" | translate}} 1500 ₴</div>
+          </div>
+        </div>
+      </div>
+  </ion-content>
+</div>

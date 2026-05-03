@@ -1,0 +1,83 @@
+<div class="rate-item">
+  <div class="container">
+    <cp-header-secondary [title]="'rates.price-title' | translate" (close)="ratesFacade.goToRateList()"></cp-header-secondary>
+
+    <cp-user-item class="teacher" [user]="ratesFacade.studentsList()[2]" [hideAllActions]="true"></cp-user-item>
+  </div>
+
+  <div class="prises">
+    <div class="container">
+      <div class="one-time">
+        <div class="title">{{ "rates.price.one-time-type" | translate }}</div>
+        <div class="price-wrap">
+          <div class="price-item">
+            <div class="name">{{ "rates.price.school" | translate}}</div>
+            <ion-input
+                class="price-item-input"
+                type="text"
+                fill="solid"
+                inputmode="decimal"
+                placeholder="0"
+                (ionInput)="onInput($event)"
+                [value]="500"
+            >
+              <div slot="end" class="currency-symbol">₴</div>
+            </ion-input>
+          </div>
+          <div class="price-item">
+            <div class="name">{{ "rates.price.teacher" | translate}}</div>
+            <ion-input
+                class="price-item-input"
+                type="text"
+                fill="solid"
+                inputmode="decimal"
+                placeholder="0"
+                (ionInput)="onInput($event)"
+                [value]="500"
+            >
+              <div slot="end" class="currency-symbol">₴</div>
+            </ion-input>
+          </div>
+        </div>
+      </div>
+
+      <div class="one-time">
+        <div class="title">{{ "rates.price.abonnement-type" | translate}}</div>
+        <div class="price-wrap">
+          <div class="price-item">
+            <div class="name">{{ "rates.price.school" | translate}}</div>
+            <ion-input
+                class="price-item-input"
+                type="text"
+                fill="solid"
+                inputmode="decimal"
+                placeholder="0"
+                (ionInput)="onInput($event)"
+                [value]="500"
+            >
+              <div slot="end" class="currency-symbol">₴</div>
+            </ion-input>
+          </div>
+          <div class="price-item">
+            <div class="name">{{ "rates.price.teacher" | translate}}</div>
+            <ion-input
+                class="price-item-input"
+                type="text"
+                fill="solid"
+                inputmode="decimal"
+                placeholder="0"
+                (ionInput)="onInput($event)"
+                [value]="500"
+            >
+              <div slot="end" class="currency-symbol">₴</div>
+            </ion-input>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bnt-wrap container">
+    <ion-button>{{"common.save" | translate}}</ion-button>
+  </div>
+</div>

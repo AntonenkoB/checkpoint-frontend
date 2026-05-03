@@ -1,19 +1,22 @@
 import {Component, ElementRef, inject, signal, ViewChild} from '@angular/core';
-import { ImageCropperComponent, ImageCroppedEvent } from 'ngx-image-cropper';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { IonButton, ModalController } from '@ionic/angular/standalone';
+import {ImageCropperComponent, ImageCroppedEvent} from 'ngx-image-cropper';
+import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
+import {IonButton, ModalController, NavParams} from '@ionic/angular/standalone';
+import {CloseComponent} from "@shared/components/close/close.component";
+import {TranslatePipe} from "@shared/pipes/translate-pipe";
 
-const MAX_SIZE_MB = 2;
-const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+const MAX_SIZE_MB = 10;
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif'];
 
 @Component({
   selector: 'cp-avatar-upload',
   templateUrl: './avatar-upload.component.html',
   styleUrls: ['./avatar-upload.component.scss'],
-  imports: [ImageCropperComponent, IonButton],
+  imports: [ImageCropperComponent, IonButton, CloseComponent, TranslatePipe],
 })
 export class AvatarUploadComponent {
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
+  private navParams = inject(NavParams);
 
   private sanitizer = inject(DomSanitizer);
   private modalController = inject(ModalController);
@@ -29,7 +32,11 @@ export class AvatarUploadComponent {
 
     this.error.set(null);
 
-    if (!ALLOWED_TYPES.includes(file.type)) {
+    const isImage = file.type.startsWith('image/') ||
+      ALLOWED_TYPES.includes(file.type) ||
+      file.name.toLowerCase().match(/\.(jpe?g|png|webp|heic|heif)$/);
+
+    if (!isImage) {
       this.error.set('errors.invalid-format');
       return;
     }
@@ -40,6 +47,8 @@ export class AvatarUploadComponent {
     }
 
     this.imageFile.set(file);
+
+    (event.target as HTMLInputElement).value = '';
   }
 
   onImageCropped(event: ImageCroppedEvent): void {
@@ -58,7 +67,7 @@ export class AvatarUploadComponent {
 
   async onConfirm(): Promise<void> {
     if (!this.croppedBlob()) return;
-    await this.modalController.dismiss({ blob: this.croppedBlob() });
+    await this.modalController.dismiss({blob: this.croppedBlob()});
   }
 
   async onCancel(): Promise<void> {
@@ -67,5 +76,9 @@ export class AvatarUploadComponent {
 
   triggerFileInput(): void {
     this.fileInput.nativeElement.click();
+  }
+
+  public closeModal(): void {
+    this.modalController.dismiss();
   }
 }

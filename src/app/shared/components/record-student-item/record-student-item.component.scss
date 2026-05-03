@@ -1,0 +1,46 @@
+:host {
+  display: block;
+  width: 100%;
+
+  .record-student {
+    align-items: center;
+    display: flex;
+    gap: var(--spacing-16);
+    padding: var(--spacing-8) 0;
+  }
+
+  .avatar {
+    height: 64px;
+    width: 64px;
+  }
+
+  .record-info {
+    color: var(--color-text-primary);
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .record-info-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-8);
+    font: var(--font-alumi-20-black);
+  }
+
+  .record-info-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-8);
+    font: var(--font-open-16-regular);
+    padding-top: var(--spacing-8);
+  }
+
+  .record-creative-name,
+  .record-name {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}

@@ -60,6 +60,67 @@
       "system": "Системна",
       "light": "Світла",
       "dark": "Темна"
+    },
+    "photo": {
+      "validation-info": "Оберіть фото формату JPG, PNG, WEBP <br/> з максимальним розміром 10MB",
+      "title": "Обрати фото",
+      "clear": "Очистити",
+      "save": "Зберегти"
     }
+  },
+  "schedule": {
+    "title": "Розклад",
+    "times": "Вкажіть доступні години",
+    "myself": "Самостійні уроки",
+    "independent": "Самостійно",
+    "cancel": "Відмінити",
+    "transfer": "Відмінити",
+    "type": {
+      "weekly": "Щотижнево",
+      "one-time": "Разово"
+    },
+    "btn-change-schedule": "Змінити розклад",
+    "lesson-cancelled": "Урок скасовано",
+    "btn-to-schedule": "Назад до розкладу",
+    "btn-planing-lesson": "Запланувати заняття"
+  },
+  "record": {
+    "student-title": "Виберіть учня на урок",
+    "time-title": "Виберіть час уроку"
+  },
+  "market": {
+    "select-lessons-count": "Виберіть кількість уроків до покупки",
+    "buy-for-price": "Купити за 1 535 ₴",
+    "select-session-type": "Виберіть тип заняття",
+    "with-teacher": "З учителем",
+    "self-study": "Самостійні",
+    "one-time-lessons": "Разові уроки",
+    "abonnement-lessons": "Абонемент",
+    "abonnement-details": "3500 ₴ (1100 ₴/урок) <br/> за 4 уроки на місяць",
+    "abonnement-usage-note": "Маєш почати використовувати уроки <br/> протягом трьох місяців",
+    "payment-success-title": "Оплачено!",
+    "payment-success-description": "Ви придбали 1 урок за 1 535 ₴",
+    "payment-success-btn": "До зустрічі на уроках",
+    "select-teacher-to-buy": "Виберіть вашого вчителя, <br/> щоб купити уроки"
+  },
+  "rates": {
+    "price-title": "Вартість навчання",
+    "salary-title": "Зарплати",
+    "receipt-teacher": "Вчителю",
+    "payment": "Оплата",
+    "price": {
+      "one-time-type": "Разово",
+      "abonnement-type": "Абонемент",
+      "school": "Школа",
+      "teacher": "Вчитель"
+    },
+    "salary": {
+      "total-revenue": "Всього надходжень",
+      "salary-teacher": "Виплата вчителю",
+      "salary-school": "Школа отримала"
+    }
+  },
+  "date": {
+    "this-week": "Цього тижня"
   }
 }

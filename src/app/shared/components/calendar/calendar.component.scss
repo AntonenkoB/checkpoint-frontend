@@ -1,0 +1,17 @@
+:host {
+  .month {
+    padding-top: 0;
+    overflow-x: auto;
+    justify-content: flex-start;
+    padding-bottom: var(--spacing-24);
+    gap: var(--spacing-8);
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    ion-segment-button {
+      --border-radius: 0px;
+    }
+  }
+}

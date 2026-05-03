@@ -15,5 +15,7 @@
     }
   </div>
 
-  <ion-button (click)="save.emit(selectedTeacher())">{{ "common.add" | translate }}</ion-button>
+  <div class="btn-wrap">
+    <ion-button (click)="save.emit(selectedTeacher())">{{ "common.add" | translate }}</ion-button>
+  </div>
 </div>

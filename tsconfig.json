@@ -34,8 +34,17 @@
       "@shared/*": [
         "src/app/shared/*"
       ],
-      "@pages/*": [
-        "src/app/pages/*"
+      "@auth/*": [
+        "src/app/features/auth/*"
+      ],
+      "@schedule/*": [
+        "src/app/features/schedule/*"
+      ],
+      "@users/*": [
+        "src/app/features/users/*"
+      ],
+      "@rates/*": [
+        "src/app/features/rates/*"
       ],
     },
     "skipLibCheck": true,

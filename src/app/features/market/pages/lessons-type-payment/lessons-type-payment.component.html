@@ -1,0 +1,27 @@
+<div class="lessons-type-payment container">
+  <cp-header-secondary [title]="' '" (close)="marketFacade.goToStudentMain()"></cp-header-secondary>
+
+  <div class="lessons-type-payment-info">
+    <cp-record-student-item
+        class="selected-teacher"
+        [student]="marketFacade.selectedTeacher"
+        [withAmountLesson]="false"
+    ></cp-record-student-item>
+
+    <div class="one-lesson" (click)="marketFacade.goToPayment()">
+      <div class="name">{{"market.one-time-lessons" | translate}}</div>
+      <div class="price">1200 ₴</div>
+    </div>
+
+    <div class="abonnement-lesson" (click)="marketFacade.goToPayment()">
+      <div class="name">{{"market.abonnement-lessons" | translate}}</div>
+      <div class="price"
+      [innerHTML]="'market.abonnement-details' | translate"
+      ></div>
+    </div>
+
+    <div class="lessons-type-payment-description"
+         [innerHTML]="'market.abonnement-usage-note' | translate"
+    ></div>
+  </div>
+</div>

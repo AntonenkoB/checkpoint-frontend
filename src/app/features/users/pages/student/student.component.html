@@ -1,0 +1,41 @@
+<div class="student container">
+  <div class="student-bg"></div>
+  <div class="teacher-wrap">
+    <div class="teacher" (click)="studentFacade.goToLessonsType()">
+      <div class="teacher-icon">
+        <div class="icon-plus" [innerHTML]="PLUS_SVG"></div>
+      </div>
+      <div class="teacher-info">
+        <div class="teacher-name">
+          Володиславославоучень
+        </div>
+        <div class="amount-lessons">
+          1 урок з вчителем, 0 самостійних
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lessons">
+    <div class="week-title">{{ "date.this-week" | translate}}</div>
+    <cp-user-item class="teacher-lessons" [user]="studentFacade.teachersList()[1]" [hideAllActions]="true"></cp-user-item>
+    <div class="record-lesson">
+      <div class="date">Сьогодні, 26 березня, 13:00-14:00</div>
+      <div class="action" (click)="studentFacade.goToTransferringLesson()">
+        <div class="action-icon" [innerHTML]="DOTS_SVG"></div>
+      </div>
+    </div>
+
+    <div class="myself">{{ "schedule.independent" | translate}}</div>
+    <div class="record-lesson">
+      <div class="date">Субота, 29 березня, 13:00-14:00</div>
+      <div class="action" (click)="studentFacade.goToTransferringLesson()">
+        <div class="action-icon" [innerHTML]="DOTS_SVG"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="btn-wrap">
+    <ion-button class="btn-planing">{{ "schedule.btn-planing-lesson" | translate}}</ion-button>
+  </div>
+</div>

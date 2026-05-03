@@ -9,12 +9,14 @@ import {EAppPages} from "@models/router.model";
 import {EAuthPages} from "../../auth/models/router.model";
 import {EUserPages, EUserRole} from "../models/user.model";
 import {SettingsService} from "@shared/services/settings.service";
+import {ThemeService} from "@shared/services/theme.service";
 
 @Injectable()
 export class UserEffects {
   private actions$ = inject(Actions);
   private userService = inject(UserService);
   private settingsService = inject(SettingsService);
+  private themeService = inject(ThemeService);
 
   allUsers$ = createEffect(() =>
     this.actions$.pipe(
@@ -40,7 +42,7 @@ export class UserEffects {
     this.actions$.pipe(
       ofType(UserActions.allUsersFailure),
       map(() => {
-        return RouterActions.navigate({ path: [EAppPages.Auth, EAuthPages.Login]});
+        return RouterActions.goTo({ path: [EAppPages.Auth, EAuthPages.Login]});
       })
     )
   );
@@ -108,7 +110,7 @@ export class UserEffects {
   createUserSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UserActions.createUserSuccess),
-      switchMap(({}) => of(RouterActions.navigate({path: [EAppPages.Users, EUserPages.ListUsers]})))
+      switchMap(({}) => of(RouterActions.goTo({path: [EAppPages.Users, EUserPages.ListUsers]})))
     )
   );
 
@@ -155,12 +157,16 @@ export class UserEffects {
       ofType(UserActions.getProfile),
       switchMap(() =>
         this.userService.getProfile().pipe(
-          map((data) =>
-            ApiResponseHelper.handleResponse(
-              data,
-              (profile) => UserActions.getProfileSuccess({profile}),
-              (errors) => UserActions.getProfileFailure({error: errors})
-            )
+          map((data) => {
+              if (data.success) {
+                this.themeService.apply(data.data.theme);
+              }
+              return ApiResponseHelper.handleResponse(
+                data,
+                (profile) => UserActions.getProfileSuccess({profile}),
+                (errors) => UserActions.getProfileFailure({error: errors})
+              )
+            }
           ),
           catchError((error) =>
             of(UserActions.getUserFailure({error: error.message}))
@@ -192,7 +198,7 @@ export class UserEffects {
     this.actions$.pipe(
       ofType(UserActions.updateProfileSuccess),
       switchMap(({ profile }) =>
-        from(this.settingsService.updateSettings({ theme: profile.theme }))
+        from(this.settingsService.updateSettings({ ...this.settingsService.getCurrentSettings(), theme: profile.theme }))
       )
     ), { dispatch: false }
   );

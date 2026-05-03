@@ -1,28 +1,19 @@
 @use '../../../../../scss/mixins/app-padding' as *;
 :host {
+  background-color: var(--color-background-primary);
   display: block;
   margin: 0;
-  --ripple-color: transparent !important;
-  @include app-padding;
-
 
   .login {
-    height: 100vh;
-    padding: 20px;
-
-    @media (min-width: 480px) {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
+    padding-top: var(--cp-safe-area-top);
+    height: 100%;
   }
 
   .logo-wrap {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 48px 0 80px;
+    padding-top: 48px;
     width: 100%;
   }
 
@@ -35,13 +26,9 @@
     }
   }
 
-  .name-wrap {
-    max-width: 400px;
-    margin: 0 auto;
-
-    @media (min-width: 480px) {
-      min-width: 400px;
-    }
+  .login-container {
+    //flex: 1 1 auto;
+    padding-top: 14vh;
   }
 
   .name {
@@ -81,7 +68,6 @@
   .send {
     display: block;
     margin-top: 60px;
-    margin-bottom: 264px;
     width: 100%;
   }
 }

@@ -1,0 +1,21 @@
+<div class="record-time">
+  <div class="container">
+    <cp-header-secondary
+        [title]="'record.time-title' | translate"
+        (close)="recordStudentFacade.goToSchedule()"
+
+    ></cp-header-secondary>
+    <cp-record-student-item class="student-item"></cp-record-student-item>
+  </div>
+
+  <div class="record-calendar">
+    <cp-calendar></cp-calendar>
+  </div>
+
+  <div class="container record-time-list">
+    <cp-time-list></cp-time-list>
+  </div>
+  <div class="btn-wrap container">
+    <ion-button>{{ "common.save" | translate }}</ion-button>
+  </div>
+</div>

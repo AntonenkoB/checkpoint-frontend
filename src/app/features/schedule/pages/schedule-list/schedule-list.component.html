@@ -1,0 +1,53 @@
+<div class="schedule-list">
+  @if (profile()?.role === eUserRole.Teacher) {
+    <div class="schedule-list-calendar container-large">
+      <cp-calendar></cp-calendar>
+    </div>
+  }
+
+  @if (profile()?.role === eUserRole.Admin) {
+    <div class="schedule-list-wrap container">
+      <cp-calendar-short></cp-calendar-short>
+    </div>
+  }
+
+  <div class="days-list schedule-list-wrap">
+    <div class="container">
+      <div class="day-item">
+        <div class="title">Сьогодні</div>
+
+        <div class="schedule-time-list">
+          @for (student of studentsList(); track student.id) {
+            <cp-user-item
+                class="time"
+                [timeLesson]="'13-14'"
+                [user]="student"
+                (dotsEvent)="scheduleFacade.goToTransferringLesson()"
+            ></cp-user-item>
+          }
+          @for (student of studentsList(); track student.id) {
+            <cp-user-item
+                class="time"
+                [timeLesson]="'13-14'"
+                [user]="student"
+                (dotsEvent)="scheduleFacade.goToTransferringLesson()"
+            ></cp-user-item>
+          }
+        </div>
+      </div>
+
+      <div class="day-item">
+        <div class="title">Завтра</div>
+
+        <div class="time-list">
+          <cp-user-item
+              class="time"
+              [timeLesson]="'13-14'"
+              (openUser)="scheduleFacade.goToRecordStudent()"
+          ></cp-user-item>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

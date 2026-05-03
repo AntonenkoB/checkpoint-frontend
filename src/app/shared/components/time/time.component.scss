@@ -1,0 +1,25 @@
+:host {
+  display: block;
+  width: 100%;
+
+  .time {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    border: 1px solid var(--color-border-primary);
+    border-radius: 8px;
+    width: 100%;
+    aspect-ratio: 13 / 9;
+
+    &.active {
+      color: var(--color-text-secondary);
+      background-color: var(--color-background-secondary);
+    }
+  }
+
+  .time-value {
+    font: var(--font-alumi-36-regular);
+  }
+}

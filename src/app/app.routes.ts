@@ -13,6 +13,21 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: EAppPages.Schedule,
+    loadChildren: () => import('./features/schedule/schedule.routes').then((m) => m.routesSchedule),
+    canActivate: [AuthGuard],
+  },
+  {
+    path: EAppPages.Market,
+    loadChildren: () => import('./features/market/market.routes').then((m) => m.routesMarket),
+    canActivate: [AuthGuard],
+  },
+  {
+    path: EAppPages.Rates,
+    loadChildren: () => import('./features/rates/rates.routes').then((m) => m.routesRates),
+    canActivate: [AuthGuard],
+  },
+  {
     path: '',
     redirectTo: EAppPages.Users,
     pathMatch: 'full',

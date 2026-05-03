@@ -1,0 +1,11 @@
+<div class="lesson-canceled container">
+  <cp-header-secondary class="lesson-canceled-header"  [title]="' '" (close)="scheduleFacade.goToSchedule()"></cp-header-secondary>
+
+  <div class="lesson-canceled-info">
+    <div class="lesson-date">{{ "schedule.lesson-cancelled" | translate }}</div>
+    <div class="student">
+      <cp-record-student-item [student]="student()" [withAmountLesson]="false"></cp-record-student-item>
+    </div>
+    <ion-button (click)="scheduleFacade.goToSchedule()">{{ "schedule.btn-to-schedule" | translate }}</ion-button>
+  </div>
+</div>

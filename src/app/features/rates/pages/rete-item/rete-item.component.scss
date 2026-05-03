@@ -1,0 +1,52 @@
+:host {
+  background-color: var(--color-background-primary);
+  display: block;
+
+  .rate-item {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .teacher {
+    margin-top: var(--spacing-20);
+    margin-bottom: var(--spacing-20);
+  }
+
+  .prises {
+    flex: 1 1 auto;
+    padding-bottom: var(--spacing-20);
+    overflow-y: auto;
+  }
+
+  .one-time {
+    &:first-child {
+      padding-bottom: 56px;
+    }
+  }
+
+  .title {
+    font: var(--font-open-16-bold);
+  }
+
+  .price-wrap {
+    display: flex;
+    gap: var(--spacing-16);
+    padding-top: var(--spacing-16);
+    width: 100%;
+  }
+
+  .price-item {
+    padding-top: var(--spacing-16);
+    flex: 1 1 auto;
+  }
+
+  .name {
+    font: var(--font-open-16-regular);
+    padding-bottom: var(--spacing-8);
+  }
+
+  .bnt-wrap {
+    padding: var(--spacing-20);
+  }
+}

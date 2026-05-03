@@ -27,7 +27,7 @@ export class OnboardingComponent implements OnInit {
       this.progress.update(prev => prev + this.STEP);
 
       if (this.progress() >= 1) {
-        this.store.dispatch(RouterActions.navigate({path: [EAppPages.Users, EUserPages.ListUsers]}))
+        this.store.dispatch(RouterActions.goTo({path: [EAppPages.Users, EUserPages.ListUsers]}))
         setTimeout(() => {
           this.progress.set(0);
         }, 1000);

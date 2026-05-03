@@ -10,6 +10,7 @@
  */
 
 /* custom ionic scss  */
+@use "./scss/variables" as *;
 @use "./scss/colors" as *;
 @use "./scss/fonts" as *;
 
@@ -46,21 +47,46 @@
 
 html {
   font-family: "Alumni Sans SC", sans-serif;
-  //background-color: var(--color-background-primary);
+  color: var(--color-text-primary);
+}
+
+.container {
+  padding: 0 var(--spacing-20);
+  margin: 0 auto;
+  max-width: var(--cp-max-with);
+  width: 100%;
+}
+
+.container-large {
+  margin: 0 auto;
+  padding-left: 20px;
+  max-width: var(--cp-max-with-large);
+  width: 100%;
 }
 
 img[fill] {
   position: static !important; /* Вимикає автоматичний absolute */
-  //width: auto !important;
-  //height: auto !important;
-  //inset: unset !important;
 }
 
 .error-text {
   color: var(--color-red);
   font: var(--font-open-12-regular);
 }
+
 input {
   pointer-events: auto !important;
   opacity: 1 !important;
+}
+
+
+image-cropper {
+  --cropper-outline-color: #ffffff;
+  --cropper-overlay-color: #ffffff;
+
+}
+.ion-palette-dark {
+  image-cropper {
+    --cropper-outline-color: #0C0C18;
+    --cropper-overlay-color: #0C0C18;
+  }
 }

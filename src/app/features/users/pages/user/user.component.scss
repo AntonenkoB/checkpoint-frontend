@@ -1,19 +1,23 @@
-@use '../../../../../scss/mixins/app-padding' as *;
-
 :host {
   align-items: center;
   background-color: var(--color-background-primary);
-  @include app-padding;
+  padding-bottom: var(--cp-safe-area-bottom);
+
+  .user-header {
+    width: 100%;
+  }
 
   .user-create-content {
-    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    width: 100%;
+    position: relative;
+    height: 100%;
   }
 
   .user-create {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
+    flex: 1 1 auto;
   }
 
   .header-avatar {
@@ -41,7 +45,8 @@
     cursor: pointer;
   }
 
-  .submit {
-    margin-top: 40px;
+  .btn-wrap-update {
+    padding-top: var(--spacing-20);
+    padding-bottom: var(--spacing-20);
   }
 }

@@ -3,38 +3,147 @@
   width: 100%;
 
   .user {
-    align-items: center;
     border: 1px solid var(--color-border-primary);
     border-radius: 8px;
-    display: flex;
-    gap: var(--spacing-16);
     padding: var(--spacing-8) var(--spacing-16);
     width: 100%;
+  }
+
+  .user-wrap {
+    gap: var(--spacing-16);
+    align-items: center;
+    display: flex;
+    min-height: 50px;
+  }
+
+  .user-description {
+    cursor: pointer;
+    gap: var(--spacing-16);
+    align-items: center;
+    display: flex;
+    flex: 1 1 auto;
+    min-width: 0
+  }
+
+  .time-lesson {
+    font: var(--font-alumi-32-regular);
+    flex: 0 0 auto;
+  }
+
+  .time-lesson-item {
+    font: var(--font-open-12-regular);
   }
 
   .avatar {
     height: 50px;
     width: 50px;
+    flex: 0 0 50px;
   }
 
   .user-info {
     flex: 1 1 auto;
+    min-width: 0;
   }
 
   .creative-name {
     font: var(--font-alumi-20-black);
     text-transform: uppercase;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   .name {
     font: var(--font-open-13-regular);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .user-acton {
+    flex-shrink: 0
   }
 
   .add-user {
-    font: var(--font-open-13-regular);
+    display: flex;
+    align-items: center;
+    font: var(--font-open-16-regular);
   }
 
-  .delete {
+  .open-student-info,
+  .delete,
+  .dots {
     cursor: pointer;
+    padding-left: var(--spacing-8);
+    height: 40px;
+  }
+
+  .dots-wrap {
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+
+  .dots,
+  .delete {
+    display: flex;
+    align-items: center;
+  }
+
+  .open-student-info {
+    .open-student-info-icon {
+      display: inline-flex;
+    }
+
+    &.open {
+      .open-student-info-icon {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  .student-info {
+    padding-left: 66px;
+    flex: 1 1 100%;
+    padding-top: var(--spacing-8);
+    min-width: 0;
+  }
+
+  .student-info-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font: var(--font-open-12-regular);
+    gap: var(--spacing-8);
+  }
+
+  .student-info-teacher {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .student-info-lessons {
+    white-space: nowrap;
+  }
+
+  .rates-info {
+    padding-top: var(--spacing-16);
+  }
+
+  .rates-info-price-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: var(--spacing-8);
+  }
+
+  .rates-info-title {
+    font: var(--font-open-16-bold);
+    padding-top: var(--spacing-8);
+  }
+
+  .rates-info-price-wrap {
+    font: var(--font-open-16-regular);
   }
 }

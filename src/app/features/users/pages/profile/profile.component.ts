@@ -1,4 +1,4 @@
-import {Component, computed, effect, ElementRef, inject, signal, ViewChild, WritableSignal} from '@angular/core';
+import {Component, effect, ElementRef, inject, signal, ViewChild, WritableSignal} from '@angular/core';
 import {
   IonButton,
   IonContent,
@@ -21,6 +21,7 @@ import {HeaderSecondaryComponent} from "@shared/components/header-secondary/head
 import {AvatarUploadComponent} from "@shared/components/avatar-upload/avatar-upload.component";
 import {DomSanitizer} from "@angular/platform-browser";
 import {DELETE_SVG, PLUS_SVG} from "@models/svg.models";
+import {PhoneMaskDirective} from "@shared/directives/phone-mask";
 
 @Component({
   selector: 'cp-profile-component',
@@ -42,6 +43,7 @@ import {DELETE_SVG, PLUS_SVG} from "@models/svg.models";
     IonContent,
     LoaderComponent,
     HeaderSecondaryComponent,
+    PhoneMaskDirective,
   ],
   providers: [ProfileFacade],
 })
@@ -86,7 +88,7 @@ export class ProfileComponent {
 
     minLength(controls.last_name, 2, { message: 'errors.min2' });
 
-    pattern(controls.phone, /^\+?\d{9,15}$/, { message: 'errors.format-phone' });
+    pattern(controls.phone, /^\+380 \d{2} \d{3} \d{2} \d{2}$/, { message: 'errors.format-phone' });
   });
 
   private updateForm(): void {
@@ -123,7 +125,10 @@ export class ProfileComponent {
       return;
     }
 
-    this.profileFacade.update(this.userForm().value() as IUser);
+    const form =  this.userForm().value() as IUser
+    form.phone = form.phone.replace(/\D/g, '');
+
+    this.profileFacade.update(form);
   }
 
   public changeTheme(event: any): void {

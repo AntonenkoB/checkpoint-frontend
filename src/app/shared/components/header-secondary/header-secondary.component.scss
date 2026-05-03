@@ -3,9 +3,11 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: calc(var(--spacing-16) + var(--cp-safe-area-top)) 0 var(--spacing-8);
   }
 
   .title {
     font: var(--font-alumi-32-black);
+    text-transform: uppercase;
   }
 }

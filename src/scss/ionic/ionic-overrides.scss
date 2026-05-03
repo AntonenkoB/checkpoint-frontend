@@ -2,8 +2,8 @@
   --ion-font-family: "Alumni Sans SC", sans-serif !important;
 
   ion-content {
-    --padding-start: 16px !important;
-    --padding-end: 16px !important;
+    --padding-start: 0px !important;
+    --padding-end: 0px !important;
     --padding-top: 16px !important;
     --padding-bottom: 16px !important;
     --background: var(--ion-background-color);
@@ -73,6 +73,16 @@
     to {
       background-color: transparent;
       color: var(--ion-text-color);
+    }
+  }
+
+  ion-input[type="number"]::part(native) {
+    -moz-appearance: textfield !important;
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      -webkit-appearance: none !important;
+      margin: 0 !important;
     }
   }
 
@@ -149,7 +159,6 @@
     --background: rgba(0,0,0,0);
     display: flex;
 
-
     ion-segment-button {
       --background: rgba(0,0,0,0);
       --background-checked: rgba(0,0,0,0);
@@ -162,6 +171,7 @@
       --border-radius: 8px;
       min-height: 44px;
       letter-spacing: normal;
+      text-transform: uppercase;
 
       &::part(native) {
         --ripple-color: transparent;
@@ -169,7 +179,6 @@
 
       ion-label {
         line-height: 44px;
-
         margin: 0;
       }
     }
@@ -195,27 +204,56 @@
       gap: var(--spacing-8);
 
       ion-segment-button {
-        --color: var(--color-bnt-secondary-text);
+        --color: var(--color-btn-secondary-text);
         border: 1px solid var(--color-border-primary);
         font: var(--font-alumi-24-regular);
         text-transform: uppercase;
 
         &.segment-button-checked {
-          --background-checked: var(--color-bnt-bg-primary);
-          --color-checked: var(--color-bnt-primary-text);
+          --background-checked: var(--color-btn-bg-primary);
+          --color-checked: var(--color-btn-primary-text);
         }
       }
     }
 
+    &.btn-fill  {
+      ion-segment-button {
+        --border-radius: 4px;
+        --padding-start: 8px;
+        --padding-end: 8px;
+        font: var(--font-alumi-24-regular);
+        text-transform: uppercase;
+        min-height: 32px;
+        min-width: auto;
+        width: auto;
+
+        ion-label {
+          line-height: 32px;
+          margin: 0;
+        }
+
+        &.segment-button-checked {
+          --background-checked: var(--color-btn-bg-primary);
+          --color-checked: var(--color-btn-primary-text);
+        }
+      }
+    }
   }
 
   ion-button {
     --border-radius: 8px;
     --padding-start: 16px;
     --padding-end: 16px;
+    --padding-top: 16px;
+    --padding-bottom: 16px;
+    --background-activated: var(--color-btn-bg-primary);
+    --background-activated-opacity: 0;
     margin-inline-start: 0;
     margin-inline-end: 0;
-    font: var(--font-alumi-48-black);
+    margin-top: 0;
+    margin-bottom: 0;
+    font: var(--font-alumi-42-black);
+    letter-spacing: 0;
     min-height: 50px;
     text-transform: uppercase;
     width: 100%;
@@ -223,9 +261,9 @@
 
   ion-modal#teachers-modal {
     //--width: fit-content;
-    --max-width: 420px;
+    --max-width: var(--cp-max-with);
     //--height: fit-content;
     //--border-radius: 6px;
-    //--box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+    //--box-shadow: 0 28px 48px rgba(12, 12, 24, 0.4);
   }
 }

@@ -1,0 +1,19 @@
+<div class="container">
+  <cp-header-secondary
+      [title]="'record.student-title' | translate"
+      (close)="studentFacade.goToSchedule()"
+  ></cp-header-secondary>
+
+  <div class="time">Сьогодні, 26 березня, 13:00-14:00</div>
+
+  <div class="student-list">
+    @for (student of studentsList(); track student.id) {
+      <cp-record-student-item
+          class="record-student-item"
+          [student]="student"
+          (select)="studentFacade.goToRecordTime()"
+      ></cp-record-student-item>
+    }
+  </div>
+</div>
+

@@ -1,0 +1,33 @@
+:host {
+  background-color: var(--color-background-primary);
+  display: block;
+  height: 100%;
+
+  .record-time {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .student-item {
+    padding-top: var(--spacing-16);
+  }
+
+  .record-calendar {
+    max-width: 1092px;
+    padding-left: var(--spacing-20);
+    margin: 0 auto;
+    width: 100%;
+    padding-top: var(--spacing-16);
+  }
+
+  .record-time-list {
+    flex: 1 1 auto;
+    overflow: auto;
+  }
+
+  .btn-wrap {
+    padding-top: var(--spacing-16);
+    padding-bottom: var(--spacing-20);
+  }
+}

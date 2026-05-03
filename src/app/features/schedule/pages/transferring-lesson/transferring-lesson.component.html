@@ -1,0 +1,14 @@
+<div class="transferring-lesson container">
+  <cp-header-secondary class="transferring-header"  [title]="' '" (close)="scheduleFacade.goToSchedule()"></cp-header-secondary>
+
+  <div class="transferring-lesson-info">
+    <div class="lesson-date">Сьогодні, 13-14</div>
+    <div class="student">
+      <cp-record-student-item [student]="student()" [withAmountLesson]="false"></cp-record-student-item>
+    </div>
+    <div class="cansel-btn" (click)="scheduleFacade.goToCanceledLesson()">{{ "schedule.cencel" | translate}}</div>
+    <div class="btn-wrap">
+      <div class="transferring-btn">{{ "schedule.transfer" | translate}}</div>
+    </div>
+  </div>
+</div>

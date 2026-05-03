@@ -1,0 +1,9 @@
+<div class="calendar">
+  <ion-segment class="segment btn-fill month" [value]="next2MonthsDays()[0].date" (ionChange)="dayChange($event)">
+    @for (day of next2MonthsDays(); track day.date) {
+      <ion-segment-button class="btn-clear" value="{{day.date}}">
+        <ion-label>{{ day.day }} <br> {{ day.number }}</ion-label>
+      </ion-segment-button>
+    }
+  </ion-segment>
+</div>

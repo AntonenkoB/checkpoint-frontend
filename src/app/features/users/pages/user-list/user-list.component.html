@@ -1,29 +1,68 @@
 <div class="user-wrap">
-  <div class="user-list-header">
-    <cp-tabs [tabList]="USER_ROLE_TABS" [activeTab]="activeTab()" (segmentChange)="tabChange($event)"></cp-tabs>
-    <cp-avatar class="header-avatar" [src]="profile()?.avatar ?? ''" (click)="userListFacade.goToProfile()"></cp-avatar>
+  <div class="user-list-header container">
+    <cp-header-mobile
+        [profile]="profile()"
+        [activeMenu]="activeMenu()"
+        (selectMenu)="menuChange($event)"
+        (goToProfile)="userListFacade.goToProfile()"
+    ></cp-header-mobile>
   </div>
 
-  <div class="user-list">
-    @if (userListFacade.userList().length > 0) {
-      <ion-content>
-        @for (user of userListFacade.userList(); track user.id) {
-          <cp-user-item class="user-item" [user]="user" (click)="userListFacade.goToUser(user.id, this.activeTab())"></cp-user-item>
-        }
-        <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
-          <ion-infinite-scroll-content loadingSpinner="crescent"></ion-infinite-scroll-content>
-        </ion-infinite-scroll>
-      </ion-content>
+  @if (activeMenu() === eHeaderMenu.Teacher ) {
+    <div class="owner-tabs container">
+      <cp-tabs
+          [bntStyle]="'btn-clear'"
+          [tabList]="SETTING_RATES_TABS"
+          [activeTab]="activeRatesMenu()"
+          (segmentChange)="ratesChange($event)"
+      ></cp-tabs>
+    </div>
+  }
+
+  @if (activeRatesMenu() === eRateTabs.Salary && activeMenu() === eHeaderMenu.Teacher ) {
+    <div class="month-tabs container-large">
+      <cp-tabs
+          [bntStyle]="'btn-fill'"
+          [tabList]="MONTH_LIST"
+          [activeTab]="MONTH_LIST[0].value"
+      ></cp-tabs>
+    </div>
+  }
+
+  <div class="user-list-wrap">
+    @if (activeMenu() !== eHeaderMenu.Schedule) {
+      @if (userList().length > 0 && activeMenu() !== eHeaderMenu.Schedule) {
+        <ion-content class="user-list">
+          <div class="container">
+            @for (user of userList(); track user.id) {
+              <cp-user-item
+                  class="user-item"
+                  [user]="user"
+                  [withAdditionalInfo]="true"
+                  [withRatesInfo]="activeRatesMenu() === eRateTabs.Price"
+                  [withSalaryInfo]="activeRatesMenu() === eRateTabs.Salary"
+                  (openUser)="userListFacade.goToUser(user.id, this.activeMenu(), activeRatesMenu())"
+              >
+              </cp-user-item>
+            }
+          </div>
+
+          <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+            <ion-infinite-scroll-content loadingSpinner="crescent"></ion-infinite-scroll-content>
+          </ion-infinite-scroll>
+        </ion-content>
+      } @else {
+        <cp-empty-state class="empty-state"></cp-empty-state>
+      }
     } @else {
-      <cp-empty-state class="empty-state"></cp-empty-state>
+      <cp-schedule-list></cp-schedule-list>
     }
 
     <cp-loader [isLoad]="!isReady()"></cp-loader>
   </div>
 
-  <div class="buttons">
-    <ion-button (click)="userListFacade.create(this.activeTab())">{{ USER_ACTIONS_BTN[activeTab()] | translate }}
-    </ion-button>
+  <div class="buttons container">
+    <ion-button (click)="userListFacade.create(activeMenu())">{{ this.USER_ACTIONS_BTN[activeMenu()] | translate }}</ion-button>
   </div>
 </div>
 

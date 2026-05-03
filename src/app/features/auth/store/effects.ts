@@ -59,43 +59,43 @@ export class AuthEffects {
   login$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.login),
-      switchMap(({ login }) =>
+      switchMap(({login}) =>
         this.authService.login(login).pipe(
           switchMap((response) => {
             if (!response?.success) {
-              return of(AuthActions.loginFailure({ error: 'login.invalid-password' }));
+              return of(AuthActions.loginFailure({error: 'login.invalid-password'}));
             }
 
-            const { token, user } = response.data;
+            const {token, user} = response.data;
 
             return forkJoin([
-              this.tokenService.setToken(token),
-              this.settingsService.updateSettings({
+              from(this.tokenService.setToken(token)),
+              from(this.settingsService.updateSettings({
                 theme: user.theme,
                 repeat: login.repeat
-              })
+              }))
             ]).pipe(
               switchMap(() => {
                 const actions: Action[] = [
-                  AuthActions.loginSuccess({ user, token }),
+                  AuthActions.loginSuccess({user, token}),
                   UserActions.getProfile()
                 ];
 
                 if (!user.onboarding_completed) {
-                  actions.push(AuthActions.authStep({ step: EAuthStep.CreatePassword }));
+                  actions.push(AuthActions.authStep({step: EAuthStep.CreatePassword}));
                 } else {
                   const redirectPath = user.role === EUserRole.Student
-                    ? [EAppPages.Users, EUserPages.Profile]
+                    ? [EAppPages.Users, EUserPages.Student]
                     : [EAppPages.Users, EUserPages.ListUsers];
 
-                  actions.push(RouterActions.navigate({ path: redirectPath }));
+                  actions.push(RouterActions.goTo({path: redirectPath}));
                 }
 
                 return from(actions);
               })
             );
           }),
-          catchError(() => of(AuthActions.loginFailure({ error: 'login.invalid-password' })))
+          catchError(() => of(AuthActions.loginFailure({error: 'login.invalid-password'})))
         )
       )
     )
@@ -107,12 +107,12 @@ export class AuthEffects {
       switchMap(({payload}) =>
         this.authService.createPassword(payload).pipe(
           switchMap((response) => {
-            const actions: Action[] = [UserActions.getProfileSuccess({ profile: response.data.user })]
+            const actions: Action[] = [UserActions.getProfileSuccess({profile: response.data.user})]
 
             if (response?.success && response.data.user.onboarding_completed) {
               response.data.user.role === EUserRole.Student
-                ? actions.push(RouterActions.navigate({path: [EAppPages.Users, EUserPages.Profile]}))
-                : actions.push(RouterActions.navigate({path: [EAppPages.Users, EUserPages.ListUsers]}))
+                ? actions.push(RouterActions.goTo({path: [EAppPages.Users, EUserPages.Profile]}))
+                : actions.push(RouterActions.goTo({path: [EAppPages.Users, EUserPages.ListUsers]}))
             }
 
             return actions
@@ -140,8 +140,12 @@ export class AuthEffects {
   logout$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.logout),
-      switchMap(() => from(this.tokenService.clearToken()).pipe(
-          map(() => RouterActions.navigate({ path: [EAppPages.Auth, EAuthPages.Login] })),
+      switchMap(() =>
+        forkJoin([
+          from(this.tokenService.clearToken()),
+          from(this.settingsService.clearSettings())
+        ]).pipe(
+          map(() => RouterActions.goTo({path: [EAppPages.Auth, EAuthPages.Login]}))
         )
       )
     )

@@ -1,5 +1,9 @@
-<ion-segment class="btn-clear" [value]="activeTab" (ionChange)="onSegmentChange($event)">
-  @for (tab of tabList; track tab.value) {
+<ion-segment
+    [className]="bntStyle()"
+    [value]="activeTab()"
+    (ionChange)="onSegmentChange($event)"
+>
+  @for (tab of tabList(); track tab.value) {
     <ion-segment-button value="{{tab.value}}">
       <ion-label>{{ tab.title | translate }}</ion-label>
     </ion-segment-button>

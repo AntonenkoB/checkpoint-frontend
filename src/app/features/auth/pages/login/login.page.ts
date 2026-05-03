@@ -9,7 +9,7 @@ import {
   selectLoginFailure
 } from "../../store/selectors";
 import {EAuthStep, ISavePassword} from "../../models/auth.model";
-import {IonButton, IonCheckbox, IonInput, IonInputPasswordToggle, IonItem} from "@ionic/angular/standalone";
+import {IonButton, IonCheckbox, IonContent, IonInput, IonInputPasswordToggle, IonItem} from "@ionic/angular/standalone";
 import {TranslatePipe} from "@shared/pipes/translate-pipe";
 import {addIcons} from "ionicons";
 import {NoRipplePasswordToggle} from "@shared/directives/no-ripple-password-toggle";
@@ -17,14 +17,14 @@ import {CustomCheckbox} from "@shared/directives/custom-checkbox";
 import {Platform} from "@ionic/angular";
 import {FORM_PASSWORD_ICONS} from "@models/form.models";
 import {DomSanitizer} from "@angular/platform-browser";
-import { LOGO_SVG } from '@models/svg.models';
+import {LOGO_SVG} from '@models/svg.models';
 
 @Component({
   selector: 'cp-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [FormsModule, IonInput, IonButton, IonInputPasswordToggle, IonCheckbox, TranslatePipe, IonItem, NoRipplePasswordToggle, CustomCheckbox]
+  imports: [FormsModule, IonInput, IonButton, IonInputPasswordToggle, IonCheckbox, TranslatePipe, IonItem, NoRipplePasswordToggle, CustomCheckbox, IonContent]
 })
 export class LoginPage {
   private store = inject<Store<AppState>>(Store);

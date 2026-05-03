@@ -1,0 +1,46 @@
+:host {
+  background-color: var(--color-background-primary);
+  display: block;
+
+  .lessons-type-payment {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+  }
+
+  .lessons-type-payment-info {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .selected-teacher {
+    margin-bottom: var(--spacing-40);
+  }
+
+  .one-lesson,
+  .abonnement-lesson {
+    border: 1px solid var(--color-border-primary);
+    border-radius: 8px;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    padding: var(--spacing-8) var(--spacing-16) var(--spacing-16);
+    margin-bottom: var(--spacing-24);
+  }
+
+  .name {
+    font: var(--font-alumi-40-regular);
+  }
+
+  .price {
+    font: var(--font-open-16-regular);
+  }
+
+  .lessons-type-payment-description {
+    color: var(--color-text-primary);
+    font: var(--font-open-16-regular);
+    padding-bottom: 120px;
+  }
+}

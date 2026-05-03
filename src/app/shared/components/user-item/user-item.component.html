@@ -1,19 +1,111 @@
 <div class="user">
-  <cp-avatar class="avatar" [src]="user()?.avatar ?? ''"></cp-avatar>
-  <div class="user-info">
-    @if (user()) {
-      <div class="creative-name">{{getCreativeName()}}</div>
-      <div class="name">{{getName()}}</div>
-    } @else {
-      <div class="add-user">+ {{"users.add-teacher-btn" | translate}}</div>
+  <div class="user-wrap">
+    <div class="user-description" (click)="openUser.emit(user()?.id)">
+      @if (timeLesson()) {
+        <div class="time-lesson">13-14</div>
+      }
+
+      @if (user()) {
+        <cp-avatar class="avatar" [src]="user()?.avatar ?? ''"></cp-avatar>
+      }
+      <div class="user-info">
+        @if (user()) {
+          <div class="creative-name">{{creativeName()}}</div>
+          <div class="name">{{fullName()}}</div>
+        } @else {
+          <div class="add-user">+ {{(timeLesson() ? "users.add-student-btn" : "users.add-teacher-btn") | translate}}</div>
+        }
+      </div>
+    </div>
+
+    @if (!hideAllActions()) {
+      <div class="user-acton">
+        @if (isSelect()) {
+          <div class="" [innerHTML]="CHECK_THIN_SVG"></div>
+        }
+
+        @if (withAdditionalInfo()) {
+          <div class="open-student-info"
+               [class.open]="additionalInfoToggle()"
+               (click)="additionalInfoToggle.set(!additionalInfoToggle())"
+          >
+            <div class="open-student-info-icon" [innerHTML]="ARROW_SVG"></div>
+          </div>
+        }
+
+        @if (showDelete()) {
+          <div class="delete"
+               [innerHTML]="CLOSE_SVG"
+               (click)="delete.emit(user()?.id)"
+          ></div>
+        }
+
+        @if (timeLesson() && user()?.role === EUserRole.Student) {
+          <div
+              class="dots"
+              [innerHTML]="DOTS_SVG"
+              (click)="dotsEvent.emit(user()?.id)"
+          ></div>
+        }
+      </div>
     }
   </div>
 
-  @if (isSelect()) {
-    <div class="icon" [innerHTML]="CHECK_THIN_SVG"></div>
+  @if (additionalInfoToggle() && user()?.role === EUserRole.Student) {
+    <div class="student-info">
+      <div class="student-info-item">
+        <div class="student-info-teacher">Дмитро Новіков Новіков Новіков</div>
+        <div class="student-info-lessons">1 урок до 18.03</div>
+      </div>
+    </div>
   }
 
-  @if (showDelete()) {
-    <div class="icon delete" [innerHTML]="CLOSE_SVG" (click)="delete.emit(user()?.id)"></div>
+  @if (withRatesInfo() && additionalInfoToggle() && user()?.role === EUserRole.Teacher) {
+    <div class="rates-info">
+      <div class="rates-info-item">
+        <div class="rates-info-title">{{ "rates.price.one-time-type" | translate }}</div>
+        <div class="rates-info-price-wrap">
+          <div class="rates-info-name">{{ "rates.price.school" | translate}}</div>
+          <div class="rates-info-price">500 ₴</div>
+        </div>
+        <div class="rates-info-price-wrap">
+          <div class="rates-info-name">{{ "rates.price.teacher" | translate}}</div>
+          <div class="rates-info-price">500 ₴</div>
+        </div>
+      </div>
+
+      <div class="rates-info-item">
+        <div class="rates-info-title">{{ "rates.price.abonnement-type" | translate }}</div>
+        <div class="rates-info-price-wrap">
+          <div class="rates-info-name">{{ "rates.price.school" | translate}}</div>
+          <div class="rates-info-price">500 ₴</div>
+        </div>
+        <div class="rates-info-price-wrap">
+          <div class="rates-info-name">{{ "rates.price.teacher" | translate}}</div>
+          <div class="rates-info-price">500 ₴</div>
+        </div>
+      </div>
+    </div>
   }
+
+  @if (withSalaryInfo() && additionalInfoToggle() && user()?.role === EUserRole.Teacher) {
+    <div class="rates-info">
+      <div class="rates-info-item">
+        <div class="rates-info-price-wrap">
+          <div class="rates-info-name">{{ "rates.salary.total-revenue" | translate}}</div>
+          <div class="rates-info-price">11 234 ₴</div>
+        </div>
+        <div class="rates-info-price-wrap">
+          <div class="rates-info-name">{{ "rates.salary.salary-teacher" | translate}}</div>
+          <div class="rates-info-price">1 234 ₴</div>
+        </div>
+        <div class="rates-info-price-wrap">
+          <div class="rates-info-name">{{ "rates.salary.salary-school" | translate}}</div>
+          <div class="rates-info-price">1 234 ₴</div>
+        </div>
+      </div>
+    </div>
+  }
+  <ng-content />
 </div>
+

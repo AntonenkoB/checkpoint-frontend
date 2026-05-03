@@ -1,0 +1,81 @@
+<div class="schedule">
+  @if(profile()?.role === eUserRole.Admin) {
+    <div class="schedule-header container">
+<!--      <cp-header-mobile-->
+<!--          [profile]="profile()"-->
+<!--          [activeMenu]="eHeaderMenu.Schedule"-->
+<!--          (selectMenu)="menuChange($event)"-->
+<!--          (goToProfile)="scheduleFacade.goToProfile()"-->
+<!--      ></cp-header-mobile>-->
+
+      <cp-header-secondary
+          class="schedule-header-admin"
+          [title]="'schedule.times' | translate"
+          (close)="scheduleFacade.goToSchedule()"
+      ></cp-header-secondary>
+    </div>
+
+    <div class="schedule-admin container-large">
+<!--      <div class="title">{{ "schedule.myself" | translate }}</div>-->
+<!--      <div class="description">{{ "schedule.times" | translate }}</div>-->
+      <div class="description container">{{ "schedule.myself" | translate }}</div>
+
+<!--      <cp-calendar-short></cp-calendar-short>-->
+      <cp-calendar></cp-calendar>
+    </div>
+  }
+
+  @if(profile()?.role === eUserRole.Teacher) {
+    <div class="container">
+      <cp-header-secondary
+          class="schedule-header-teacher"
+          [title]="'schedule.times' | translate"
+          (close)="scheduleFacade.goToSchedule()"
+      ></cp-header-secondary>
+
+      <ion-segment
+          class="segment teacher btn-clear"
+          [value]="SCHEDULE_TYPE_TABS[0].value"
+          (ionChange)="scheduleTypeChange($event)"
+      >
+        @for (type of SCHEDULE_TYPE_TABS; track type.value) {
+          <ion-segment-button class="btn-clear" [value]="type.value">
+            <ion-label>{{ type.title | translate }}</ion-label>
+          </ion-segment-button>
+        }
+      </ion-segment>
+
+      @if (scheduleType() === eScheduleType.Weekly) {
+        <div class="week-wrap">
+          <ion-segment
+              class="segment btn-fill week"
+              [value]="WEEK_SHORT_LIST[0]"
+              (ionChange)="onSegmentChange($event)"
+          >
+            @for (day of WEEK_SHORT_LIST; track day) {
+              <ion-segment-button class="btn-clear" value="{{day}}">
+                <ion-label>{{ day }}</ion-label>
+              </ion-segment-button>
+            }
+          </ion-segment>
+        </div>
+      }
+    </div>
+
+    @if(scheduleType() === eScheduleType.OneTime) {
+      <div class="schedule-calendar">
+        <cp-calendar></cp-calendar>
+      </div>
+    }
+  }
+
+  <div class="time-list-wrap">
+    <div class="container">
+      <cp-time-list class="schedule-time-list"></cp-time-list>
+    </div>
+  </div>
+
+  <div class="buttons container">
+    <ion-button>{{ "common.save" | translate }}</ion-button>
+  </div>
+</div>

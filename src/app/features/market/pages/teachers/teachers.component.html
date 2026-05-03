@@ -1,0 +1,18 @@
+<div class="teachers container">
+  <cp-header-secondary [title]="' '" (close)="marketFacade.goToStudentMain()"></cp-header-secondary>
+
+  <div class="teachers-info">
+    <div class="title" [innerHTML]="'market.select-teacher-to-buy' | translate "></div>
+
+    <div class="teachers-list">
+      @for (teacher of marketFacade.teachersList(); track teacher.id) {
+        <cp-record-student-item
+          class="teacher"
+          [student]="teacher"
+          [withAmountLesson]="false"
+          (select)="marketFacade.selectedTeacherPayment(teacher)"
+      ></cp-record-student-item>
+      }
+    </div>
+  </div>
+</div>

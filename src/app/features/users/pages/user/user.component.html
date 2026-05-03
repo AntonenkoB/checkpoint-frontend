@@ -1,8 +1,12 @@
-<ion-content [fullscreen]="true" class="user-create-content">
-  <div class="user-create">
-    <cp-header-secondary [title]="userTitle() | translate" (close)="userFacade.close()"></cp-header-secondary>
+<div class="user-create-content">
+  <cp-header-secondary
+      class="user-header container"
+      [title]="userTitle() | translate"
+      (close)="userFacade.close()"
+  ></cp-header-secondary>
 
-    <form class="form" [formRoot]="userForm" (ngSubmit)="onSubmit()">
+  <ion-content class="user-create">
+    <form class="form container" [formRoot]="userForm" (ngSubmit)="onSubmit()">
       <ion-list lines="none">
         <ion-item>
           <ion-input
@@ -69,6 +73,8 @@
           <ion-input
               fill="solid"
               type="text"
+              inputmode="tel"
+              cpPhoneMask
               [placeholder]="'profile.phone' | translate"
               [value]="userForm.phone().value()"
               [errorText]="userForm.phone().errors()[0]?.message ?? ' ' | translate"
@@ -104,27 +110,38 @@
           </ion-item>
         }
 
-        @if (userFacade.roleCreate() === EUserRole.Student) {
-          @for (selectedTeacher of attachUser(); track selectedTeacher.id) {
+        @if (userFacade.roleCreate() === eUserRole.Student) {
+          @if (profile()?.role === eUserRole.Teacher) {
             <ion-item>
-              <cp-user-item [user]="selectedTeacher" [showDelete]="true" (delete)="deleteTeacher(selectedTeacher.id)"></cp-user-item>
+              <cp-user-item [user]="profile()"></cp-user-item>
             </ion-item>
           }
 
-          <ion-item>
-            <cp-user-item id="open-teachers-modal" class="add-teacher"></cp-user-item>
-          </ion-item>
+          @if (profile()?.role === eUserRole.Admin) {
+            @for (selectedTeacher of attachUser(); track selectedTeacher.id) {
+              <ion-item>
+                <cp-user-item [user]="selectedTeacher" [showDelete]="true" (delete)="deleteTeacher(selectedTeacher.id)"></cp-user-item>
+              </ion-item>
+            }
 
-          <ion-modal id="teachers-modal" #modal trigger="open-teachers-modal" [initialBreakpoint]="1" [breakpoints]="[0, 1]">
-            <ng-template>
-              <cp-select-teacher class="select-teacher" [choseTeachers]="attachUser()" (save)="updateTeachers($event)" (close)="modal.dismiss()"></cp-select-teacher>
-            </ng-template>
-          </ion-modal>
+            <ion-item>
+              <cp-user-item id="open-teachers-modal" class="add-teacher"></cp-user-item>
+            </ion-item>
+
+            <ion-modal id="teachers-modal" #modal trigger="open-teachers-modal" [initialBreakpoint]="1" [breakpoints]="[0, 1]">
+              <ng-template>
+                <cp-select-teacher class="select-teacher" [choseTeachers]="attachUser()" (save)="updateTeachers($event)" (close)="modal.dismiss()"></cp-select-teacher>
+              </ng-template>
+            </ion-modal>
+          }
         }
       </ion-list>
     </form>
+  </ion-content>
 
-    <ion-button class="submit" (click)="onSubmit()">{{ "common.add" | translate }}</ion-button>
+  <div class="btn-wrap-update container">
+    <ion-button class="submit" (click)="onSubmit()">{{ (isUpdate() ? "common.save" : "common.add") | translate }}</ion-button>
   </div>
+
   <cp-loader [isLoad]="!userFacade.userLoading()"></cp-loader>
-</ion-content>
+</div>

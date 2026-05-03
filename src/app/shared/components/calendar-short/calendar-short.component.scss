@@ -1,0 +1,11 @@
+:host {
+  .calendar-short {
+    padding: var(--spacing-24) 0;
+
+    ::ng-deep {
+      ion-segment {
+        justify-content: flex-start;
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+:host {
+  background-color: var(--color-background-primary);
+
+  .container {
+    padding: var(--spacing-20);
+  }
+
+  .time {
+    font: var(--font-open-16-regular);
+    padding: var(--spacing-16) 0;
+  }
+
+  .record-student-item {
+    cursor: pointer;
+  }
+}

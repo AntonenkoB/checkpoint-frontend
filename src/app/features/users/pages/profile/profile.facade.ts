@@ -36,13 +36,13 @@ export class ProfileFacade {
   public close(): void {
     switch (this.profile()?.role) {
       case EUserRole.Student:
-        this.store.dispatch(RouterActions.navigate({path: [EAppPages.Users, EUserPages.Profile]}));
+        this.store.dispatch(RouterActions.goTo({path: [EAppPages.Users, EUserPages.Profile]}));
         break;
       case EUserRole.Teacher:
-        this.store.dispatch(RouterActions.navigate({path: [EAppPages.Users, EUserPages.ListUsers]}));
+        this.store.dispatch(RouterActions.goTo({path: [EAppPages.Users, EUserPages.ListUsers]}));
         break;
       case EUserRole.Admin:
-        this.store.dispatch(RouterActions.navigate({path: [EAppPages.Users, EUserPages.ListUsers]}));
+        this.store.dispatch(RouterActions.goTo({path: [EAppPages.Users, EUserPages.ListUsers]}));
         break;
     }
   }

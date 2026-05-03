@@ -1,0 +1,24 @@
+<div class="lessons-payment container">
+  <cp-header-secondary [title]="' '" (close)="marketFacade.goToStudentMain()"></cp-header-secondary>
+
+  <div class="lessons-payment-info">
+    <cp-record-student-item
+        class="teacher-payment"
+        [student]="marketFacade.selectedTeacher"
+        [withAmountLesson]="false"
+    ></cp-record-student-item>
+
+    <div class="description">{{"market.select-lessons-count" | translate}}</div>
+
+    <div class="amount-wrap">
+      <div class="increment" [innerHTML]="MINUS_SVG" (click)="increment()"></div>
+      <div class="amount">{{amount()}}</div>
+      <div class="decrement" [innerHTML]="PLUS_SVG" (click)="decrement()"></div>
+    </div>
+
+    <div class="btn-wrap">
+      <ion-button (click)="marketFacade.goToPaymentSuccess()">{{"market.buy-for-price" | translate}}</ion-button>
+    </div>
+  </div>
+
+</div>

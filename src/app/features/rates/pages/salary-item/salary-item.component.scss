@@ -1,0 +1,84 @@
+:host {
+  background-color: var(--color-background-primary);
+  display: block;
+  height: 100%;
+
+  .salary-item {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .teacher {
+    padding-top: 48px;
+  }
+
+  .rates-info {
+    padding-top: var(--spacing-16);
+    flex-shrink: 0;
+  }
+
+  .rates-info-price-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: var(--spacing-8);
+
+  }
+
+  .rates-info-title {
+    font: var(--font-open-16-bold);
+    padding-top: var(--spacing-8);
+  }
+
+  .rates-info-price-wrap {
+    font: var(--font-open-16-regular);
+  }
+
+
+  .month-tabs {
+    padding-top: var(--spacing-24);
+    padding-left: var(--spacing-20);
+    overflow-y: auto;
+    flex-shrink: 0;
+    max-width: var(--cp-max-with-large);
+    margin: 0 auto;
+
+    ::ng-deep {
+      ion-segment {
+        justify-content: flex-start !important;
+        overflow-x: auto;
+
+        &::-webkit-scrollbar {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .salary-payout {
+    padding-top: 24px;
+    flex: 1 1 auto;
+    position: relative;
+  }
+
+  .salary-payout-item {
+    border: 1px solid var(--color-border-primary);
+    border-radius: 8px;
+    padding: var(--spacing-16);
+    margin-bottom: 8px;
+  }
+
+  .salary-payout-top,
+  .salary-payout-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font: var(--font-open-13-regular);
+
+  }
+
+  .salary-payout-bottom {
+    padding-top: 8px;
+  }
+}

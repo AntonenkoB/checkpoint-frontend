@@ -1,0 +1,16 @@
+<div class="confirm-modal">
+<div class="exit-title">{{title()}}</div>
+<div class="btn-wrap">
+  <ion-button
+      class="confirm"
+      [color]="isDelete() ? 'danger' : 'primary'"
+      (click)="confirm.emit()"
+  >{{ btnConfirm() }}</ion-button>
+
+  <ion-button
+      class="candsel"
+      [fill]="isDelete() ? 'solid' : 'outline'"
+      (click)="cansel.emit()"
+  >{{ btnCansel() }}</ion-button>
+</div>
+</div>

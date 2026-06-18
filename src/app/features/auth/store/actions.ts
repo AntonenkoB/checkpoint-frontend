@@ -2,8 +2,8 @@ import {createActionGroup, emptyProps, props} from '@ngrx/store';
 import {
   EAuthStep,
   IAuthLogin,
-  ICheckUser,
-  IForgotPassword,
+  ICheckUser, ICodeConfirm, ICodeConfirmResponse,
+  IForgotPassword, IResetPassword,
   ISavePassword,
 } from "../models/auth.model";
 
@@ -20,11 +20,19 @@ export const AuthActions = createActionGroup({
 
     logout: emptyProps(),
 
-    createPassword: props<{ payload: ISavePassword }>(),
+    createPassword: props<{ payload: ISavePassword, repeat: boolean }>(),
 
     forgotPassword: props<{ payload: IForgotPassword }>(),
     forgotPasswordSuccess: emptyProps(),
     forgotPasswordFailure: props<{ error: string }>(),
+
+    codeConfirm: props<{ payload: ICodeConfirm }>(),
+    codeConfirmSuccess: props<{ payload: ICodeConfirmResponse }>(),
+    codeConfirmFailure: props<{ error: string }>(),
+
+    resetPassword: props<{ payload: IResetPassword }>(),
+    resetPasswordSuccess: emptyProps(),
+    resetPasswordFailure: props<{ error: string }>(),
 
     refreshToken: emptyProps(),
     refreshTokenSuccess: emptyProps(),

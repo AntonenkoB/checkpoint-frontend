@@ -1,0 +1,34 @@
+<div class="container">
+  <cp-header-secondary [title]="'student.pages.history-lessons' | translate" (close)="studentFacade.goToProfile(true)"></cp-header-secondary>
+
+</div>
+<ion-content class="lessons-wrap">
+  <div class="container">
+    @for (item of studentFacade.groupPastLessons(); track $index) {
+      <div
+          class="week-title"
+      >{{item.label}}</div>
+
+      <div class="lessons-item">
+        @for (week of item.week; track week) {
+          @if (week.teacher) {
+
+            @if (week.teacher.creative_name) {
+              <div class="lesson-type-title">{{week.teacher.creative_name}}</div>
+            } @else {
+              <div class="lesson-type-title">{{week.teacher.first_name}} {{week.teacher.last_name}}</div>
+            }
+          } @else {
+            <div class="lesson-type-title individual-type-title">{{"schedule.independent" | translate}}</div>
+          }
+
+          @for (lesson of week.lessons; track lesson) {
+            <div class="record-lesson">
+              <div class="date">{{lesson | lessonDateTime}}</div>
+            </div>
+          }
+        }
+      </div>
+    }
+  </div>
+</ion-content>

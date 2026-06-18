@@ -1,7 +1,8 @@
-import {Component, computed, input, output} from "@angular/core";
+import {Component, computed, input, model, output} from "@angular/core";
 import {TabsComponent} from "@shared/components/tabs/tabs.component";
 import {AvatarComponent} from "@shared/components/avatar/avatar.component";
-import {ADMIN_TABS, EHeaderMenu, EUserRole, IUser, TEACHER_TABS} from "../../../features/users/models/user.model";
+import {ADMIN_TABS, EHeaderMenu, TEACHER_TABS} from "../../../features/users/models/user.model";
+import {IUser, EUserRole} from "@models/user.model";
 
 @Component({
   selector: "cp-header-mobile",
@@ -15,11 +16,13 @@ import {ADMIN_TABS, EHeaderMenu, EUserRole, IUser, TEACHER_TABS} from "../../../
 export class HeaderMobileComponent {
   public profile = input<IUser | null>();
   public activeMenu = input<EHeaderMenu>();
+  public amountStudents = model<string>();
   public selectMenu = output<EHeaderMenu>();
   public goToProfile = output();
   public USER_ROLE_TABS = computed(() => {
     switch (this.profile()?.role) {
       case EUserRole.Admin:
+      case EUserRole.Owner:
         return ADMIN_TABS();
       default:
         return TEACHER_TABS();

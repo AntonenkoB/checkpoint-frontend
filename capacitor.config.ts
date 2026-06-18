@@ -1,15 +1,19 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.bo.checkpoint.app',
+  appId: 'com.checkpoint.app.ua',
   appName: 'checkpoint',
   webDir: 'www',
   plugins: {
     SplashScreen: {
       launchShowDuration: 2000,
-      launchAutoHide: true,
+      launchAutoHide: false,
+      useDialog: false,
       showSpinner: false,
-      splashFullscreen: true
+    },
+    Keyboard: {
+      resize: 'ionic',
+      resizeOnFullScreen: true
     }
   }
 };

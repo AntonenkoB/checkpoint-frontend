@@ -1,0 +1,20 @@
+<div class="lesson-success container">
+  <cp-header-secondary class="lesson-success-header"  [title]="' '" (close)="lessonsFacade.exitFromCanselSuccess()"></cp-header-secondary>
+
+  <div class="lesson-success-info">
+    <div class="lesson-canceled-icon" [innerHTML]="TRANSFERRED_LESSON_SVG"></div>
+
+    <div class="lesson-title">{{ "lessons.planned-success" | translate }}</div>
+    <div class="student">
+      @if (lessonsFacade.lessonsStore.currentUser()!) {
+        <cp-record-student-item [student]="lessonsFacade.lessonsStore.currentUser()!" [withAmountLesson]="false"></cp-record-student-item>
+      }
+    </div>
+
+    <div class="lesson-date">{{lessonsFacade.lessonsStore.currentDateTime()!}}</div>
+  </div>
+
+  <div class="btn-wrap">
+    <ion-button (click)="lessonsFacade.exitFromCanselSuccess()">{{ "lessons.planned-success-btn" | translate }}</ion-button>
+  </div>
+</div>

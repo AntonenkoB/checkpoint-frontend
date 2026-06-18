@@ -1,8 +1,8 @@
-<div class="user">
+<div class="user" [class.disabled]="disabled()">
   <div class="user-wrap">
-    <div class="user-description" (click)="openUser.emit(user()?.id)">
+    <div class="user-description" (click)="openUser.emit(user()?.id!)">
       @if (timeLesson()) {
-        <div class="time-lesson">13-14</div>
+        <div class="time-lesson">{{timeLesson()?.from}} - {{timeLesson()?.to}}</div>
       }
 
       @if (user()) {
@@ -24,14 +24,14 @@
           <div class="" [innerHTML]="CHECK_THIN_SVG"></div>
         }
 
-        @if (withAdditionalInfo()) {
-          <div class="open-student-info"
-               [class.open]="additionalInfoToggle()"
-               (click)="additionalInfoToggle.set(!additionalInfoToggle())"
-          >
-            <div class="open-student-info-icon" [innerHTML]="ARROW_SVG"></div>
-          </div>
-        }
+<!--        @if (withAdditionalInfo()) {-->
+<!--          <div class="open-student-info"-->
+<!--               [class.open]="additionalInfoToggle()"-->
+<!--               (click)="additionalInfoToggle.set(!additionalInfoToggle())"-->
+<!--          >-->
+<!--            <div class="open-student-info-icon" [innerHTML]="ARROW_SVG"></div>-->
+<!--          </div>-->
+<!--        }-->
 
         @if (showDelete()) {
           <div class="delete"
@@ -40,70 +40,45 @@
           ></div>
         }
 
-        @if (timeLesson() && user()?.role === EUserRole.Student) {
+        @if (timeLesson() && user()?.role === EUserRole.Student && (!withTeacher() || !showTeacher())) {
           <div
               class="dots"
               [innerHTML]="DOTS_SVG"
               (click)="dotsEvent.emit(user()?.id)"
           ></div>
         }
+
+        @if (withTeacher() && showTeacher()) {
+          <div class="teacher-avatar-wrp">
+            <cp-avatar class="avatar teacher-avatar" [src]="withTeacher()?.avatar ?? ''"></cp-avatar>
+          </div>
+        }
       </div>
     }
   </div>
 
-  @if (additionalInfoToggle() && user()?.role === EUserRole.Student) {
-    <div class="student-info">
-      <div class="student-info-item">
-        <div class="student-info-teacher">Дмитро Новіков Новіков Новіков</div>
-        <div class="student-info-lessons">1 урок до 18.03</div>
-      </div>
-    </div>
-  }
+  @if (additionalInfoToggle() && user()?.purchases?.length! > 0) {
+    <div class="student-info"  (click)="openUser.emit(user()?.id!)">
+      @for (purchase of user()?.purchases; track purchase.id) {
+        <div class="student-info-item">
+          @if (purchase.teacher) {
+            <div class="student-info-teacher">{{purchase.teacher.first_name}} {{purchase.teacher.last_name}}</div>
+          } @else {
+            <div class="student-info-teacher">{{ 'market.self-study' | translate}}</div>
+          }
+          <div class="student-info-lessons">{{purchase.lessons_remaining}}
+            @if (purchase.teacher) {
+              {{"lessons.type.lesson" | translate}}
+            } @else {
+              {{"lessons.type.independent" | translate }}
+            }
 
-  @if (withRatesInfo() && additionalInfoToggle() && user()?.role === EUserRole.Teacher) {
-    <div class="rates-info">
-      <div class="rates-info-item">
-        <div class="rates-info-title">{{ "rates.price.one-time-type" | translate }}</div>
-        <div class="rates-info-price-wrap">
-          <div class="rates-info-name">{{ "rates.price.school" | translate}}</div>
-          <div class="rates-info-price">500 ₴</div>
+            @if (purchase.expires_at) {
+              {{ "common.to" | translate}} {{ purchase.expires_at | date:'dd.MM'}}
+            }
+          </div>
         </div>
-        <div class="rates-info-price-wrap">
-          <div class="rates-info-name">{{ "rates.price.teacher" | translate}}</div>
-          <div class="rates-info-price">500 ₴</div>
-        </div>
-      </div>
-
-      <div class="rates-info-item">
-        <div class="rates-info-title">{{ "rates.price.abonnement-type" | translate }}</div>
-        <div class="rates-info-price-wrap">
-          <div class="rates-info-name">{{ "rates.price.school" | translate}}</div>
-          <div class="rates-info-price">500 ₴</div>
-        </div>
-        <div class="rates-info-price-wrap">
-          <div class="rates-info-name">{{ "rates.price.teacher" | translate}}</div>
-          <div class="rates-info-price">500 ₴</div>
-        </div>
-      </div>
-    </div>
-  }
-
-  @if (withSalaryInfo() && additionalInfoToggle() && user()?.role === EUserRole.Teacher) {
-    <div class="rates-info">
-      <div class="rates-info-item">
-        <div class="rates-info-price-wrap">
-          <div class="rates-info-name">{{ "rates.salary.total-revenue" | translate}}</div>
-          <div class="rates-info-price">11 234 ₴</div>
-        </div>
-        <div class="rates-info-price-wrap">
-          <div class="rates-info-name">{{ "rates.salary.salary-teacher" | translate}}</div>
-          <div class="rates-info-price">1 234 ₴</div>
-        </div>
-        <div class="rates-info-price-wrap">
-          <div class="rates-info-name">{{ "rates.salary.salary-school" | translate}}</div>
-          <div class="rates-info-price">1 234 ₴</div>
-        </div>
-      </div>
+      }
     </div>
   }
   <ng-content />

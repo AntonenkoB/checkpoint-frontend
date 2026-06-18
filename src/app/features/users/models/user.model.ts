@@ -1,19 +1,15 @@
 import {ETheme, IOptions} from "@models/common.model";
+import {ITimeRange} from "@schedule/models/schedule.model";
+import {IUser, EUserRole} from "@models/user.model";
+
+
 
 export enum EUserPages {
   ListUsers = 'list',
   Student = 'student',
-  Profile = 'profile',
-  Create = 'create',
+  CreateUser = 'create',
+  UpdateUser = 'update',
   User = 'user',
-  SelectTeacher = 'create',
-}
-
-export enum EUserRole {
-  Owner = 'owner',
-  Admin = 'admin',
-  Teacher = 'teacher',
-  Student = 'student',
 }
 
 export enum EHeaderMenu {
@@ -21,32 +17,13 @@ export enum EHeaderMenu {
   Teacher = 'teacher',
   Student = 'student',
   Schedule = 'schedule',
+  Salary = 'salary',
 }
 
 export enum ERateTabs {
   Price = 'price',
   Salary = 'salary',
-}
-
-export interface IUser {
-  id: number;
-  creative_name: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone: string;
-  role: EUserRole;
-  theme: ETheme;
-  is_active: boolean;
-  onboarding_completed: boolean;
-  profile_video: string;
-  teacher_description: string;
-  teacher_videos: string[];
-  created_at: string;
-  updated_at: string;
-  avatar: string;
-  lang?: string;
-  teachers?: Partial<IUser[]>;
+  AllTeaches = 'all-teachers',
 }
 
 export interface IUserProfile {
@@ -55,11 +32,12 @@ export interface IUserProfile {
   first_name: string;
   last_name: string;
   phone: string;
-  role: string;
+  role: EUserRole;
   temporary_password?: string;
 }
 
 export interface IUserUpdate {
+  id?: number;
   email: string;
   creative_name: string;
   first_name: string;
@@ -68,6 +46,13 @@ export interface IUserUpdate {
   role: EUserRole;
   temporary_password?: string;
   teacher_ids?: number[];
+}
+
+export interface IStudentLesson {
+  id: number;
+  date: string;
+  teacher: IUser;
+  time: ITimeRange
 }
 
 export const ADMIN_TABS = (): IOptions<EHeaderMenu>[] => [
@@ -97,6 +82,10 @@ export const TEACHER_TABS = (): IOptions<EHeaderMenu>[] => [
   {
     value: EHeaderMenu.Schedule,
     title: "schedule.title"
+  },
+  {
+    value: EHeaderMenu.Salary,
+    title: "salary.title"
   }
 ]
 
@@ -121,6 +110,10 @@ export const USER_ROLE_TABS = (): IOptions<EHeaderMenu>[] => [
 
 export const SETTING_RATES_TABS = (): IOptions<ERateTabs>[] => [
   {
+    value: ERateTabs.AllTeaches,
+    title: "rates.all-teachers-title"
+  },
+  {
     value: ERateTabs.Price,
     title: "rates.price-title"
   },
@@ -130,41 +123,12 @@ export const SETTING_RATES_TABS = (): IOptions<ERateTabs>[] => [
   }
 ]
 
-export const USER_ROLE_ACTIONS = (): IOptions<EUserRole>[] => [
-  {
-    value: EUserRole.Student,
-    title: "users.add-student-btn"
-  },
-  {
-    value: EUserRole.Teacher,
-    title: "users.add-teacher-btn"
-  },
-  {
-    value: EUserRole.Admin,
-    title: "users.add-admin-btn"
-  }
-]
-
-export const THEME_ACTIONS = (): IOptions<ETheme>[] => [
-  {
-    value: ETheme.System,
-    title: "profile.theme.system"
-  },
-  {
-    value: ETheme.Light,
-    title: "profile.theme.light"
-  },
-  {
-    value: ETheme.Dark,
-    title: "profile.theme.dark"
-  }
-]
-
 export const USER_CREATE_BTN = (): Record<EHeaderMenu, string> => ({
   [EHeaderMenu.Student]: "users.add-student-btn",
   [EHeaderMenu.Teacher]: "users.add-teacher-btn",
   [EHeaderMenu.Admin]: "users.add-admin-btn",
   [EHeaderMenu.Schedule]: "schedule.btn-change-schedule",
+  [EHeaderMenu.Salary]: "schedule.btn-change-schedule",
 });
 
 export const USER_CREATE_TITLE = (): Record<EHeaderMenu, string> => ({
@@ -172,6 +136,7 @@ export const USER_CREATE_TITLE = (): Record<EHeaderMenu, string> => ({
   [EHeaderMenu.Teacher]: "users.add-teacher-title",
   [EHeaderMenu.Admin]: "users.add-admin-title",
   [EHeaderMenu.Schedule]: "users.admin",
+  [EHeaderMenu.Salary]: "users.admin",
 });
 
 export const USER_UPDATE_TITLE = (): Record<EHeaderMenu, string> => ({
@@ -179,56 +144,5 @@ export const USER_UPDATE_TITLE = (): Record<EHeaderMenu, string> => ({
   [EHeaderMenu.Teacher]: "users.update-teacher-title",
   [EHeaderMenu.Admin]: "users.update-admin-title",
   [EHeaderMenu.Schedule]: "users.admin",
+  [EHeaderMenu.Salary]: "users.admin",
 });
-
-
-export const MONTH_LIST = (): IOptions<any>[] => [
-  {
-    value: 'Квітень',
-    title: 'Квітень'
-  },
-  {
-    value: 'Березень',
-    title: 'Березень'
-  },
-  {
-    value: 'Лютий',
-    title: 'Лютий'
-  },
-  {
-    value: 'Січень',
-    title: 'Січень'
-  },
-  {
-    value: 'Грудень',
-    title: 'Грудень'
-  },
-  {
-    value: 'Листопад',
-    title: 'Листопад'
-  },
-  {
-    value: 'Жовтень',
-    title: 'Жовтень'
-  },
-  {
-    value: 'Вересень',
-    title: 'Вересень'
-  },
-  {
-    value: 'Серпень',
-    title: 'Серпень'
-  },
-  {
-    value: 'Липень',
-    title: 'Липень'
-  },
-  {
-    value: 'Червень',
-    title: 'Червень'
-  },
-  {
-    value: 'Травень',
-    title: 'Травень'
-  },
-]

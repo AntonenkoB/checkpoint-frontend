@@ -1,0 +1,32 @@
+<div class="container">
+  <cp-header-secondary [title]="'student.pages.history-purchases' | translate" (close)="studentFacade.goToProfile(true)"></cp-header-secondary>
+</div>
+
+<ion-content class="purchases-wrap">
+  <div class="container">
+    @for (purchase of studentFacade.historyPurchases(); track purchase.id) {
+      <div class="purchases-item">
+        <div class="info-top">
+          <div class="date">{{purchase.purchased_at | date:'d MMMM':'':'uk-UA'}}</div>
+          @if (purchase.teacher) {
+            <div class="teacher">{{purchase.teacher.first_name}} {{purchase.teacher.last_name}}</div>
+          } @else {
+            <div class="teacher">{{"schedule.independent" | translate}}</div>
+          }
+
+        </div>
+        <div class="info-bottom">
+          <div class="type">
+            @if (purchase.plan.type === eRatesType.Subscription) {
+              {{'rates.price.abonnement-type' | translate}},
+            }
+            {{purchase.plan.lessons_per_unit}} 
+            заняття</div>
+          <div class="price">{{purchase.plan.price | priceFormat: '₴'}}</div>
+        </div>
+      </div>
+    }
+  </div>
+</ion-content>
+<!--</div>-->
+

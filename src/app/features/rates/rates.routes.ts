@@ -1,16 +1,15 @@
 import {Routes} from '@angular/router';
 import {ERatePages} from "./models/rates.model";
 import {ERoutParams} from "@models/router.model";
-import {EUserPages} from "@users/models/user.model";
 
 export const routesRates: Routes = [
   {
-    path: ERatePages.Teachers,
+    path: ERatePages.RateList,
     loadComponent: () =>
       import('./pages/rete-list/rete-list.component').then((m) => m.ReteListComponent),
   },
   {
-    path: ERatePages.Salary,
+    path: `${ERatePages.SalaryItem}/:${ERoutParams.TeacherId}`,
     loadComponent: () =>
       import('./pages/salary-item/salary-item.component').then((m) => m.SalaryItemComponent),
   },

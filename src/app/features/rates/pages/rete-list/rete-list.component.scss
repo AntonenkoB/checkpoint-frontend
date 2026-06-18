@@ -1,4 +1,33 @@
 :host {
   background-color: var(--color-background-primary);
   display: block;
+
+  .reate-item {
+    border: 1px solid var(--color-border-primary);
+    border-radius: 8px;
+    cursor: pointer;
+    padding: var(--spacing-8) var(--spacing-16) var(--spacing-16);
+    margin-bottom: var(--spacing-16);
+  }
+
+  .rates-info-price-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: var(--spacing-8);
+  }
+
+  .rates-item-title {
+    font: var(--font-alumi-20-black);
+    text-transform: uppercase;
+  }
+
+  .rates-info-title {
+    font: var(--font-open-16-bold);
+    padding-top: var(--spacing-8);
+  }
+
+  .rates-info-price-wrap {
+    font: var(--font-open-16-regular);
+  }
 }

@@ -1,13 +1,15 @@
-import {Injectable, signal} from "@angular/core";
+import {inject, Injectable, signal} from "@angular/core";
 import {Preferences} from "@capacitor/preferences";
 import {ELang, ETheme, IAppSettings} from "@models/common.model";
 import {Capacitor} from "@capacitor/core";
+import {ThemeService} from "@shared/services/theme.service";
 
 @Injectable({ providedIn: 'root' })
 export class SettingsService {
   public lang = signal<ELang>(ELang.UA);
-  public theme = signal<ETheme>(ETheme.Light);
+  public theme = signal<ETheme>(ETheme.System);
   public repeat = signal<boolean>(!Capacitor.isNativePlatform());
+  private themeService = inject(ThemeService);
 
   async loadSettings() {
     const { value: settingsJson } = await Preferences.get({ key: 'app_settings' });
@@ -30,7 +32,11 @@ export class SettingsService {
       repeat: this.repeat(),
     };
 
-    await Preferences.set({ key: 'app_settings', value: JSON.stringify(current) });
+    try {
+      await Preferences.set({ key: 'app_settings', value: JSON.stringify(current) });
+    } catch (error) {
+      console.error('Помилка запису в Capacitor Preferences:', error);
+    }
   }
 
   public getCurrentSettings(): IAppSettings {
@@ -45,7 +51,8 @@ export class SettingsService {
     this.lang.set(ELang.UA);
     this.theme.set(ETheme.Light);
     this.repeat.set(!Capacitor.isNativePlatform());
-    
+
+    this.themeService.apply(this.theme())
     await Preferences.remove({ key: 'app_settings' });
   }
 }

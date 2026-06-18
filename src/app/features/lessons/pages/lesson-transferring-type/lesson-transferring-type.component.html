@@ -1,0 +1,18 @@
+<div class="transferring-lesson container">
+  <cp-header-secondary class="transferring-header"  [title]="'lessons.edit-title' | translate" (close)="lessonsFacade.exitFromCanselSuccess()"></cp-header-secondary>
+
+  <div class="transferring-lesson-info">
+    <div class="student">
+      @if (lessonsFacade.lessonsStore.currentUser()!) {
+        <cp-record-student-item [student]="lessonsFacade.lessonsStore.currentUser()!" [withAmountLesson]="false"></cp-record-student-item>
+      } @else {
+        <div class="individual-lesson-title">{{ "lesson.type.independent-lesson" | translate }}</div>
+      }
+    </div>
+    <div class="lesson-date">{{lessonsFacade.lessonsStore.currentDateTime()!}}</div>
+    <ion-button class="cansel-btn" (click)="lessonsFacade.goToTransferringTime()">{{ "schedule.transfer" | translate}}</ion-button>
+    <ion-button [color]="'danger'" (click)="lessonsFacade.cancelLesson()">{{ "schedule.cancel" | translate}}</ion-button>
+    <div class="btn-wrap">
+    </div>
+  </div>
+</div>

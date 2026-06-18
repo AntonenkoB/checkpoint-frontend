@@ -1,0 +1,26 @@
+:host {
+  background-color: var(--color-background-primary);
+
+  .purchases-wrap {
+    height: 100%;
+  }
+
+  .purchases-item {
+    font: var(--font-open-16-regular);
+  }
+
+  .info-top,
+  .info-bottom {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .info-bottom {
+    padding-top: var(--spacing-8);
+  }
+
+  .purchases-item {
+    padding-bottom: var(--spacing-24);
+  }
+}

@@ -1,0 +1,26 @@
+:host {
+  height: 100%;
+  background-color: var(--color-background-primary);
+
+  .lesson-action {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .lesson-action-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1 1 auto;
+    padding-bottom: 120px;
+  }
+
+  .lesson-title {
+    font: var(--font-alumi-48-black);
+  }
+
+  .student {
+    padding: var(--spacing-40) 0;
+  }
+}

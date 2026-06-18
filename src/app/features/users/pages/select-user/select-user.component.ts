@@ -2,9 +2,9 @@ import {Component, effect, inject, input, output, signal} from "@angular/core";
 import {HeaderSecondaryComponent} from "@shared/components/header-secondary/header-secondary.component";
 import {TranslatePipe} from "@shared/pipes/translate-pipe";
 import {UserItemComponent} from "@shared/components/user-item/user-item.component";
-import {SelectUserFacade} from "./select-user.facade";
+import {SelectUserFacade} from "../../facade/select-user.facade";
 import {IonButton} from "@ionic/angular/standalone";
-import {IUser} from "../../models/user.model";
+import {IUser} from "@models/user.model";
 
 @Component({
   selector: "cp-select-teacher",

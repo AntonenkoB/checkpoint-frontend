@@ -1,53 +1,39 @@
 <div class="schedule-list">
-  @if (profile()?.role === eUserRole.Teacher) {
-    <div class="schedule-list-calendar container-large">
-      <cp-calendar></cp-calendar>
-    </div>
-  }
+  <div class="schedule-list-calendar container-large">
+    <cp-calendar
+        [activeDays]="recordedDays()"
+        [scheduleDay]="activeDate()"
+        (selectDay)="selectDay($event)"
+    ></cp-calendar>
+  </div>
 
-  @if (profile()?.role === eUserRole.Admin) {
-    <div class="schedule-list-wrap container">
-      <cp-calendar-short></cp-calendar-short>
-    </div>
-  }
-
-  <div class="days-list schedule-list-wrap">
+  <div class="days-list schedule-list-wrap" #daysList>
     <div class="container">
-      <div class="day-item">
-        <div class="title">Сьогодні</div>
+      @for (day of scheduleFacade.scheduleByDate(); track day.date) {
+        <div class="day-item" [id]="day.date">
+          <div class="title day-section" >{{day.date | dayTitle}}</div>
 
-        <div class="schedule-time-list">
-          @for (student of studentsList(); track student.id) {
-            <cp-user-item
-                class="time"
-                [timeLesson]="'13-14'"
-                [user]="student"
-                (dotsEvent)="scheduleFacade.goToTransferringLesson()"
-            ></cp-user-item>
-          }
-          @for (student of studentsList(); track student.id) {
-            <cp-user-item
-                class="time"
-                [timeLesson]="'13-14'"
-                [user]="student"
-                (dotsEvent)="scheduleFacade.goToTransferringLesson()"
-            ></cp-user-item>
+          @for (slot of day.slots; track slot.id) {
+            <div class="schedule-time-list">
+              <cp-user-item
+                  class="time"
+                  [timeLesson]="slot.time"
+                  [user]="slot.lesson?.student"
+                  [showTeacher]="!scheduleFacade.isTeacher()"
+                  [withTeacher]="slot.teacher"
+                  (openUser)="scheduleFacade.selectTime($event, day.date, slot.time, slot.id)"
+                  (dotsEvent)="scheduleFacade.goToTransferringLesson(slot.lesson?.student!, getDayTitle(day.date, slot.time), slot.lesson.id)"
+              ></cp-user-item>
+            </div>
           }
         </div>
-      </div>
 
-      <div class="day-item">
-        <div class="title">Завтра</div>
-
-        <div class="time-list">
-          <cp-user-item
-              class="time"
-              [timeLesson]="'13-14'"
-              (openUser)="scheduleFacade.goToRecordStudent()"
-          ></cp-user-item>
-        </div>
-      </div>
+      } @empty {
+        <cp-empty-state></cp-empty-state>
+      }
     </div>
+
+    <cp-loader [isLoad]="!scheduleListStore.isLoading()"></cp-loader>
   </div>
 </div>
 

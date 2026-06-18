@@ -1,5 +1,6 @@
-import {Component, computed, OnInit} from "@angular/core";
+import {Component, computed, inject, input, OnInit, output} from "@angular/core";
 import {TabsComponent} from "@shared/components/tabs/tabs.component";
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: "cp-calendar-short",
@@ -10,28 +11,30 @@ import {TabsComponent} from "@shared/components/tabs/tabs.component";
   ]
 })
 export class CalendarShortComponent implements OnInit {
-  public next3Days = computed(() => {
+  private datePipe = inject(DatePipe);
+  public activeDays = input<string[]>();
+  public selectDay = output<string>();
+
+  public nextWeek = computed(() => {
     const today = new Date();
-    const numberDays = 3;
+    const numberDays = 8;
 
-    const result: {
-      value: string;
-      title: string;
-    }[] = [];
-
-    Array.from({ length: numberDays }, (_, i) => {
+    return Array.from({ length: numberDays }, (_, i) => {
       const d = new Date(today);
       d.setDate(today.getDate() + i);
-      result.push({
-        value: d.toISOString(),
-        title: d.toLocaleDateString('uk-UA', {
-          weekday: 'long'
-        })
-      })
-    });
 
-    return  result;
+      return {
+        value: this.datePipe.transform(d, 'yyyy-MM-dd') as string,
+        title: d.toLocaleDateString('uk-UA', { weekday: 'long' })
+      };
+    });
   });
+
+  public disabledTabs = computed(() => {
+    return this.nextWeek()
+      .filter(day => !this.activeDays()?.includes(day.value))
+      .map(day => day.value);
+  })
 
   ngOnInit() {}
 }

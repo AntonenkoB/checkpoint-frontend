@@ -21,7 +21,6 @@
 
   .schedule-header-teacher {
     display: block;
-    padding-top: var(--spacing-20);
   }
 
   .header-avatar {
@@ -65,17 +64,8 @@
     }
   }
 
-  .schedule-calendar {
-    padding-left: var(--spacing-20);
-    max-width: 100%;
-  }
-
   .week {
     padding-top: 0;
-
-    ion-segment-button {
-      --border-radius: 0px;
-    }
   }
 
   .day {
@@ -86,6 +76,7 @@
     padding-bottom: var(--spacing-24);
     flex: 1 1 auto;
     overflow-y: auto;
+    padding-top: var(--spacing-20);
     width: 100%;
   }
 

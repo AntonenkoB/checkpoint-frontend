@@ -3,25 +3,16 @@ import {EMarketPages} from "./models/market.model";
 
 export const routesMarket: Routes = [
   {
-    path: EMarketPages.Type,
+    path: `${EMarketPages.PaymentType}/:teacherId`,
     loadComponent: () =>
-      import('./pages/lessons-type/lessons-type.component').then((m) => m.LessonsTypeComponent),
-  },
-  {
-    path: EMarketPages.Teachers,
-    loadComponent: () =>
-      import('./pages/teachers/teachers.component').then((m) => m.TeachersComponent),
+      import('./pages/lessons-type-payment/lessons-type-payment.component').then((m) => m.LessonsTypePaymentComponent),
   },
   {
     path: EMarketPages.Payment,
     loadComponent: () =>
       import('./pages/lessons-payment/lessons-payment.component').then((m) => m.LessonsPaymentComponent),
   },
-  {
-    path: EMarketPages.PaymentType,
-    loadComponent: () =>
-      import('./pages/lessons-type-payment/lessons-type-payment.component').then((m) => m.LessonsTypePaymentComponent),
-  },
+
   {
     path: EMarketPages.PaymentSuccess,
     loadComponent: () =>
@@ -29,7 +20,7 @@ export const routesMarket: Routes = [
   },
   {
     path: '',
-    redirectTo:  EMarketPages.Type,
+    redirectTo:  EMarketPages.LessonsType,
     pathMatch: 'full',
   },
 ];

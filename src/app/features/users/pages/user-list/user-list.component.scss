@@ -1,7 +1,7 @@
 :host {
   background-color: var(--color-background-primary);
   display: block;
-  padding-bottom: calc(var(--spacing-20) + var(--cp-safe-area-bottom));
+  padding-bottom: var(--cp-safe-area-bottom);
   height: 100%;
 
   .user-wrap {
@@ -9,6 +9,7 @@
     flex-direction: column;
     height: 100%;
     margin: 0 auto;
+    min-height: 100dvh;
   }
 
   .user-list-header {
@@ -16,8 +17,36 @@
     padding-right: var(--spacing-20);
   }
 
+  .search-wrap {
+    background-color: var(--color-background-primary);
+    padding-bottom: 10px;
+    font: var(--font-open-16-regular);
+
+    .search {
+      --min-height: 32px  !important;
+      height: 32px  !important;
+
+      ::ng-deep {
+        ion-input {
+          --padding-top: 0px;
+          --padding-bottom: 6px;
+
+          --min-height: 28px !important;
+          min-height: 28px !important;
+          height: 28px;
+        }
+
+        .input-wrapper {
+          border-bottom: 1px solid var(--color-border-primary);
+          --border-color: var(--color-border-primary);
+        }
+      }
+    }
+  }
+
+
   .owner-tabs {
-    padding: var(--spacing-40) var(--spacing-20) 0;
+    padding: var(--spacing-16) var(--spacing-20) 0;
 
     ::ng-deep {
       ion-segment {
@@ -53,10 +82,15 @@
     overflow: auto;
   }
 
+  .owner-additional-page {
+    margin-left: -20px;
+    margin-right: -20px;
+  }
+
   .user-item {
     display: flex;
     gap: 24px;
-    padding-bottom: var(--spacing-24);
+    padding-bottom: var(--spacing-16);
     width: 100%;
   }
 
@@ -85,6 +119,6 @@
   }
 
   .buttons {
-    padding: var(--spacing-20) var(--spacing-20) 0 var(--spacing-20);
+    padding: var(--spacing-20);
   }
 }

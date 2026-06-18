@@ -1,3 +1,8 @@
-<div class="time" [class.active]="active()" (click)="active.set(!active())">
-  <div class="time-value">{{time()}}</div>
+<div class="time"
+     [class.active]="isActive()"
+     [class.disabled]="isDisabled()"
+     [class.has-lesson]="hasLesson()"
+     (click)="clickToTime()"
+>
+  <div class="time-value">{{time()?.from}} - {{time()?.to}}</div>
 </div>

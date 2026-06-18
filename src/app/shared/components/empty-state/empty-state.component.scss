@@ -1,15 +1,32 @@
 :host {
+  display: block;
+  height: 100%;
+
   .empty-state {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     height: 100%;
     width: 100%;
     color: var(--color-text-primary);
+
+    .svg-wrap {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      ::ng-deep {
+        svg {
+          height: 100% !important;
+          max-height: 372px;
+          max-width: 230px;
+          width: 100%;
+        }
+      }
+    }
 
     img {
       min-height: 100%;
       max-width: 230px;
     }
+
   }
 }

@@ -2,22 +2,28 @@
   <cp-header-secondary [title]="' '" (close)="marketFacade.goToStudentMain()"></cp-header-secondary>
 
   <div class="lessons-type-payment-info">
-    <cp-record-student-item
-        class="selected-teacher"
-        [student]="marketFacade.selectedTeacher"
-        [withAmountLesson]="false"
-    ></cp-record-student-item>
+    @if (+marketFacade.routTeacherId()! > 0) {
+      <cp-record-student-item
+          class="selected-teacher"
+          [student]="marketFacade.selectedTeacher()"
+          [withAmountLesson]="false"
+      ></cp-record-student-item>
+    } @else {
+      <div class="individual-lessons-title">{{"schedule.myself" | translate}}</div>
+    }
 
-    <div class="one-lesson" (click)="marketFacade.goToPayment()">
+    <div class="one-lesson" (click)="marketFacade.goToPayment(eMarketPlanType.Single)">
       <div class="name">{{"market.one-time-lessons" | translate}}</div>
-      <div class="price">1200 ₴</div>
+      <div class="price">{{ marketFacade.marketStore.teacherRate()?.[0]?.price }} ₴</div>
     </div>
 
-    <div class="abonnement-lesson" (click)="marketFacade.goToPayment()">
+    <div class="abonnement-lesson" (click)="marketFacade.goToPayment(eMarketPlanType.Subscription)">
       <div class="name">{{"market.abonnement-lessons" | translate}}</div>
-      <div class="price"
-      [innerHTML]="'market.abonnement-details' | translate"
-      ></div>
+      <div class="price" [innerHTML]=" 'market.abonnement-details' | translate: {
+        total: abonnementParams()?.total ?? 0,
+        perLesson: abonnementParams()?.perLesson ?? 0,
+        count: abonnementParams()?.count ?? 0
+      }"></div>
     </div>
 
     <div class="lessons-type-payment-description"

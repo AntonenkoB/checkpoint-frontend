@@ -1,0 +1,229 @@
+import {computed, inject, Injectable} from "@angular/core";
+import {Store} from "@ngrx/store";
+import {EAppPages} from "@models/router.model";
+import {AppState} from "@capacitor/app";
+import {EHeaderMenu, EUserPages} from "@users/models/user.model";
+import {IUser} from "@models/user.model";
+import {RouterActions} from "../../../store/router/actions";
+import {
+  ELessonFlow,
+  ELessonPages,
+  ELessonsRecordType,
+  ELessonsType,
+  ICancelLesson
+} from "@lessons/models/lessons.model";
+import {DatePipe} from "@angular/common";
+import {LessonsStore} from "@lessons/store/lessons.store";
+import {ProfileFacade} from "@profile/facade/profile.facade";
+import {toSignal} from "@angular/core/rxjs-interop";
+import {ActivatedRoute} from "@angular/router";
+import {ScheduleStore} from "@schedule/store/schedule.store";
+import {EMarketPages} from "@market/models/market.model";
+
+
+@Injectable({ providedIn: 'root' })
+export class LessonsFacade {
+  private store = inject<Store<AppState>>(Store);
+  private datePipe = inject(DatePipe);
+  public lessonsStore = inject(LessonsStore);
+  public scheduleStore = inject(ScheduleStore);
+  public profileFacade = inject(ProfileFacade);
+  private route = inject(ActivatedRoute);
+
+  private queryParams = toSignal(this.route.queryParams);
+  public currentRecordTab = computed(() => this.queryParams()?.['recordType']);
+  public currentLessonsFlow = computed(() => this.queryParams()?.['lessonsFlow']);
+  public currentLessonsType = computed(() => this.queryParams()?.['lessonsType']);
+
+  public readonly profile = this.profileFacade.profile;
+  public readonly slots = this.lessonsStore.slots;
+  public readonly currentActionUser = this.lessonsStore.currentUser;
+  public readonly studentTeachers = computed(() => {
+    let teachers =  this.profile()?.teachers ?? [];
+    let purchases =  this.profile()?.purchases ?? [];
+
+    return teachers.map(teacher => ({
+      ...teacher,
+      purchases: purchases.filter(p => p.teacher?.id === teacher?.id)
+    }) as IUser);
+  });
+
+  constructor() {
+  }
+
+  public selectedLessonType(type: ELessonsType): void {
+    if (this.currentLessonsFlow() === ELessonFlow.Booking) {
+      if (type === ELessonsType.TeacherGuided) {
+        const moreOneTeacher = this.studentTeachers().length > 1;
+
+        if (moreOneTeacher) {
+          this.goToSelectTeacher(type);
+        } else {
+          const teacher = this.studentTeachers()[0]!;
+          this.lessonsStore.updateCurrentUser(teacher);
+          this.goToSelectTime(type);
+        }
+
+      } else {
+        this.goToSelectTime(type);
+      }
+    } else {
+      if (type === ELessonsType.TeacherGuided) {
+        const moreOneTeacher = this.studentTeachers().length > 1;
+        const teacher = this.studentTeachers()[0]!;
+
+        if (moreOneTeacher) {
+          this.goToSelectTeacher(type);
+
+          return;
+        }
+
+        this.lessonsStore.updateCurrentUser(teacher);
+        this.goToPayment(teacher.id);
+      } else {
+        this.goToPayment(0);
+      }
+    }
+  }
+
+  public goToSelectTeacher(lessonsType: ELessonsType): void {
+    this.store.dispatch(RouterActions.goTo({
+      path: [EAppPages.Lessons, ELessonPages.SelectTeacher],
+      extras: {queryParams: {lessonsType, lessonsFlow: this.currentLessonsFlow()}}
+    }))
+  }
+
+  public selectTeacher(teacher: IUser): void {
+    if (this.currentLessonsFlow() === ELessonFlow.Booking) {
+      this.lessonsStore.updateCurrentUser(teacher);
+      this.goToSelectTime();
+    } else {
+      this.goToPayment(teacher.id);
+    }
+  }
+
+  public goToSelectTime(type?: ELessonsType): void {
+    const dateTo = new Date();
+
+    if (type === ELessonsType.TeacherGuided) {
+      dateTo.setMonth(dateTo.getMonth() + 2);
+    } else {
+      dateTo.setDate(dateTo.getDate() + 7);
+    }
+
+    const from = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    const to = this.datePipe.transform(dateTo, 'yyyy-MM-dd');
+    const teacherId = type === ELessonsType.TeacherGuided ? (this.profile()?.teachers?.[0]?.id ?? 0) : 0;
+    const lessonsType = type ? type : this.currentLessonsType();
+
+    this.store.dispatch(RouterActions.goTo({
+      path: [EAppPages.Lessons, teacherId, ELessonPages.RecordTime],
+      extras: {queryParams: {from, to, lessonsType}}
+    }))
+  }
+
+  public goToPayment(teacherId: number): void {
+    this.store.dispatch(RouterActions.goTo({
+      path: [EAppPages.Market, EMarketPages.PaymentType, teacherId]
+    }))
+  }
+
+  public goToStudentMain(): void {
+    this.store.dispatch(RouterActions.goTo({path: [EAppPages.Student], back: true}))
+  }
+
+  public goToTransferringTime(): void {
+    const dateTo = new Date();
+
+    if (this.currentLessonsType() === ELessonsType.TeacherGuided) {
+      dateTo.setMonth(dateTo.getMonth() + 2);
+    } else {
+      dateTo.setDate(dateTo.getDate() + 7);
+    }
+    const from = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    const to = this.datePipe.transform(dateTo, 'yyyy-MM-dd');
+
+    let teacherId = '';
+
+    if (this.profileFacade.isStudent()) {
+      teacherId = this.lessonsStore.currentUser()?.id.toString()! ?? 0;
+    } else {
+      teacherId = this.profile()?.id.toString()!;
+    }
+
+    setTimeout(() => {
+      this.store.dispatch(RouterActions.goTo({
+        path: [EAppPages.Lessons, teacherId, ELessonPages.RecordTime],
+        extras: {queryParams: {
+            recordType: ELessonsRecordType.Transferring,
+            from,
+            to,
+            lessonsType: this.currentLessonsType()
+          }}
+      }))
+    }, 0)
+  }
+
+  public exitFromCanselSuccess(): void {
+    this.lessonsStore.clearAdditionalInfo();
+
+    if (this.profileFacade.isStudent()) {
+      this.store.dispatch(RouterActions.goTo({path: [EAppPages.Student], back: true}))
+      return;
+    }
+
+    const dateTo = new Date();
+    dateTo.setMonth(dateTo.getMonth() + 2);
+    const from = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    const to = this.datePipe.transform(dateTo, 'yyyy-MM-dd');
+
+    this.store.dispatch(RouterActions.goTo({
+      path: [EAppPages.Users, EUserPages.ListUsers],
+      extras: {queryParams: {tab: EHeaderMenu.Schedule, from, to}},
+      back: true
+    }))
+  }
+
+  public cancelLesson(): void {
+    if (this.profileFacade.isStudent()) {
+      const data: ICancelLesson = {
+        teacher_id: this.lessonsStore.currentUser()?.id ?? 0,
+        lesson_id: this.lessonsStore.currentLessonId()!,
+      }
+
+      if (this.currentLessonsType() === ELessonsType.TeacherGuided) {
+        this.lessonsStore.canceledAsStudent(data);
+      } else {
+        this.lessonsStore.cancelIndividualAsStudent(data);
+      }
+      return;
+    }
+
+    if (this.profileFacade.isTeacher()) {
+      const data: ICancelLesson = {
+        student_id: this.lessonsStore.currentUser()!.id,
+        lesson_id: this.lessonsStore.currentLessonId()!,
+      }
+      this.lessonsStore.cancelAsTeacher(data);
+      return;
+    }
+
+    if (this.profileFacade.isAdmin()) {
+      const data: ICancelLesson = {
+        student_id: this.lessonsStore.currentUser()!.id,
+        lesson_id: this.lessonsStore.currentLessonId()!,
+      }
+      this.lessonsStore.cancelIndividualAsAdmin(data);
+      return;
+    }
+
+  }
+
+  public getSlotsToStudent(day: string): void {
+    if (this.currentLessonsType() === ELessonsType.TeacherGuided) {
+      this.lessonsStore.getTeacherSlots(day);
+    } else {
+      this.lessonsStore.getIndividualSlots();
+    }
+  }
+}

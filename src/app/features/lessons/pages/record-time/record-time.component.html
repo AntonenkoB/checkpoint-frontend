@@ -1,0 +1,45 @@
+<div class="record-time">
+  <div class="container">
+    <cp-header-secondary
+        [title]="'record.time-title' | translate"
+        (close)="lessonsFacade.exitFromCanselSuccess()"
+
+    ></cp-header-secondary>
+    @if (lessonsFacade.currentActionUser()!) {
+      <cp-record-student-item
+          class="student-item"
+          [withAmountLesson]="false"
+          [student]="lessonsFacade.currentActionUser()!"
+      ></cp-record-student-item>
+    }
+  </div>
+
+  @if (lessonsFacade.profileFacade.isStudent() && lessonsFacade.currentLessonsType() === eLessonsType.TeacherGuided) {
+    <div class="record-calendar">
+      <cp-calendar
+          [disableEmpty]="true"
+          [activeDays]="calendarActiveDays()"
+          (selectDay)="selectDay($event)"
+      ></cp-calendar>
+    </div>
+  } @else {
+    <div class="container record-calendar-short">
+      <cp-calendar-short
+          [activeDays]="calendarActiveDays()"
+          (selectDay)="selectShortDay($event)"
+      ></cp-calendar-short>
+    </div>
+  }
+
+  <div class="container record-time-list">
+    <cp-time-list
+        [disabledSlots]="disabledSlotsPrepare()"
+        [activeSlots]="activeTime()"
+        [onlyOne]="true"
+        (selectTime)="selectedTime($event)"
+    ></cp-time-list>
+  </div>
+  <div class="btn-wrap container">
+    <ion-button (click)="save()">{{ "schedule.btn-planing" | translate }}</ion-button>
+  </div>
+</div>

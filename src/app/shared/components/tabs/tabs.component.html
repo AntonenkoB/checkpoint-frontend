@@ -1,11 +1,17 @@
 <ion-segment
-    [className]="bntStyle()"
+    class="segment"
+    [scrollable]="true"
+    [ngClass]="bntStyle()"
     [value]="activeTab()"
     (ionChange)="onSegmentChange($event)"
 >
   @for (tab of tabList(); track tab.value) {
-    <ion-segment-button value="{{tab.value}}">
-      <ion-label>{{ tab.title | translate }}</ion-label>
+    <ion-segment-button [disabled]="!!disabledTabs()?.includes(tab.value)" value="{{tab.value}}">
+      <ion-label>{{ tab.title | translate }}
+        @if (amountStudents() && tab.value === eHeaderMenu.Student) {
+          ({{ amountStudents()}})
+        }
+      </ion-label>
     </ion-segment-button>
   }
 </ion-segment>

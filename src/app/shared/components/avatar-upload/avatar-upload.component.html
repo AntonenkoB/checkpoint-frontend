@@ -1,7 +1,9 @@
 <div class="avatar-upload">
-  <div class="close-modal">
-    <cp-close (close)="closeModal()"></cp-close>
-  </div>
+  <cp-header-secondary
+      class="avatar-upload-header"
+      [title]="'profile.photo.title' | translate"
+      (close)="closeModal()"
+  ></cp-header-secondary>
 
   @if (!imageFile()) {
     <div class="avatar-info">
@@ -28,9 +30,9 @@
       </div>
 
       <div class="actions">
-        <ion-button fill="outline" (click)="imageFile.set(null); triggerFileInput()">
-          {{"profile.photo.clear" | translate}}
-        </ion-button>
+        <div class="another-photo" (click)="imageFile.set(null); triggerFileInput()">
+          Вибрати інше фото
+        </div>
         <ion-button (click)="onConfirm()">
           {{"profile.photo.save" | translate}}
         </ion-button>

@@ -1,7 +1,8 @@
 import {createReducer, on} from '@ngrx/store';
 import {UserActions} from './actions';
-import {IUser} from "../models/user.model";
+import {IUser} from "@models/user.model";
 import {DEFAULT_PAGINATION, IPagination} from "@models/api.models";
+import {IStudentLesson} from "@users/models/user.model";
 
 export interface UserState {
   usersList: IUser[] | null;
@@ -11,7 +12,7 @@ export interface UserState {
   studentsList: IUser[] | null;
   studentsListPagination: IPagination;
   user: IUser | null;
-  profile: IUser | null;
+  lessonsList: IStudentLesson[];
   loading: boolean;
   error: string | null;
 }
@@ -24,7 +25,7 @@ export const initialUserState: UserState = {
   studentsList: null,
   studentsListPagination: DEFAULT_PAGINATION,
   user: null,
-  profile: null,
+  lessonsList: [],
   loading: false,
   error: null,
 };
@@ -152,17 +153,16 @@ export const userReducer = createReducer(
     loading: false,
   })),
 
-  // get Profile
-  on(UserActions.getProfile, (state) => ({
+  on(UserActions.getLessons, (state) => ({
     ...state,
     loading: true,
   })),
-  on(UserActions.getProfileSuccess, (state, {profile}) => ({
+  on(UserActions.getLessonsSuccess, (state, {lessonsList}) => ({
     ...state,
-    profile,
+    lessonsList,
     loading: false,
   })),
-  on(UserActions.getProfileFailure, (state, {error}) => ({
+  on(UserActions.getLessonsFailure, (state, {error}) => ({
     ...state,
     error,
     loading: false,

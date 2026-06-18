@@ -1,68 +1,78 @@
 <div class="salary-item">
   <div class="container">
     <cp-header-secondary [title]="'Зарплата'" (close)="ratesFacade.goToSalaryList()"></cp-header-secondary>
-    <cp-user-item class="teacher" [user]="ratesFacade.studentsList()[2]"></cp-user-item>
+
+    @if (ratesFacade.currentTeacher()) {
+      <cp-user-item-read class="teacher" [user]="ratesFacade.currentTeacher()"></cp-user-item-read>
+    }
   </div>
 
   <div class="month-tabs">
-    <cp-tabs
-        [bntStyle]="'btn-fill'"
-        [tabList]="MONTH_LIST"
-        [activeTab]="MONTH_LIST[0].value"
-    ></cp-tabs>
+    <cp-months-list
+        [activeMonth]="ratesFacade.currentMonth()"
+        (changeMonth)="ratesFacade.changeSalaryMonth($event)"
+    ></cp-months-list>
   </div>
 
-  <div class="container">
-    <div class="rates-info">
-      <div class="rates-info-item">
-        <div class="rates-info-price-wrap">
-          <div class="rates-info-name">{{ "rates.salary.total-revenue" | translate}}</div>
-          <div class="rates-info-price">11 234 ₴</div>
-        </div>
-        <div class="rates-info-price-wrap">
-          <div class="rates-info-name">{{ "rates.salary.salary-teacher" | translate}}</div>
-          <div class="rates-info-price">1 234 ₴</div>
-        </div>
-        <div class="rates-info-price-wrap">
-          <div class="rates-info-name">{{ "rates.salary.salary-school" | translate}}</div>
-          <div class="rates-info-price">1 234 ₴</div>
+  @for ( salary of salaryStore.teacherSalary(); track $index) {
+    <div class="container">
+      <div class="rates-info">
+        <div class="rates-info-item">
+          @if (ratesFacade.profileFacade.isOwner()) {
+            <div class="rates-info-price-wrap">
+              <div class="rates-info-name">{{ "rates.salary.total-revenue" | translate}}</div>
+              <div class="rates-info-price">{{salary.total_income | priceFormat: '₴'}}</div>
+            </div>
+            <div class="rates-info-price-wrap">
+              <div class="rates-info-name">{{ "rates.salary.salary-teacher" | translate}}</div>
+              <div class="rates-info-price">{{salary.teacher_earned | priceFormat: '₴'}}</div>
+            </div>
+            <div class="rates-info-price-wrap">
+              <div class="rates-info-name">{{ "rates.salary.salary-school" | translate}}</div>
+              <div class="rates-info-price">{{salary.school_earned | priceFormat: '₴'}}</div>
+            </div>
+          }
+
+          @if (ratesFacade.profileFacade.isTeacher()) {
+            <div class="rates-info-price-wrap">
+              <div class="rates-info-name">{{ "rates.salary.salary-for-teacher-all-title" | translate}}</div>
+              <div class="rates-info-price">{{salary.teacher_earned | priceFormat: '₴'}}</div>
+            </div>
+          }
         </div>
       </div>
     </div>
-  </div>
 
-  <ion-content class="salary-payout">
-      <div class="container">
-        <div class="salary-payout-item">
-          <div class="salary-payout-top">
-            <div class="info">17 березня, 12:00</div>
-            <div class="total">{{ "rates.receipt-teacher" | translate}} 500 ₴</div>
+    <ion-content class="salary-payout">
+      <div class="salary-payout-info container">
+        @for ( transaction of salary.purchases; track transaction.purchased_at) {
+          <div class="salary-payout-item">
+            <div class="salary-payout-top">
+              <div class="info">{{ formatDate(transaction.purchased_at) }}</div>
+
+              @if (ratesFacade.profileFacade.isOwner()) {
+                <div class="total">{{ "rates.receipt-teacher" | translate}} {{transaction.teacher_earned | priceFormat: '₴'}}</div>
+              }
+              @if (ratesFacade.profileFacade.isTeacher()) {
+                <div class="total">{{"rates.salary.salary-for-teacher-item" | translate}} {{transaction.teacher_earned | priceFormat: '₴'}}</div>
+              }
+            </div>
+            <div class="salary-payout-bottom">
+              <div class="info">{{transaction.student.first_name}} {{transaction.student.last_name}}</div>
+              @if (ratesFacade.profileFacade.isOwner()) {
+                <div class="total">{{"rates.payment" | translate}} {{transaction.price_paid | priceFormat: '₴'}}</div>
+              }
+            </div>
           </div>
-          <div class="salary-payout-bottom">
-            <div class="info">Тарас Шевченко</div>
-            <div class="total">оплата 1500 ₴</div>
+        } @empty {
+          <div class="empty">
+            <cp-empty-state></cp-empty-state>
           </div>
-        </div>
-        <div class="salary-payout-item">
-          <div class="salary-payout-top">
-            <div class="info">17 березня, 12:00</div>
-            <div class="total">{{ "rates.receipt-teacher" | translate}} 500 ₴</div>
-          </div>
-          <div class="salary-payout-bottom">
-            <div class="info">Тарас Шевченко</div>
-            <div class="total">{{ "rates.payment" | translate}} 1500 ₴</div>
-          </div>
-        </div>
-        <div class="salary-payout-item">
-          <div class="salary-payout-top">
-            <div class="info">17 березня, 12:00</div>
-            <div class="total">{{ "rates.receipt-teacher" | translate}} 500 ₴</div>
-          </div>
-          <div class="salary-payout-bottom">
-            <div class="info">Тарас Шевченко</div>
-            <div class="total">{{ "rates.receipt-teacher" | translate}} 1500 ₴</div>
-          </div>
-        </div>
+        }
       </div>
-  </ion-content>
+
+      <cp-loader [isLoad]="salaryStore.isReady()"></cp-loader>
+    </ion-content>
+  }
+
 </div>

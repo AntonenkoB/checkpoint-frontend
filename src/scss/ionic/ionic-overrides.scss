@@ -5,7 +5,8 @@
     --padding-start: 0px !important;
     --padding-end: 0px !important;
     --padding-top: 16px !important;
-    --padding-bottom: 16px !important;
+    //--padding-bottom: 16px !important;
+    --padding-bottom: 0 !important;
     --background: var(--ion-background-color);
   }
 
@@ -51,7 +52,7 @@
     }
 
     .input-bottom {
-      min-height: 20px !important;
+      min-height: 22px !important;
     }
   }
 
@@ -92,6 +93,24 @@
       --background-activated: transparent !important;
       --background-focused: transparent !important;
       --background-hover: transparent !important;
+    }
+  }
+
+  ion-input-otp {
+    --border-color: var(--color-border-primary) !important;
+    --color: var(--color-text-primary);
+    border-width: 1px !important;
+    font: var(--font-alumi-24-regular);
+
+    .input-otp-description {
+      padding-top: var(--spacing-16);
+      font: var(--font-open-13-regular);
+      color: var(--color-text-primary);
+
+      .send-new-code {
+        cursor: pointer;
+        text-decoration: underline;
+      }
     }
   }
 
@@ -168,7 +187,8 @@
       --background-hover: rgba(0,0,0,0);
       --indicator-box-shadow: none;
       --ripple-color: transparent;
-      --border-radius: 8px;
+      --border-radius: 4px;
+      --color: rgba(var(--ion-text-color-rgb), 1);
       min-height: 44px;
       letter-spacing: normal;
       text-transform: uppercase;
@@ -181,10 +201,17 @@
         line-height: 44px;
         margin: 0;
       }
+
+      &.segment-button-disabled {
+        --color-disabled: #9e9ea2;
+        --color: var(--color-disabled);
+        opacity: 1;
+      }
     }
 
     &.btn-clear {
-      gap: var(--spacing-24);
+      gap: clamp(var(--spacing-8), var(--spacing-24), var(--spacing-24));
+
 
       ion-segment-button {
         --padding-start: 0;
@@ -265,5 +292,21 @@
     //--height: fit-content;
     //--border-radius: 6px;
     //--box-shadow: 0 28px 48px rgba(12, 12, 24, 0.4);
+  }
+
+  ion-progress-bar {
+    --background: rgba(0, 0, 0, 0);
+  }
+
+  ion-toast {
+    --max-width: var(--cp-max-with);
+    font: var(--font-open-16-regular);
+  }
+
+  ion-fab-button.student-action-btn {
+    --ripple-color: transparent;
+    --background-activated: var(--background);
+    --background-focused: transparent;
+    --background-hover: var(--background);
   }
 }

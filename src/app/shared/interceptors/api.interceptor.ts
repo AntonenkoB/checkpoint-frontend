@@ -3,16 +3,18 @@ import {
   HttpErrorResponse,
   HttpEvent,
   HttpRequest,
-  HttpHandlerFn,
+  HttpHandlerFn, HttpContextToken,
 } from '@angular/common/http';
 import {inject} from '@angular/core';
 import {Observable, switchMap, throwError} from 'rxjs';
 import {catchError, take} from 'rxjs/operators';
 import {TokenService} from "@shared/services/token-service";
 import {Store} from "@ngrx/store";
-import {AuthActions} from "../../features/auth/store/actions";
 import {Actions, ofType} from "@ngrx/effects";
 import {EApiEndpoints} from "@models/api.models";
+import {AuthActions} from "@auth/store/actions";
+
+export const IS_AUTH_REQUEST = new HttpContextToken<boolean>(() => false);
 
 export const apiInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> => {
   const tokenService = inject(TokenService);
@@ -29,6 +31,10 @@ export const apiInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, nex
   return next(authReq).pipe(
     catchError((error: HttpErrorResponse) => {
       if (error.status === 401) {
+        if (authReq.context.get(IS_AUTH_REQUEST)) {
+          return throwError(() => error);
+        }
+
         store.dispatch(AuthActions.refreshToken());
 
         return actions$.pipe(

@@ -1,5 +1,13 @@
 <div class="time-list">
   @for (time of TIME_LIST; track time) {
-    <cp-time class="time-item" [time]="time"></cp-time>
+    <cp-time
+        class="time-item"
+        [time]="time"
+        [isDisabled]="disabledSlots()?.every(slot => slot.from !== time.from) ?? false"
+        [isActive]="activeSlots()?.some(slot => slot.from === time.from) ?? false"
+        [hasLesson]="hasLessons()?.some(slot => slot.from === time.from) ?? false"
+        (selectTime)="selectTime.emit($event)"
+        (unselectTime)="unselectTime.emit($event)"
+    ></cp-time>
   }
 </div>

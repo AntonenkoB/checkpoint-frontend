@@ -46,6 +46,18 @@
       "@rates/*": [
         "src/app/features/rates/*"
       ],
+      "@profile/*": [
+        "src/app/features/profile/*"
+      ],
+      "@student/*": [
+        "src/app/features/student/*"
+      ],
+      "@market/*": [
+        "src/app/features/market/*"
+      ],
+      "@lessons/*": [
+        "src/app/features/lessons/*"
+      ],
     },
     "skipLibCheck": true,
     "useDefineForClassFields": false

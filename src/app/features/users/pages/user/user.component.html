@@ -7,12 +7,13 @@
 
   <ion-content class="user-create">
     <form class="form container" [formRoot]="userForm" (ngSubmit)="onSubmit()">
-      <ion-list lines="none">
+      <ion-list class="input-list" lines="none">
         <ion-item>
           <ion-input
               fill="solid"
               type="email"
               placeholder="Email"
+              [readonly]="isReadonly()"
               [value]="userForm.email().value()"
               [helperText]="' '"
               [errorText]="userForm.email().errors()[0]?.message ?? ' ' | translate"
@@ -28,6 +29,7 @@
           <ion-input
               fill="solid"
               type="text"
+              [readonly]="isReadonly()"
               [placeholder]="'profile.creative-name' | translate"
               [value]="userForm.creative_name().value()"
               [errorText]="userForm.creative_name().errors()[0]?.message ?? ' ' | translate"
@@ -43,6 +45,7 @@
           <ion-input
               fill="solid"
               type="text"
+              [readonly]="isReadonly()"
               [placeholder]="'profile.first-name' | translate"
               [value]="userForm.first_name().value()"
               [errorText]="userForm.first_name().errors()[0]?.message ?? ' ' | translate"
@@ -58,6 +61,7 @@
           <ion-input
               fill="solid"
               type="text"
+              [readonly]="isReadonly()"
               [placeholder]="'profile.last-name' | translate"
               [value]="userForm.last_name().value()"
               [errorText]="userForm.last_name().errors()[0]?.message ?? ' ' | translate"
@@ -75,6 +79,7 @@
               type="text"
               inputmode="tel"
               cpPhoneMask
+              [readonly]="isReadonly()"
               [placeholder]="'profile.phone' | translate"
               [value]="userForm.phone().value()"
               [errorText]="userForm.phone().errors()[0]?.message ?? ' ' | translate"
@@ -86,38 +91,8 @@
           ></ion-input>
         </ion-item>
 
-        @if (!userForm.temporary_password().hidden()) {
-          <ion-item>
-            <ion-input
-                fill="solid"
-                type="password"
-                [placeholder]="'profile.password' | translate"
-                [value]="userForm.temporary_password().value()"
-                [errorText]="userForm.temporary_password().errors()[0]?.message ?? ' ' | translate"
-                (ionInput)="userForm.temporary_password().value.set($any($event).detail.value)"
-                (ionFocus)="ionFocus('password')"
-                (ionBlur)="ionBlur('password')"
-                [class.ion-touched]="isTouched('password')"
-                [class.ion-invalid]="isTouched('password') && userForm.temporary_password().invalid()"
-            >
-              <ion-input-password-toggle
-                  noRipple
-                  slot="end"
-                  showIcon="my-eye-off"
-                  hideIcon="my-eye"
-              />
-            </ion-input>
-          </ion-item>
-        }
-
         @if (userFacade.roleCreate() === eUserRole.Student) {
-          @if (profile()?.role === eUserRole.Teacher) {
-            <ion-item>
-              <cp-user-item [user]="profile()"></cp-user-item>
-            </ion-item>
-          }
-
-          @if (profile()?.role === eUserRole.Admin) {
+          @if (userFacade.isAdmin()) {
             @for (selectedTeacher of attachUser(); track selectedTeacher.id) {
               <ion-item>
                 <cp-user-item [user]="selectedTeacher" [showDelete]="true" (delete)="deleteTeacher(selectedTeacher.id)"></cp-user-item>
@@ -136,12 +111,36 @@
           }
         }
       </ion-list>
+      @if (!isReadonly()) {
+        <div class="btn-wrap-update">
+          <ion-button class="submit" (click)="onSubmit()">{{ "common.save" | translate }}</ion-button>
+
+          @if (userFacade.isAdmin() || userFacade.isOwner()) {
+            <div class="delete-user" id="open-delete-user-modal">видалити користувача</div>
+          }
+        </div>
+      }
     </form>
   </ion-content>
 
-  <div class="btn-wrap-update container">
-    <ion-button class="submit" (click)="onSubmit()">{{ (isUpdate() ? "common.save" : "common.add") | translate }}</ion-button>
-  </div>
-
   <cp-loader [isLoad]="!userFacade.userLoading()"></cp-loader>
+
+  <ion-modal
+      #deleteUserModal
+      id="delete-modal"
+      trigger="open-delete-user-modal"
+      [initialBreakpoint]="initialBreakpoint"
+      [breakpoints]="modalBreakpoints"
+  >
+    <ng-template>
+      <cp-confirm-modal
+          [title]="'profile.delete-title' | translate"
+          [btnConfirm]="'profile.delete' | translate"
+          [btnCansel]="'profile.no-delete' | translate"
+          [isDelete]="true"
+          (cansel)="deleteModalCansel()"
+          (confirm)="userFacade.deleteUser()"
+      ></cp-confirm-modal>
+    </ng-template>
+  </ion-modal>
 </div>

@@ -20,6 +20,12 @@
     margin-bottom: var(--spacing-40);
   }
 
+  .individual-lessons-title {
+    font: var(--font-alumi-32-black);
+    text-transform: uppercase;
+    padding-bottom: var(--spacing-40);
+  }
+
   .one-lesson,
   .abonnement-lesson {
     border: 1px solid var(--color-border-primary);

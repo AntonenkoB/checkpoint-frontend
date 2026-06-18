@@ -2,8 +2,8 @@ import {Component, ElementRef, inject, signal, ViewChild} from '@angular/core';
 import {ImageCropperComponent, ImageCroppedEvent} from 'ngx-image-cropper';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import {IonButton, ModalController, NavParams} from '@ionic/angular/standalone';
-import {CloseComponent} from "@shared/components/close/close.component";
 import {TranslatePipe} from "@shared/pipes/translate-pipe";
+import {HeaderSecondaryComponent} from "@shared/components/header-secondary/header-secondary.component";
 
 const MAX_SIZE_MB = 10;
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif'];
@@ -12,7 +12,7 @@ const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'i
   selector: 'cp-avatar-upload',
   templateUrl: './avatar-upload.component.html',
   styleUrls: ['./avatar-upload.component.scss'],
-  imports: [ImageCropperComponent, IonButton, CloseComponent, TranslatePipe],
+  imports: [ImageCropperComponent, IonButton, TranslatePipe, HeaderSecondaryComponent],
 })
 export class AvatarUploadComponent {
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;

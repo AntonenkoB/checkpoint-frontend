@@ -1,6 +1,6 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, input, model, OnInit, output} from "@angular/core";
 import {TimeComponent} from "@shared/components/time/time.component";
-import {TIME_LIST} from "../../../features/schedule/models/schedule.model";
+import {ITimeRange, TIME_LIST} from "../../../features/schedule/models/schedule.model";
 
 @Component({
   selector: "cp-time-list",
@@ -11,7 +11,17 @@ import {TIME_LIST} from "../../../features/schedule/models/schedule.model";
   ]
 })
 export class TimeListComponent implements OnInit {
+  public activeSlots = model<ITimeRange[]>()
+  public hasLessons = input<ITimeRange[]>()
+  public disabledSlots = input<ITimeRange[]>()
+  public onlyOne = input<boolean>()
+  public selectTime = output<ITimeRange>()
+  public unselectTime = output<ITimeRange>()
+
   public TIME_LIST = TIME_LIST;
+
+  constructor() {
+  }
 
   ngOnInit() {
   }

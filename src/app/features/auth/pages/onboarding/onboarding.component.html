@@ -1,4 +1,27 @@
 <div class="onboarding ion-display-flex ion-align-items-center ion-justify-content-center">
   <ion-progress-bar class="progress-bar" [value]="progress()"></ion-progress-bar>
-  <p>відео від Юри</p>
+
+  <div class="video-wrap container">
+    <video
+        autoplay
+        muted
+        playsinline
+        preload="metadata"
+        #onboardingVideo
+        class="video"
+    >
+      <source [src]="videoSrc()" type="video/mp4">
+    </video>
+
+    <button
+        class="btn-mute"
+        (click)="toggleMute()"
+    >
+      @if (isMuted()) {
+        <div [innerHTML]="SOUND_SVG"></div>
+      } @else {
+        <div [innerHTML]="SOUND_OFF_SVG"></div>
+      }
+    </button>
+  </div>
 </div>

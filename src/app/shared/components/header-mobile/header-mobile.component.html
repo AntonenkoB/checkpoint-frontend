@@ -1,5 +1,11 @@
 <div class="header-mobile">
-  <cp-tabs [tabList]="USER_ROLE_TABS()" [activeTab]="activeMenu()" (segmentChange)="menuChange($event)"></cp-tabs>
+  <cp-tabs
+      class="header-tabs"
+      [tabList]="USER_ROLE_TABS()"
+      [activeTab]="activeMenu()"
+      [amountStudents]="amountStudents()"
+      (segmentChange)="menuChange($event)"
+  ></cp-tabs>
   <cp-avatar
       class="header-avatar"
       [src]="profile()?.avatar ?? ''"

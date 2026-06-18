@@ -1,0 +1,84 @@
+<div class="student">
+  <div class="student-bg"></div>
+  <div class="teacher-wrap container">
+    <div class="teacher">
+      <div class="teacher-icon"  (click)="studentFacade.goToProfile()">
+        <cp-avatar class="student-avatar" [src]="studentFacade.profile()?.avatar!"></cp-avatar>
+      </div>
+      <div class="teacher-info"  (click)="studentFacade.goToProfile()">
+        <div class="teacher-name">
+          {{name()}}
+        </div>
+        <div class="amount-lessons">
+          {{ studentFacade.amountTeacherLessons() }} урок з вчителем, {{studentFacade.amountIndividualLessons()}} самостійних
+        </div>
+      </div>
+      <div class="student-action-wrap">
+<!--        <div-->
+<!--            class="dots"-->
+<!--            [innerHTML]="DOTS_SVG"-->
+<!--            (click)="studentFacade.goToSelectPaymentType()"-->
+<!--        ></div>-->
+
+        <ion-fab #studentActions class="student-action-container" horizontal="end">
+          <ion-fab-button class="student-action-btn">
+            <div
+                class="dots"
+                [innerHTML]="DOTS_SVG"
+            ></div>
+          </ion-fab-button>
+          <ion-fab-list class="student-action-list" side="start">
+            <div class="student-action-item"
+                 (click)="studentFacade.goToSelectPaymentType(); studentActions.activated = false"
+            >
+              {{ "rates.payment" | translate}}
+            </div>
+          </ion-fab-list>
+        </ion-fab>
+      </div>
+    </div>
+  </div>
+
+  <div class="lessons-wrap">
+    <div class="lessons container">
+      @for (item of studentFacade.groupFutureLessons(); track item) {
+        <div
+          class="week-title"
+          [id]="item.label === 'Цього тижня' ? 'current-week-scroll-target' : ''"
+      >{{item.label}}</div>
+
+        @for (week of item.week; track week) {
+          @if (week.teacher) {
+            <cp-user-item
+                class="teacher-lessons"
+                [user]="week.teacher"
+                [hideAllActions]="true"
+                (openUser)="studentFacade.goToLessonsType(week.teacher.id)"
+            ></cp-user-item>
+          } @else {
+            <div class="record-lesson individual-lesson-title">{{"schedule.independent" | translate}}</div>
+          }
+
+          @for (lesson of week.lessons; track lesson) {
+            <div class="record-lesson">
+              <div class="date">{{lesson | lessonDateTime}}</div>
+
+              @if (checkActions(lesson)) {
+                <div class="action" (click)="studentFacade.goToTransferringLessonType(week.teacher, lesson)">
+                  <div class="action-icon" [innerHTML]="DOTS_SVG"></div>
+                </div>
+              }
+            </div>
+          }
+        }
+      }
+    </div>
+  </div>
+
+  <div class="btn-wrap container">
+    <ion-button
+        class="btn-planing"
+        (click)="studentFacade.planingLesson()"
+    >{{ "schedule.btn-planing-lesson" | translate}}</ion-button>
+  </div>
+</div>

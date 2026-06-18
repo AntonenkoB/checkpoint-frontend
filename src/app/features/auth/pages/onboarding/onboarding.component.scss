@@ -8,13 +8,35 @@
   }
 
   .progress-bar {
+    --height: 6px;
+    height: 6px;
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
+    z-index: 1;
   }
 
-  p {
-    font: var(--font-alumi-32-bold)
+  .video-wrap {
+    padding: 0;
+    position: relative;
+  }
+
+  .video {
+    width: 100%;
+  }
+
+  .btn-mute {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+    background: rgba(0,0,0,0.7);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 50%;
+    font-size: 12px;
+    cursor: pointer;
   }
 }

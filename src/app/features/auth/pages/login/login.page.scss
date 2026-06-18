@@ -1,4 +1,6 @@
 @use '../../../../../scss/mixins/app-padding' as *;
+@use 'src/scss/mixins/_breakpoints.scss' as *;
+
 :host {
   background-color: var(--color-background-primary);
   display: block;
@@ -6,7 +8,39 @@
 
   .login {
     padding-top: var(--cp-safe-area-top);
+    padding-bottom: var(--cp-safe-area-bottom);
     height: 100%;
+    position: relative;
+
+    @include desktop {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+  }
+
+  .back-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding-top: var(--cp-safe-area-top);
+  }
+  .back-wrap {
+    position: relative;
+
+    .back {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      width: 40px;
+      height: 40px;
+      margin-top: var(--spacing-16);
+    }
   }
 
   .logo-wrap {
@@ -27,8 +61,8 @@
   }
 
   .login-container {
-    //flex: 1 1 auto;
-    padding-top: 14vh;
+    padding-top: var(--spacing-80);
+    padding-bottom: 48px;
   }
 
   .name {
@@ -56,6 +90,11 @@
 
   .forgot-password {
     cursor: pointer;
+    display: inline-block;
+  }
+
+  .input-otp-description {
+    font: var(--font-open-13-regular);
   }
 
   .forgot {

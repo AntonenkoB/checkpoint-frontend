@@ -3,6 +3,11 @@ export const FORM_PASSWORD_ICONS = {
   'my-eye-off': 'assets/svg/eye-off.svg',
 }
 
+export const SOUND_ICONS = {
+  'sound': 'assets/svg/sound.svg',
+  'sound-off': 'assets/svg/sound-off.svg',
+}
+
 export const FORM_SELECT_ICONS = {
   'custom-arrow': 'assets/svg/arrow.svg',
 }

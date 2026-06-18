@@ -1,12 +1,14 @@
 :host {
   .close {
     cursor: pointer;
-    padding: 8px 0 8px 8px;
-    width: 24px;
+    padding: 0 0 var(--spacing-16) var(--spacing-16);
+    //width: 24px;
   }
 
   .close-ion {
     display: flex;
     align-items: center;
+    width: 15px;
+    height: 15px;
   }
 }

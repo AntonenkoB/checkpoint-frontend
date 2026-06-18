@@ -1,5 +1,6 @@
-import {Component, computed, effect, signal} from "@angular/core";
+import {Component, computed, effect, inject, input, model, OnInit, output, signal} from "@angular/core";
 import {IonLabel, IonSegment, IonSegmentButton} from "@ionic/angular/standalone";
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: "cp-calendar",
@@ -12,6 +13,14 @@ import {IonLabel, IonSegment, IonSegmentButton} from "@ionic/angular/standalone"
   ]
 })
 export class CalendarComponent {
+  public activeDays = input<string[]>()
+  public selectedDay = model<string>()
+  public disableEmpty = input(false)
+  public isDirty = input(false)
+  public scheduleDay = model<string>();
+  public selectDay = output<CustomEvent>();
+  private datePipe = inject(DatePipe);
+
   public next2MonthsDays = computed(() => {
     const today = new Date();
     const end = new Date(today);
@@ -35,7 +44,7 @@ export class CalendarComponent {
       const number = current.getDate().toString();
 
       result.push({
-        date: new Date(current).toISOString(),
+        date: this.datePipe.transform(current, 'yyyy-MM-dd') as string,
         day,
         number
       });
@@ -46,20 +55,32 @@ export class CalendarComponent {
     return result;
   });
 
-  public scheduleDay = signal(this.next2MonthsDays()[0].date)
-
   constructor() {
     effect(() => {
-      this.scheduleDay.set(this.next2MonthsDays()[0].date)
+      if (!this.scheduleDay()) {
+        this.scheduleDay.set(this.next2MonthsDays()[0].date)
+      }
     });
   }
-
 
   private capitalize(value: string): string {
     return value.charAt(0).toUpperCase() + value.slice(1);
   }
 
   public dayChange(event: CustomEvent): void {
-    // this.scheduleDay.set(event.detail.value)
+    if (this.isDirty()) {
+      const element = event.target as HTMLIonSegmentElement;
+      const currentDay = this.scheduleDay();
+
+      setTimeout(() => {
+        element.value = currentDay;
+      }, 0);
+
+      this.selectDay.emit(event);
+      return
+    }
+
+    this.scheduleDay.set(event.detail.value)
+    this.selectDay.emit(event);
   }
 }

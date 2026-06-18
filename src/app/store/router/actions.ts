@@ -5,7 +5,7 @@ import {TRouter} from "@models/router.model";
 export const RouterActions = createActionGroup({
   source: 'Router',
   events: {
-    goTo: props<{ path: TRouter[]; extras?: NavigationExtras }>(),
+    goTo: props<{ path: TRouter[]; extras?: NavigationExtras; back?: boolean }>(),
     goToSuccess: emptyProps(),
     goToFailure: props<{ error: string }>(),
   },

@@ -1,5 +1,13 @@
 <ion-content>
   <div class="login">
+    @if (authStep() !== EAuthStep.Identifier) {
+      <div class="back-container">
+        <div class="back-wrap container">
+          <div class="back" [innerHTML]="BACK_SVG" (click)="goToPrevStep()"></div>
+        </div>
+      </div>
+    }
+
     <div class="logo-wrap">
       <div class="logo" [innerHTML]="LOGO_SVG"></div>
     </div>
@@ -11,6 +19,8 @@
               fill="solid"
               class="name"
               type="text"
+              inputmode="email"
+              [maxlength]="64"
               [helperText]="' '"
               [value]="name()"
               [errorText]="checkUserFailure() ?? '' | translate"
@@ -28,13 +38,14 @@
               fill="solid"
               class="name"
               type="password"
+              [maxlength]="64"
               [helperText]="' '"
               [value]="password()"
               [errorText]="loginFailure() ?? '' | translate"
               [placeholder]="'login.password' | translate"
               [class.ion-touched]="!!loginFailure()"
               [class.ion-invalid]="!!loginFailure()"
-              (ionInput)="changePassword($event.detail.value ?? '')"
+              (ionInput)="inputPassword($event.detail.value ?? '')"
           >
             <ion-input-password-toggle
                 noRipple
@@ -59,17 +70,20 @@
         </div>
       }
 
-      @if (authStep() === EAuthStep.CreatePassword) {
+      @if (authStep() === EAuthStep.CreatePassword || authStep() === EAuthStep.ResetPassword) {
         <ion-item>
           <ion-input
               fill="solid"
               class="name"
               type="password"
+              [maxlength]="64"
               [helperText]="' '"
-              [class.ion-touched]="!!createPassword().password"
-              [class.ion-invalid]="!!createPassword().password"
+              [errorText]="'errors.min-length-password' | translate"
+              [class.ion-touched]="validateCreatePassword()"
+              [class.ion-invalid]="validateCreatePassword()"
               [placeholder]="'login.new-password' | translate"
-              (ionInput)="savePassword(($event.detail.value) ?? '')"
+              (ionBlur)="checkValidatePassword(createPassword().password)"
+              (ionInput)="changePassword(($event.detail.value) ?? '')"
           >
             <ion-input-password-toggle
                 noRipple
@@ -96,6 +110,7 @@
               fill="solid"
               class="name"
               type="email"
+              [maxlength]="64"
               [helperText]="' '"
               [value]="email()"
               [errorText]="forgotPasswordFailure() ?? '' | translate"
@@ -105,6 +120,21 @@
               (ionInput)="changeEmail($event.detail.value ?? '')"
           ></ion-input>
         </ion-item>
+      }
+
+      @if (authStep() === EAuthStep.CodeConfirm) {
+        <ion-input-otp
+            type="number"
+            color="primary"
+            shape="round"
+            [length]="6"
+            (ionInput)="changeCodeConfirm($event.detail.value ?? '')"
+        >
+          {{ "login.didnt-receive-code" | translate}}
+          <span class="send-new-code" (click)="sendNewCode()">
+            {{ "login.resend-code" | translate}}
+          </span>
+        </ion-input-otp>
       }
 
       <ion-button class="send" (click)="send()">{{ "login.continue" | translate }}</ion-button>

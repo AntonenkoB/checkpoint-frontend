@@ -1,0 +1,207 @@
+:host {
+  background-color: var(--color-background-primary);
+  display: block;
+
+  .student {
+    position: relative;
+    height: 100%;
+    color: var(--color-no-reverse-white);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-top: var(--cp-safe-area-top);
+    padding-bottom: var(--cp-safe-area-bottom);
+  }
+
+  .student-bg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+    background-image: url('/assets/img/student-bg.png');
+    background-size: cover;
+    background-position: 60% center;
+    background-repeat: no-repeat;
+
+    &:after {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background-color: var(--color-no-reverse-black);
+      opacity: 0.56;
+    }
+  }
+
+  .teacher-wrap {
+    padding-top: var(--spacing-20);
+    padding-bottom: var(--spacing-24);
+  }
+
+  .teacher {
+    align-items: center;
+    background-color: var(--color-no-reverse-black);
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    gap: var(--spacing-16);
+    padding: var(--spacing-16) 0 var(--spacing-16) var(--spacing-16);
+  }
+
+  .teacher-icon {
+    align-items: center;
+    color: var(--color-no-reverse-white);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    height: 50px;
+    width: 50px;
+  }
+
+  .student-avatar {
+    height: 50px;
+    width: 50px;
+
+    ::ng-deep {
+      .avatar {
+        border-color: rgba(var(--color-no-reverse-white-rgb), 0.56);
+      }
+    }
+  }
+
+  .icon-plus {
+    display: inline-flex;
+  }
+
+  .student-action-wrap {
+    position: relative;
+    height: 40px;
+    width: 50px;
+
+    .dots {
+      ::ng-deep {
+        svg {
+          display: block;
+          transform: rotate(90deg);
+        }
+      }
+    }
+  }
+
+  .student-action-container {
+    right: 0;
+  }
+
+  .student-action-btn {
+    flex: 0 0 40px;
+    height: 40px;
+    width: 50px;
+  }
+
+  .student-action-list {
+    border-radius: 8px;
+    border: 1px solid var(--color-border-primary-secondary);
+    padding: var(--spacing-16);
+    margin: 60px 0 0 0;
+  }
+
+  .student-action-item {
+    font: var(--font-open-16-regular);
+  }
+
+  .lessons-wrap {
+    overflow: auto;
+    flex: 1 1 auto;
+  }
+
+  .week-title {
+    font: var(--font-alumi-20-black);
+    padding-bottom: var(--spacing-8);
+  }
+
+
+  .teacher-lessons {
+    margin-bottom: var(--spacing-8);
+
+    ::ng-deep {
+      .user {
+        background-color: var(--color-no-reverse-black);
+        border-color: var(--color-no-reverse-black);
+      }
+
+      .avatar {
+        border-color: rgba(var(--color-no-reverse-white-rgb), 0.56);
+      }
+    }
+  }
+
+  .teacher-info {
+    font: var(--font-alumi-24-bold);
+    flex: 1 1 auto;
+  }
+
+  .individual-lesson-title {
+    font: var(--font-alumi-16-black);
+  }
+
+  .amount-lessons {
+    color: var(--color-no-reverse-white);
+    opacity: 0.56;
+    font: var(--font-open-13-regular);
+  }
+
+  .record-lesson {
+    align-items: center;
+    background-color: var(--color-no-reverse-black);
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    color: var(--color-no-reverse-white);
+    padding-left: var(--spacing-16);
+    margin-bottom: var(--spacing-8);
+    min-height: 40px;
+  }
+
+  .date {
+    font: var(--font-open-12-regular);
+  }
+
+  .action {
+    align-items: center;
+    display: flex;
+    cursor: pointer;
+    justify-content: center;
+    height: 40px;
+    width: 40px;
+  }
+
+  .action-icon {
+    display: inline-flex;
+  }
+
+  .myself {
+    align-items: center;
+    background-color: var(--color-no-reverse-black);
+    border-radius: 8px;
+    display: flex;
+    padding: 0 var(--spacing-24);
+    height: 40px;
+    font: var(--font-alumi-16-black);
+    margin-bottom: var(--spacing-8);
+  }
+
+  .btn-wrap {
+    padding-top: var(--spacing-20);
+    padding-bottom: var(--spacing-20);
+  }
+
+  .btn-planing {
+    --ion-color-primary: var(--color-no-reverse-black);
+    --ion-color-primary-contrast: var(--color-no-reverse-white);
+  }
+}

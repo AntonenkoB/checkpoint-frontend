@@ -7,6 +7,20 @@
     border-radius: 8px;
     padding: var(--spacing-8) var(--spacing-16);
     width: 100%;
+
+    &.disabled {
+      pointer-events: none;
+      border-color: var(--color-disabled);
+      color: var(--color-disabled);
+
+      ::ng-deep {
+        cp-avatar {
+          .avatar {
+            border-color: var(--color-disabled);
+          }
+        }
+      }
+    }
   }
 
   .user-wrap {
@@ -39,6 +53,23 @@
     width: 50px;
     flex: 0 0 50px;
   }
+
+  .teacher-avatar-wrp {
+    height: 50px;
+
+    .teacher-avatar {
+      display: block;
+      width: 24px;
+      height: 24px;
+
+      ::ng-deep {
+        svg {
+          width: 12px;
+        }
+      }
+    }
+  }
+
 
   .user-info {
     flex: 1 1 auto;
@@ -103,7 +134,7 @@
   }
 
   .student-info {
-    padding-left: 66px;
+    cursor: pointer;
     flex: 1 1 100%;
     padding-top: var(--spacing-8);
     min-width: 0;
@@ -115,6 +146,7 @@
     justify-content: space-between;
     font: var(--font-open-12-regular);
     gap: var(--spacing-8);
+    padding-bottom: var(--spacing-8);
   }
 
   .student-info-teacher {
@@ -125,25 +157,5 @@
 
   .student-info-lessons {
     white-space: nowrap;
-  }
-
-  .rates-info {
-    padding-top: var(--spacing-16);
-  }
-
-  .rates-info-price-wrap {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-top: var(--spacing-8);
-  }
-
-  .rates-info-title {
-    font: var(--font-open-16-bold);
-    padding-top: var(--spacing-8);
-  }
-
-  .rates-info-price-wrap {
-    font: var(--font-open-16-regular);
   }
 }

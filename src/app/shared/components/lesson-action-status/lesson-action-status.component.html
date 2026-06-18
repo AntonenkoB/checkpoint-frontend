@@ -1,0 +1,16 @@
+<div class="lesson-action container">
+  <cp-header-secondary class="lesson-action-header"  [title]="' '" (close)="close.emit()"></cp-header-secondary>
+
+  <div class="lesson-action-info">
+    <div class="lesson-title">{{ title() }}</div>
+    @if (date()) {
+      <div class="lesson-date">{{ date() }}</div>
+    }
+
+    <div class="student">
+      <cp-record-student-item [student]="user()" [withAmountLesson]="false"></cp-record-student-item>
+    </div>
+
+    <ion-button (click)="confirm.emit()">{{ bntTitle() }}</ion-button>
+  </div>
+</div>

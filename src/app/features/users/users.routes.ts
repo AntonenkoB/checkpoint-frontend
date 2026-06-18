@@ -10,22 +10,17 @@ export const routesUsers: Routes = [
         import('./pages/user-list/user-list.component').then((m) => m.UserListComponent),
   },
   {
-    path: EUserPages.Student,
-    loadComponent: () =>
-      import('./pages/student/student.component').then((m) => m.StudentComponent),
-  },
-  {
-    path: EUserPages.Profile,
-    loadComponent: () =>
-      import('./pages/profile/profile.component').then((m) => m.ProfileComponent),
-  },
-  {
     path: `${EUserPages.User}/:${ERoutParams.UserId}`,
     loadComponent: () =>
         import('./pages/user/user.component').then((m) => m.UserComponent),
   },
   {
-    path: EUserPages.Create,
+    path: EUserPages.CreateUser,
+    loadComponent: () =>
+        import('./pages/user-create/user-create.component').then((m) => m.UserCreateComponent),
+  },
+  {
+    path: EUserPages.UpdateUser,
     loadComponent: () =>
         import('./pages/user/user.component').then((m) => m.UserComponent),
   },

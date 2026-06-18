@@ -1,83 +1,135 @@
 <div class="rate-item">
+
   <div class="container">
     <cp-header-secondary [title]="'rates.price-title' | translate" (close)="ratesFacade.goToRateList()"></cp-header-secondary>
-
-    <cp-user-item class="teacher" [user]="ratesFacade.studentsList()[2]" [hideAllActions]="true"></cp-user-item>
+    @if (teacher()) {
+      <cp-user-item-read class="teacher" [user]="teacher()"></cp-user-item-read>
+    }
   </div>
 
-  <div class="prises">
-    <div class="container">
-      <div class="one-time">
-        <div class="title">{{ "rates.price.one-time-type" | translate }}</div>
-        <div class="price-wrap">
-          <div class="price-item">
-            <div class="name">{{ "rates.price.school" | translate}}</div>
-            <ion-input
-                class="price-item-input"
-                type="text"
-                fill="solid"
-                inputmode="decimal"
-                placeholder="0"
-                (ionInput)="onInput($event)"
-                [value]="500"
-            >
-              <div slot="end" class="currency-symbol">₴</div>
-            </ion-input>
+  @if (teacher()) {
+    <ion-content class="prises">
+      <div class="container">
+        <div class="one-time">
+          <div class="title">{{ "rates.price.one-time-type" | translate }}</div>
+          <div class="price-wrap">
+            <div class="price-item">
+              <div class="name">{{ "rates.price.school" | translate}}</div>
+              <ion-input
+                  type="text"
+                  fill="solid"
+                  inputmode="decimal"
+                  class="price-item-input name"
+                  [placeholder]="'0'"
+                  [value]="rateSingleUpdateModel().school_amount"
+                  (ionInput)="onInput($event, eRatesType.Single, 'school_amount')"
+              >
+                <div slot="end" class="currency-symbol">₴</div>
+              </ion-input>
+            </div>
+            <div class="price-item">
+              <div class="name">{{ "rates.price.teacher" | translate}}</div>
+              <ion-input
+                  class="price-item-input"
+                  type="text"
+                  fill="solid"
+                  inputmode="decimal"
+                  placeholder="0"
+                  (ionInput)="onInput($event, eRatesType.Single, 'teacher_amount')"
+                  [value]="rateSingleUpdateModel().teacher_amount"
+              >
+                <div slot="end" class="currency-symbol">₴</div>
+              </ion-input>
+            </div>
           </div>
-          <div class="price-item">
-            <div class="name">{{ "rates.price.teacher" | translate}}</div>
-            <ion-input
-                class="price-item-input"
-                type="text"
-                fill="solid"
-                inputmode="decimal"
-                placeholder="0"
-                (ionInput)="onInput($event)"
-                [value]="500"
-            >
-              <div slot="end" class="currency-symbol">₴</div>
-            </ion-input>
+        </div>
+
+        <div class="one-time">
+          <div class="title">{{ "rates.price.abonnement-type" | translate}}</div>
+          <div class="price-wrap">
+            <div class="price-item">
+              <div class="name">{{ "rates.price.school" | translate}}</div>
+              <ion-input
+                  class="price-item-input"
+                  type="text"
+                  fill="solid"
+                  inputmode="decimal"
+                  placeholder="0"
+                  (ionInput)="onInput($event, eRatesType.Subscription, 'school_amount')"
+                  [value]="rateSubscriptionUpdateModel().school_amount"
+              >
+                <div slot="end" class="currency-symbol">₴</div>
+              </ion-input>
+            </div>
+            <div class="price-item">
+              <div class="name">{{ "rates.price.teacher" | translate}}</div>
+              <ion-input
+                  class="price-item-input"
+                  type="text"
+                  fill="solid"
+                  inputmode="decimal"
+                  placeholder="0"
+                  (ionInput)="onInput($event, eRatesType.Subscription, 'teacher_amount')"
+                  [value]="rateSubscriptionUpdateModel().teacher_amount"
+              >
+                <div slot="end" class="currency-symbol">₴</div>
+              </ion-input>
+            </div>
           </div>
         </div>
       </div>
+    </ion-content>
+  } @else {
+    <ion-content class="prises individual">
+      <div class="container">
+        <div class="individual-title">{{ "rates.price.one-time-type" | translate }}</div>
 
-      <div class="one-time">
-        <div class="title">{{ "rates.price.abonnement-type" | translate}}</div>
-        <div class="price-wrap">
-          <div class="price-item">
-            <div class="name">{{ "rates.price.school" | translate}}</div>
-            <ion-input
-                class="price-item-input"
-                type="text"
-                fill="solid"
-                inputmode="decimal"
-                placeholder="0"
-                (ionInput)="onInput($event)"
-                [value]="500"
-            >
-              <div slot="end" class="currency-symbol">₴</div>
-            </ion-input>
+        <div class="one-time">
+          <div class="price-wrap">
+            <div class="price-item">
+              <div class="title">{{ "rates.price.one-time-type" | translate }}</div>
+              <ion-input
+                  type="text"
+                  fill="solid"
+                  inputmode="decimal"
+                  class="price-item-input name individual-name"
+                  [placeholder]="'0'"
+                  [value]="rateSingleUpdateModel().school_amount"
+                  (ionInput)="onInput($event, eRatesType.Single, 'school_amount')"
+              >
+                <div slot="end" class="currency-symbol">₴</div>
+              </ion-input>
+            </div>
           </div>
-          <div class="price-item">
-            <div class="name">{{ "rates.price.teacher" | translate}}</div>
-            <ion-input
-                class="price-item-input"
-                type="text"
-                fill="solid"
-                inputmode="decimal"
-                placeholder="0"
-                (ionInput)="onInput($event)"
-                [value]="500"
-            >
-              <div slot="end" class="currency-symbol">₴</div>
-            </ion-input>
+        </div>
+
+        <div class="one-time">
+          <div class="price-wrap">
+            <div class="price-item">
+              <div class="title">{{ "rates.price.abonnement-type" | translate}}</div>
+              <ion-input
+                  class="price-item-input individual-name"
+                  type="text"
+                  fill="solid"
+                  inputmode="decimal"
+                  placeholder="0"
+                  (ionInput)="onInput($event, eRatesType.Subscription, 'school_amount')"
+                  [value]="rateSubscriptionUpdateModel().school_amount"
+              >
+                <div slot="end" class="currency-symbol">₴</div>
+              </ion-input>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
+    </ion-content>
+  }
+
+
 
   <div class="bnt-wrap container">
-    <ion-button>{{"common.save" | translate}}</ion-button>
+    <ion-button (click)="save()">{{"common.save" | translate}}</ion-button>
   </div>
+
+  <cp-loader [isLoad]="!ratesStore.isLoading()"></cp-loader>
 </div>

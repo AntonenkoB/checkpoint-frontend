@@ -3,14 +3,32 @@
 
   <div class="payment-success-info">
     <div class="title">{{"market.payment-success-title" | translate}}</div>
-    <div class="description">{{"market.payment-success-description" | translate}}</div>
-    <div class="student">
-      <cp-record-student-item
-          class="teacher-payment"
-          [student]="marketFacade.selectedTeacher"
-          [withAmountLesson]="false"
-      ></cp-record-student-item>
-    </div>
+    @if (successData().plan.type === mMarketPlanType.Single) {
+      <div class="description">{{"market.payment-success-description-single" | translate: {
+          quantity: successData().quantity,
+          price: successData().price_paid
+        }
+      }}</div>
+    }
+
+    @if (successData().plan.type === mMarketPlanType.Subscription) {
+      <div class="description">{{"market.payment-success-description-abonnement" | translate: {
+        quantity: successData().quantity,
+        price: successData().price_paid
+      }
+        }}</div>
+    }
+
+    @if (successData().teacher) {
+      <div class="student">
+        <cp-record-student-item
+            class="teacher-payment"
+            [student]="successData().teacher"
+            [withAmountLesson]="false"
+        ></cp-record-student-item>
+      </div>
+    }
+
     <div class="btn-wrap">
       <ion-button (click)="marketFacade.goToStudentMain()">{{"market.payment-success-btn" | translate}}</ion-button>
     </div>

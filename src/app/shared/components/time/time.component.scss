@@ -17,6 +17,17 @@
       color: var(--color-text-secondary);
       background-color: var(--color-background-secondary);
     }
+
+    &.disabled {
+      border-color: var(--color-disabled);
+      color: var(--color-disabled);
+      cursor: default;
+    }
+
+    &.has-lesson {
+      background-color: var(--color-gray);
+      cursor: default;
+    }
   }
 
   .time-value {

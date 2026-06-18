@@ -1,14 +1,15 @@
-import { Directive, ElementRef, HostListener, inject, OnInit } from '@angular/core';
+import { Directive, ElementRef, HostListener, inject, OnInit, DoCheck } from '@angular/core';
 import { IonInput } from '@ionic/angular/standalone';
 
 @Directive({
   selector: '[cpPhoneMask]',
   standalone: true,
 })
-export class PhoneMaskDirective implements OnInit {
+export class PhoneMaskDirective implements OnInit, DoCheck {
   private ionInput = inject(IonInput);
   private el = inject(ElementRef);
   private isUpdating = false;
+  private lastValue: string | null | undefined = null;
 
   public ngOnInit(): void {
     setTimeout(() => {
@@ -18,15 +19,35 @@ export class PhoneMaskDirective implements OnInit {
     }, 150);
   }
 
+  public ngDoCheck(): void {
+    if (this.isUpdating) return;
+    
+    const val = (this.ionInput.value as string) || '';
+    if (val !== this.lastValue) {
+      this.applyMask(val);
+    }
+  }
+
   @HostListener('ionInput', ['$event'])
   public onInput(event: any): void {
     if (this.isUpdating) return;
-
+    
     const val = (event.detail.value as string) || '';
+    this.applyMask(val);
+  }
 
+  private applyMask(val: string): void {
+    const formatted = this.formatValue(val);
+    this.lastValue = formatted;
+    
+    if (val !== formatted) {
+      this.updateValue(formatted);
+    }
+  }
+
+  private formatValue(val: string): string {
     if (!val || val.length < 4) {
-      this.updateValue('+380 ');
-      return;
+      return '+380 ';
     }
 
     let digits = val.replace(/\D/g, '');
@@ -49,9 +70,7 @@ export class PhoneMaskDirective implements OnInit {
     if (digits.length > 5) formatted += ' ' + digits.substring(5, 7);
     if (digits.length > 7) formatted += ' ' + digits.substring(7, 9);
 
-    if (val !== formatted) {
-      this.updateValue(formatted);
-    }
+    return formatted;
   }
 
   @HostListener('ionFocus')

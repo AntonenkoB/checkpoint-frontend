@@ -1,0 +1,36 @@
+<div class="salary-list">
+  <div class="month-tabs">
+    <cp-months-list [activeMonth]="ratesFacade.currentMonth()" (changeMonth)="changeMonth($event)"></cp-months-list>
+  </div>
+
+  <div class="salary-list-content container">
+    @for (item of salaryStore.allSalary(); track item.teacher.id) {
+      <div class="salary-list-item" (click)="ratesFacade.goToSalaryItem(item.teacher.id)">
+        <cp-user-item-read class="teacher" [user]="item.teacher"></cp-user-item-read>
+
+        <div class="salary-info">
+          <div class="salary-info-item">
+            <div class="salary-info-price-wrap">
+              <div class="salary-info-name">{{ "rates.salary.total-revenue" | translate}}</div>
+              <div class="salary-info-price">{{item.total_income}} ₴</div>
+            </div>
+            <div class="salary-info-price-wrap">
+              <div class="salary-info-name">{{ "rates.salary.salary-teacher" | translate}}</div>
+              <div class="salary-info-price">{{item.teacher_earned}} ₴</div>
+            </div>
+            <div class="salary-info-price-wrap">
+              <div class="salary-info-name">{{ "rates.salary.salary-school" | translate}}</div>
+              <div class="salary-info-price">{{item.school_earned}} ₴</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    } @empty {
+      <div class="empty">
+        <cp-empty-state></cp-empty-state>
+      </div>
+    }
+
+    <cp-loader [isLoad]="salaryStore.isReady()"></cp-loader>
+  </div>
+</div>

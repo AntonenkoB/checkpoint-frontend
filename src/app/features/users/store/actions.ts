@@ -1,12 +1,13 @@
 import {createActionGroup, emptyProps, props} from '@ngrx/store';
-import {EUserRole, IUser, IUserUpdate} from "../models/user.model";
+import {IStudentLesson, IUserUpdate} from "../models/user.model";
+import {IUser, EUserRole} from "@models/user.model";
 import {ETheme} from "@models/common.model";
 import {IPagination} from "@models/api.models";
 
 export const UserActions = createActionGroup({
   source: 'Users',
   events: {
-    allUsers: props<{ role: EUserRole, page?: number }>(),
+    allUsers: props<{ role: EUserRole, page?: number, search?: string }>(),
     allUsersSuccess: props<{ usersList: IUser[], pagination?: IPagination}>(),
     allUsersFailure: props<{ error: string }>(),
 
@@ -34,24 +35,12 @@ export const UserActions = createActionGroup({
     getUserSuccess: props<{ user: IUser }>(),
     getUserFailure: props<{ error: string }>(),
 
-    getProfile: emptyProps(),
-    getProfileSuccess: props<{ profile: IUser }>(),
-    getProfileFailure: props<{ error: string }>(),
-
-    updateProfile: props<{ profile: IUser }>(),
-    updateProfileSuccess: props<{ profile: IUser }>(),
-    updateProfileFailure: props<{ error: string }>(),
-
-    addAvatar: props<{ blob: Blob }>(),
-    addAvatarSuccess:props<{ profile: IUser }>(),
-    addAvatarFailure: props<{ error: string }>(),
-
-    deleteAvatar: emptyProps(),
-    deleteAvatarSuccess:props<{ profile: IUser }>(),
-    deleteAvatarFailure: props<{ error: string }>(),
-
     updateTheme: props<{ theme: ETheme }>(),
     updateThemeSuccess:props<{ theme: ETheme }>(),
     updateThemeFailure: props<{ error: string }>(),
+
+    getLessons: emptyProps(),
+    getLessonsSuccess: props<{ lessonsList: IStudentLesson[] }>(),
+    getLessonsFailure: props<{ error: string }>(),
   },
 });

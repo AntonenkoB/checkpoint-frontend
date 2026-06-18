@@ -1,8 +1,11 @@
 <div class="calendar-short">
   <cp-tabs
+      class="days"
       [bntStyle]="'btn-fill'"
-      [tabList]="next3Days()"
-      [activeTab]="next3Days()[0].value"
+      [disabledTabs]="disabledTabs()"
+      [tabList]="nextWeek()"
+      [activeTab]="nextWeek()[0].value"
+      (segmentChange)="selectDay.emit($event)"
   ></cp-tabs>
 </div>
 

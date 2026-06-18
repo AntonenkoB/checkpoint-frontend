@@ -1,9 +1,12 @@
-import {Component, computed, effect, inject, OnInit, signal} from "@angular/core";
+import {Component, effect, inject, OnInit, signal} from "@angular/core";
 import {HeaderSecondaryComponent} from "@shared/components/header-secondary/header-secondary.component";
 import {TranslatePipe} from "@shared/pipes/translate-pipe";
-import {recordStudentFacade} from "./record-student.facade";
-import {RecordStudentItemComponent} from "@shared/components/record-student-item/record-student-item.component";
-import {ScheduleFacade} from "@schedule/schedule.facade";
+import {RecordStudentFacade} from "../../facade/record-student.facade";
+import {ScheduleFacade} from "@schedule/facade/schedule.facade";
+import {UserItemComponent} from "@shared/components/user-item/user-item.component";
+import {IonButton, IonContent, IonInput, IonItem} from "@ionic/angular/standalone";
+import {IUser} from "@models/user.model";
+import {EmptyStateComponent} from "@shared/components/empty-state/empty-state.component";
 
 @Component({
   selector: "cp-record-student",
@@ -12,20 +15,33 @@ import {ScheduleFacade} from "@schedule/schedule.facade";
   imports: [
     HeaderSecondaryComponent,
     TranslatePipe,
-    RecordStudentItemComponent
+    UserItemComponent,
+    IonButton,
+    IonContent,
+    IonInput,
+    IonItem,
+    EmptyStateComponent
   ],
-  providers: [recordStudentFacade]
+  providers: [RecordStudentFacade, ScheduleFacade]
 })
 export class RecordStudentComponent implements OnInit {
-  public readonly studentFacade = inject(ScheduleFacade);
-  public studentsList = signal(this.studentFacade.studentsList());
+  public readonly recordStudentFacade = inject(RecordStudentFacade);
+  public activeStudent = signal(0);
+  public searchUser = signal('');
+
 
   constructor() {
-    effect(() => {
-      this.studentsList.set(this.studentFacade.studentsList());
-    });
   }
 
   ngOnInit() {
+  }
+
+  ionViewWillEnter(): void {
+    this.recordStudentFacade.getStudents('');
+  }
+
+  public selectStudent(id: number, student: IUser): void {
+    this.activeStudent.set(id);
+    this.recordStudentFacade.selectedStudent(student);
   }
 }

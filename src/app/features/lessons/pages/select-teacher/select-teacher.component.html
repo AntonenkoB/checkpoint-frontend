@@ -1,0 +1,15 @@
+<div class="teachers container">
+  <cp-header-secondary [title]=" titleHeader() | translate" (close)="lessonsFacade.goToStudentMain()"></cp-header-secondary>
+
+  <div class="teachers-info">
+    <div class="teachers-list">
+      @for (teacher of lessonsFacade.studentTeachers(); track teacher?.id) {
+        <cp-record-student-item
+            class="teacher"
+            [student]="teacher"
+            (select)="lessonsFacade.selectTeacher(teacher!)"
+        ></cp-record-student-item>
+      }
+    </div>
+  </div>
+</div>

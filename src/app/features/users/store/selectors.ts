@@ -50,12 +50,12 @@ export const selectUserError = createSelector(
   (state) => state.error
 );
 
-export const selectProfile = createSelector(
-  selectUserState,
-  (state) => state.profile
-);
-
 export const selectProfileLoading = createSelector(
   selectUserState,
   (state) => state.loading
+);
+
+export const selectLessonsList = createSelector(
+  selectUserState,
+  (state) => state.lessonsList || []
 );

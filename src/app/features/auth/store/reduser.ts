@@ -6,6 +6,7 @@ export interface AuthState {
   checkUserFailure: string | null;
   loginFailure: string | null;
   forgotPasswordFailure: string | null;
+  codeConfirm: string | null;
   loading: boolean;
   error: string | null;
   authStep: EAuthStep;
@@ -15,6 +16,7 @@ export const authState: AuthState = {
   checkUserFailure: null,
   loginFailure: null,
   forgotPasswordFailure: null,
+  codeConfirm: null,
   loading: false,
   error: null,
   authStep: EAuthStep.Identifier,
@@ -55,13 +57,30 @@ export const authReducer = createReducer(
     loading: true,
     error: null,
   })),
+
   on(AuthActions.forgotPasswordSuccess, (state) => ({
     ...state,
     loading: false,
   })),
   on(AuthActions.forgotPasswordFailure, (state, {error}) => ({
     ...state,
-    error,
+    forgotPasswordFailure: error,
+    loading: false,
+  })),
+
+  on(AuthActions.codeConfirm, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+  on(AuthActions.codeConfirmSuccess, (state, {payload}) => ({
+    ...state,
+    codeConfirm: payload.reset_token,
+    loading: false,
+  })),
+  on(AuthActions.codeConfirmFailure, (state, {error}) => ({
+    ...state,
+    codeConfirmFailure: error,
     loading: false,
   })),
   on(AuthActions.authStep, (state, {step}) => ({

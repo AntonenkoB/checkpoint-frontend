@@ -4,6 +4,7 @@ import {CommonActions} from "./store/common/actions";
 import {Store} from "@ngrx/store";
 import { ScreenOrientation } from '@capacitor/screen-orientation';
 import {Capacitor} from "@capacitor/core";
+import {pageAnimation} from "@shared/animations/page-transition";
 
 
 @Component({
@@ -13,6 +14,8 @@ import {Capacitor} from "@capacitor/core";
 })
 export class AppComponent implements OnInit {
   private store = inject(Store);
+  pageAnimation = pageAnimation;
+
 
   public ngOnInit() {
     this.store.dispatch(CommonActions.initialize());

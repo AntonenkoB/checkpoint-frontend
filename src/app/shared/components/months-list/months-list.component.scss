@@ -1,0 +1,8 @@
+:host {
+  ::ng-deep {
+    .segment {
+      padding-inline-start: var(--spacing-20);
+      padding-inline-end: var(--spacing-20);
+    }
+  }
+}

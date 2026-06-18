@@ -1,7 +1,17 @@
 <div class="calendar">
-  <ion-segment class="segment btn-fill month" [value]="next2MonthsDays()[0].date" (ionChange)="dayChange($event)">
+  <ion-segment
+      class="segment btn-fill month"
+      [scrollable]="true"
+      [value]="scheduleDay()"
+      (ionChange)="dayChange($event)"
+  >
     @for (day of next2MonthsDays(); track day.date) {
-      <ion-segment-button class="btn-clear" value="{{day.date}}">
+      <ion-segment-button
+          class="btn-clear"
+          [disabled]="disableEmpty() && activeDays()?.every((date) => date !== day.date)!"
+          [class.no-record]="!disableEmpty() && activeDays()?.every((date) => date !== day.date)"
+          value="{{day.date}}"
+      >
         <ion-label>{{ day.day }} <br> {{ day.number }}</ion-label>
       </ion-segment-button>
     }

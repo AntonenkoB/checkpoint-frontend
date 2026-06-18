@@ -1,0 +1,28 @@
+@use 'src/scss/mixins/_breakpoints.scss' as *;
+
+:host {
+  display: block;
+  height: 100%;
+
+  .confirm-modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-20);
+
+    @include desktop {
+      height: 100%;
+    }
+  }
+
+  .exit-title {
+    font: var(--font-open-16-regular);
+    padding-top: var(--spacing-40);
+    padding-bottom: var(--spacing-80);
+  }
+
+  .confirm {
+    margin-bottom: var(--spacing-20);
+  }
+}

@@ -2,27 +2,30 @@ import {inject, Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {UserService} from '../services/user.service';
 import {UserActions} from './actions';
-import {catchError, from, map, of, switchMap} from 'rxjs';
+import {catchError, map, of, switchMap, tap} from 'rxjs';
 import {ApiResponseHelper} from "@shared/helpers/api.helper";
 import {RouterActions} from "../../../store/router/actions";
 import {EAppPages} from "@models/router.model";
 import {EAuthPages} from "../../auth/models/router.model";
-import {EUserPages, EUserRole} from "../models/user.model";
+import {EUserPages} from "../models/user.model";
+import {EUserRole} from "@models/user.model";
 import {SettingsService} from "@shared/services/settings.service";
 import {ThemeService} from "@shared/services/theme.service";
+import {TokenService} from "@shared/services/token-service";
+import {HapticService} from "@shared/services/haptic.service";
+import {ImpactStyle} from "@capacitor/haptics";
 
 @Injectable()
 export class UserEffects {
   private actions$ = inject(Actions);
   private userService = inject(UserService);
-  private settingsService = inject(SettingsService);
-  private themeService = inject(ThemeService);
+  private hapticService = inject(HapticService);
 
   allUsers$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UserActions.allUsers),
-      switchMap(({role, page}) =>
-        this.userService.getAllUsers(role, page).pipe(
+      switchMap(({role, page, search}) =>
+        this.userService.getAllUsers(role, page, search).pipe(
           map((users) =>
             ApiResponseHelper.handleResponse(
               users,
@@ -42,7 +45,7 @@ export class UserEffects {
     this.actions$.pipe(
       ofType(UserActions.allUsersFailure),
       map(() => {
-        return RouterActions.goTo({ path: [EAppPages.Auth, EAuthPages.Login]});
+        return RouterActions.goTo({path: [EAppPages.Auth, EAuthPages.Login]});
       })
     )
   );
@@ -110,7 +113,11 @@ export class UserEffects {
   createUserSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UserActions.createUserSuccess),
-      switchMap(({}) => of(RouterActions.goTo({path: [EAppPages.Users, EUserPages.ListUsers]})))
+      tap(() => void this.hapticService.impact(ImpactStyle.Medium)),
+      switchMap((data) => [
+        UserActions.allUsers({role: data.user.role}),
+        RouterActions.goTo({path: [EAppPages.Users, EUserPages.ListUsers]}),
+      ])
     )
   );
 
@@ -135,139 +142,65 @@ export class UserEffects {
   );
 
   updateUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UserActions.updateUser),
+      switchMap(({payload}) =>
+        this.userService.updateUser(payload).pipe(
+          map((data) => ApiResponseHelper.handleResponse(
+            data,
+            (user) => UserActions.updateUserSuccess({user}),
+            (errors) => UserActions.updateUserFailure({error: errors})
+          )),
+          catchError((error) =>
+            of(UserActions.updateUserFailure({error: error.message}))
+          )
+        )
+      )
+    )
+  );
+
+  updateUserSuccess$ = createEffect(() =>
       this.actions$.pipe(
-          ofType(UserActions.updateUser),
-          switchMap(({ payload }) =>
-              this.userService.updateUser(payload).pipe(
-                  map((data) => ApiResponseHelper.handleResponse(
-                    data,
-                    (user) => UserActions.updateUserSuccess({user}),
-                    (errors) => UserActions.updateUserFailure({error: errors})
-                  )),
+        ofType(UserActions.updateUserSuccess),
+        tap(() => void this.hapticService.impact(ImpactStyle.Medium))
+      ),
+    { dispatch: false }
+  );
+
+  deleteUser$ = createEffect(() =>
+      this.actions$.pipe(
+          ofType(UserActions.deleteUser),
+          switchMap(({ userId }) =>
+              this.userService.deleteUser(userId).pipe(
+                  switchMap((data) => [
+                    UserActions.allUsers({role: EUserRole.Student}),
+                    RouterActions.goTo({path: [EAppPages.Users, EUserPages.ListUsers]})
+                  ]),
                   catchError((error) =>
-                      of(UserActions.updateUserFailure({ error: error.message }))
+                      of(UserActions.deleteUserFailure({ error: error.message }))
                   )
               )
           )
       )
   );
 
-  getProfile$ = createEffect(() =>
+  getLessons$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(UserActions.getProfile),
-      switchMap(() =>
-        this.userService.getProfile().pipe(
-          map((data) => {
-              if (data.success) {
-                this.themeService.apply(data.data.theme);
-              }
-              return ApiResponseHelper.handleResponse(
-                data,
-                (profile) => UserActions.getProfileSuccess({profile}),
-                (errors) => UserActions.getProfileFailure({error: errors})
-              )
-            }
+      ofType(UserActions.getLessons),
+      switchMap(({}) =>
+        this.userService.getLessons().pipe(
+          map((data) =>
+            ApiResponseHelper.handleResponse(
+              data,
+              (lessonsList) => UserActions.getLessonsSuccess({lessonsList}),
+              (errors) => UserActions.getLessonsFailure({error: errors})
+            )
           ),
           catchError((error) =>
-            of(UserActions.getUserFailure({error: error.message}))
+            of(UserActions.getLessonsFailure({error: error.message}))
           )
         )
       )
     )
   );
-
-  updateProfile$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(UserActions.updateProfile),
-      switchMap(({ profile }) =>
-        this.userService.updateProfile(profile).pipe(
-          map((data) => ApiResponseHelper.handleResponse(
-            data,
-            (profile) => UserActions.updateProfileSuccess({profile}),
-            (errors) => UserActions.updateProfileFailure({error: errors})
-          )),
-          catchError((error) =>
-            of(UserActions.updateUserFailure({ error: error.message }))
-          )
-        )
-      )
-    )
-  );
-
-  updateProfileSuccess$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(UserActions.updateProfileSuccess),
-      switchMap(({ profile }) =>
-        from(this.settingsService.updateSettings({ ...this.settingsService.getCurrentSettings(), theme: profile.theme }))
-      )
-    ), { dispatch: false }
-  );
-
-  addAvatar$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(UserActions.addAvatar),
-      switchMap(({ blob }) => {
-        const formData = new FormData();
-        const file = new File([blob], 'avatar.webp', { type: 'image/webp' });
-        formData.append('avatar', file);
-
-        return this.userService.addAvatar(formData).pipe(
-          map((data) => ApiResponseHelper.handleResponse(
-            data,
-            (profile) => UserActions.addAvatarSuccess({profile}),
-            (errors) => UserActions.addAvatarFailure({error: errors})
-          )),
-          catchError((error) =>
-            of(UserActions.addAvatarFailure({ error: error.message }))
-          )
-        )
-      })
-    )
-  );
-
-  addAvatarSuccess$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(UserActions.addAvatarSuccess),
-      switchMap(() => of(UserActions.getProfile()))
-    )
-  );
-
-  deleteAvatar$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(UserActions.deleteAvatar),
-      switchMap(() => {
-        return this.userService.deleteAvatar().pipe(
-          map((data) => ApiResponseHelper.handleResponse(
-            data,
-            (profile) => UserActions.deleteAvatarSuccess({profile}),
-            (errors) => UserActions.deleteAvatarFailure({error: errors})
-          )),
-          catchError((error) =>
-            of(UserActions.deleteAvatarFailure({ error: error.message }))
-          )
-        )
-      })
-    )
-  );
-
-  deleteAvatarSuccess$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(UserActions.deleteAvatarSuccess),
-      switchMap(() => of(UserActions.getProfile()))
-    )
-  );
-
-  // deleteUser$ = createEffect(() =>
-  //     this.actions$.pipe(
-  //         ofType(UserActions.deleteUser),
-  //         switchMap(({ userId }) =>
-  //             this.userService.deleteUser(userId).pipe(
-  //                 map(() => UserActions.deleteUserSuccess({ userId })),
-  //                 catchError((error) =>
-  //                     of(UserActions.deleteUserFailure({ error: error.message }))
-  //                 )
-  //             )
-  //         )
-  //     )
-  // );
 }

@@ -1,8 +1,12 @@
 :host {
+  display: block;
   background-color: var(--color-background-primary);
 
-  .container {
-    padding: var(--spacing-20);
+  .record-student {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 100dvh;
   }
 
   .time {
@@ -10,7 +14,33 @@
     padding: var(--spacing-16) 0;
   }
 
+  .search-wrap {
+    padding-bottom: 10px;
+  }
+
+  .search-item {
+    ::ng-deep {
+      .input-wrapper {
+        border-bottom: 1px solid var(--color-border-primary);
+        --border-color: var(--color-border-primary);
+      }
+    }
+  }
+
+  .student-list {
+    flex: 1 1 auto;
+    overflow: auto;
+
+    .container {
+      height: 100%;
+    }
+  }
+
   .record-student-item {
-    cursor: pointer;
+    margin-bottom: var(--spacing-16);
+  }
+
+  .btn-wrap {
+    padding: var(--spacing-20);
   }
 }

@@ -1,0 +1,35 @@
+:host {
+  height: 100%;
+  background-color: var(--color-background-primary);
+
+  .transferring-lesson {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .transferring-lesson-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1 1 auto;
+    padding-bottom: 120px;
+  }
+
+  .lesson-date {
+    font: var(--font-open-16-regular);
+    padding-bottom: var(--spacing-40);
+  }
+
+  .student {
+    padding: var(--spacing-40) 0;
+  }
+
+  .individual-lesson-title {
+    font: var(--font-alumi-32-black);
+  }
+
+  .cansel-btn {
+    margin-bottom: var(--spacing-24);
+  }
+}

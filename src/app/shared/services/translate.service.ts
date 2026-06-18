@@ -1,4 +1,4 @@
-import {Injectable, inject} from '@angular/core';
+import {Injectable, inject, DestroyRef} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {
   BehaviorSubject,
@@ -8,6 +8,7 @@ import {
   shareReplay
 } from 'rxjs';
 import {ELang} from "@models/common.model";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 
 @Injectable({providedIn: 'root'})
@@ -40,7 +41,7 @@ export class TranslateService {
     );
   }
 
-  instant(key: string, translations?: Record<string, any>, params?: Record<string, string | number>): string {
+  instant(key: string, translations?: Record<string, any> | null, params?: Record<string, string | number>): string {
     const t = translations ?? this._translations;
     const value = this.resolve(t, key);
     if (!value) return key;

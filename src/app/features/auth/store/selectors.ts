@@ -40,3 +40,9 @@ export const selectForgotPasswordFailure = createSelector(
   (state: AuthState) => state.forgotPasswordFailure
 );
 
+
+export const selectCodeConfirm = createSelector(
+  selectAuthState,
+  (state: AuthState) => state.codeConfirm
+);
+

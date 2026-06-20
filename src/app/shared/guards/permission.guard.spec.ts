@@ -1,4 +1,5 @@
 import { TestBed } from "@angular/core/testing";
+import {commonTestProviders} from '@testing/test-providers';
 import {ActivatedRouteSnapshot, CanActivateFn, RouterStateSnapshot} from "@angular/router";
 
 import { permissionGuard } from "./permission.guard";
@@ -15,7 +16,7 @@ describe("permissionGuard", () => {
   };
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({ providers: [...commonTestProviders()] });
   });
 
   it("should be created", () => {

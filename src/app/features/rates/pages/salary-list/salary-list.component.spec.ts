@@ -1,24 +1,22 @@
-import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
-import { IonicModule } from "@ionic/angular";
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {SalaryListComponent} from './salary-list.component';
+import {commonTestProviders} from '@testing/test-providers';
 
-import { SalaryListComponent } from "./salary-list.component";
-
-describe("SalaryListComponent", () => {
+describe('SalaryListComponent', () => {
   let component: SalaryListComponent;
   let fixture: ComponentFixture<SalaryListComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [SalaryListComponent],
-      imports: [IonicModule.forRoot()],
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [SalaryListComponent],
+      providers: [...commonTestProviders()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SalaryListComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
-  }));
+  });
 
-  it("should create", () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

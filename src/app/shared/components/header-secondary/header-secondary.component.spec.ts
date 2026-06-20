@@ -1,24 +1,22 @@
-import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
-import { IonicModule } from "@ionic/angular";
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {HeaderSecondaryComponent} from './header-secondary.component';
+import {commonTestProviders} from '@testing/test-providers';
 
-import { HeaderSecondaryComponent } from "./header-secondary.component";
-
-describe("HeaderSecondaryComponent", () => {
+describe('HeaderSecondaryComponent', () => {
   let component: HeaderSecondaryComponent;
   let fixture: ComponentFixture<HeaderSecondaryComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [HeaderSecondaryComponent],
-      imports: [IonicModule.forRoot()],
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [HeaderSecondaryComponent],
+      providers: [...commonTestProviders()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HeaderSecondaryComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
-  }));
+  });
 
-  it("should create", () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

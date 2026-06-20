@@ -1,24 +1,22 @@
-import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
-import { IonicModule } from "@ionic/angular";
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {ReteItemComponent} from './rete-item.component';
+import {commonTestProviders} from '@testing/test-providers';
 
-import { ReteItemComponent } from "./rete-item.component";
-
-describe("ReteItemComponent", () => {
+describe('ReteItemComponent', () => {
   let component: ReteItemComponent;
   let fixture: ComponentFixture<ReteItemComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ReteItemComponent],
-      imports: [IonicModule.forRoot()],
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [ReteItemComponent],
+      providers: [...commonTestProviders()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ReteItemComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
-  }));
+  });
 
-  it("should create", () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

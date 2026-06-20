@@ -1,24 +1,22 @@
-import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
-import { IonicModule } from "@ionic/angular";
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {SelectUserComponent} from './select-user.component';
+import {commonTestProviders} from '@testing/test-providers';
 
-import { SelectUserComponent } from "./select-user.component";
-
-describe("SelectTeacherComponent", () => {
+describe('SelectUserComponent', () => {
   let component: SelectUserComponent;
   let fixture: ComponentFixture<SelectUserComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [SelectUserComponent],
-      imports: [IonicModule.forRoot()],
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [SelectUserComponent],
+      providers: [...commonTestProviders()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SelectUserComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
-  }));
+  });
 
-  it("should create", () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

@@ -1,24 +1,22 @@
-import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
-import { IonicModule } from "@ionic/angular";
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {LessonsSuccessComponent} from './lessons-success.component';
+import {commonTestProviders} from '@testing/test-providers';
 
-import { LessonsSuccessComponent } from "./lessons-success.component";
-
-describe("LessonsSuccessComponent", () => {
+describe('LessonsSuccessComponent', () => {
   let component: LessonsSuccessComponent;
   let fixture: ComponentFixture<LessonsSuccessComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [LessonsSuccessComponent],
-      imports: [IonicModule.forRoot()],
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [LessonsSuccessComponent],
+      providers: [...commonTestProviders()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LessonsSuccessComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
-  }));
+  });
 
-  it("should create", () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

@@ -1,24 +1,22 @@
-import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
-import { IonicModule } from "@ionic/angular";
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {CalendarShortComponent} from './calendar-short.component';
+import {commonTestProviders} from '@testing/test-providers';
 
-import { CalendarShortComponent } from "./calendar-short.component";
-
-describe("CalendarShortComponent", () => {
+describe('CalendarShortComponent', () => {
   let component: CalendarShortComponent;
   let fixture: ComponentFixture<CalendarShortComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [CalendarShortComponent],
-      imports: [IonicModule.forRoot()],
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [CalendarShortComponent],
+      providers: [...commonTestProviders()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(CalendarShortComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
-  }));
+  });
 
-  it("should create", () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

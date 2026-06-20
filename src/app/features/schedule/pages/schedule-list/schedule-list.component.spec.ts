@@ -1,24 +1,22 @@
-import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
-import { IonicModule } from "@ionic/angular";
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {ScheduleListComponent} from './schedule-list.component';
+import {commonTestProviders} from '@testing/test-providers';
 
-import { ScheduleListComponent } from "./schedule-list.component";
-
-describe("ScheduleListComponent", () => {
+describe('ScheduleListComponent', () => {
   let component: ScheduleListComponent;
   let fixture: ComponentFixture<ScheduleListComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ScheduleListComponent],
-      imports: [IonicModule.forRoot()],
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [ScheduleListComponent],
+      providers: [...commonTestProviders()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ScheduleListComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
-  }));
+  });
 
-  it("should create", () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

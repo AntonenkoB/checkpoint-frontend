@@ -1,24 +1,22 @@
-import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
-import { IonicModule } from "@ionic/angular";
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {LessonTransferringTypeComponent} from './lesson-transferring-type.component';
+import {commonTestProviders} from '@testing/test-providers';
 
-import { LessonTransferringTypeComponent } from "./lesson-transferring-type.component";
-
-describe("LessonTransferringTypeComponent", () => {
+describe('LessonTransferringTypeComponent', () => {
   let component: LessonTransferringTypeComponent;
   let fixture: ComponentFixture<LessonTransferringTypeComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [LessonTransferringTypeComponent],
-      imports: [IonicModule.forRoot()],
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [LessonTransferringTypeComponent],
+      providers: [...commonTestProviders()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LessonTransferringTypeComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
-  }));
+  });
 
-  it("should create", () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

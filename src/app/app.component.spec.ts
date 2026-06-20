@@ -1,12 +1,12 @@
 import {TestBed} from '@angular/core/testing';
-import {provideRouter} from '@angular/router';
 import {AppComponent} from './app.component';
+import {commonTestProviders} from '@testing/test-providers';
 
 describe('AppComponent', () => {
   it('should create the app', async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent],
-      providers: [provideRouter([])]
+      providers: [...commonTestProviders()],
     }).compileComponents();
 
     const fixture = TestBed.createComponent(AppComponent);

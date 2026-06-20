@@ -1,24 +1,22 @@
-import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
-import { IonicModule } from "@ionic/angular";
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {PaymentSuccessComponent} from './payment-success.component';
+import {commonTestProviders} from '@testing/test-providers';
 
-import { PaymentSuccessComponent } from "./payment-success.component";
-
-describe("PaymentSuccessComponent", () => {
+describe('PaymentSuccessComponent', () => {
   let component: PaymentSuccessComponent;
   let fixture: ComponentFixture<PaymentSuccessComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [PaymentSuccessComponent],
-      imports: [IonicModule.forRoot()],
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [PaymentSuccessComponent],
+      providers: [...commonTestProviders()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PaymentSuccessComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
-  }));
+  });
 
-  it("should create", () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

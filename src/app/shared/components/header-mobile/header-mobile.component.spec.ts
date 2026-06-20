@@ -1,24 +1,22 @@
-import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
-import { IonicModule } from "@ionic/angular";
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {HeaderMobileComponent} from './header-mobile.component';
+import {commonTestProviders} from '@testing/test-providers';
 
-import { HeaderMobileComponent } from "./header-mobile.component";
-
-describe("HeaderMobileComponent", () => {
+describe('HeaderMobileComponent', () => {
   let component: HeaderMobileComponent;
   let fixture: ComponentFixture<HeaderMobileComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [HeaderMobileComponent],
-      imports: [IonicModule.forRoot()],
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [HeaderMobileComponent],
+      providers: [...commonTestProviders()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HeaderMobileComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
-  }));
+  });
 
-  it("should create", () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

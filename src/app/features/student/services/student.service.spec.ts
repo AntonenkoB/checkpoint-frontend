@@ -1,4 +1,5 @@
 import { TestBed } from "@angular/core/testing";
+import {commonTestProviders} from '@testing/test-providers';
 
 import { StudentService } from "./student.service";
 
@@ -6,7 +7,7 @@ describe("StudentService", () => {
   let service: StudentService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({ providers: [...commonTestProviders()] });
     service = TestBed.inject(StudentService);
   });
 

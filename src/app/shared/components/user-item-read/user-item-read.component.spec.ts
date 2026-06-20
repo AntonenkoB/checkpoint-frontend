@@ -1,24 +1,22 @@
-import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
-import { IonicModule } from "@ionic/angular";
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {UserItemReadComponent} from './user-item-read.component';
+import {commonTestProviders} from '@testing/test-providers';
 
-import { UserItemReadComponent } from "./user-item-read.component";
-
-describe("UserItemReadComponent", () => {
+describe('UserItemReadComponent', () => {
   let component: UserItemReadComponent;
   let fixture: ComponentFixture<UserItemReadComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [UserItemReadComponent],
-      imports: [IonicModule.forRoot()],
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [UserItemReadComponent],
+      providers: [...commonTestProviders()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(UserItemReadComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
-  }));
+  });
 
-  it("should create", () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

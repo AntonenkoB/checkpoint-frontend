@@ -1,24 +1,22 @@
-import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
-import { IonicModule } from "@ionic/angular";
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {LessonsTypePaymentComponent} from './lessons-type-payment.component';
+import {commonTestProviders} from '@testing/test-providers';
 
-import { LessonsTypePaymentComponent } from "./lessons-type-payment.component";
-
-describe("LessonsTypePaymentComponent", () => {
+describe('LessonsTypePaymentComponent', () => {
   let component: LessonsTypePaymentComponent;
   let fixture: ComponentFixture<LessonsTypePaymentComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [LessonsTypePaymentComponent],
-      imports: [IonicModule.forRoot()],
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [LessonsTypePaymentComponent],
+      providers: [...commonTestProviders()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LessonsTypePaymentComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
-  }));
+  });
 
-  it("should create", () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

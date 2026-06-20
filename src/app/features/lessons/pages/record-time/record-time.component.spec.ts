@@ -1,24 +1,22 @@
-import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
-import { IonicModule } from "@ionic/angular";
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {RecordTimeComponent} from './record-time.component';
+import {commonTestProviders} from '@testing/test-providers';
 
-import { RecordTimeComponent } from "./record-time.component";
-
-describe("RecordTimeComponent", () => {
+describe('RecordTimeComponent', () => {
   let component: RecordTimeComponent;
   let fixture: ComponentFixture<RecordTimeComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [RecordTimeComponent],
-      imports: [IonicModule.forRoot()],
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [RecordTimeComponent],
+      providers: [...commonTestProviders()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(RecordTimeComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
-  }));
+  });
 
-  it("should create", () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

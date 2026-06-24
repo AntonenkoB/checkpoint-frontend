@@ -1,4 +1,14 @@
-import {Component, effect, ElementRef, inject, OnInit, signal, ViewChild, WritableSignal} from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  ElementRef,
+  inject,
+  OnInit,
+  signal,
+  ViewChild,
+  WritableSignal
+} from '@angular/core';
 import {
   IonButton,
   IonContent,
@@ -24,8 +34,7 @@ import {PhoneMaskDirective} from "@shared/directives/phone-mask";
 import {ConfirmModalComponent} from "@shared/components/confirm-modal/confirm-modal.component";
 import {Platform} from "@ionic/angular";
 import {STUDENT_PROFILE_TABS, THEME_ACTIONS} from "@profile/models/profile.model";
-import {IUser} from "@models/user.model";
-import {TabsComponent} from "@shared/components/tabs/tabs.component";
+import {EUserRole, IUser, USER_ROLE_OPTIONS} from "@models/user.model";
 
 
 @Component({
@@ -59,16 +68,18 @@ export class ProfileComponent implements OnInit {
   @ViewChild('deleteModal') deleteModal!: IonModal;
   public profileFacade = inject(ProfileFacade);
 
-
   private touchedMap = new Map<string, WritableSignal<boolean>>();
   private modalController = inject(ModalController);
   public readonly sanitizer = inject(DomSanitizer);
   public avatarUrl = signal<string | null>(null);
   public THEME_ACTIONS = THEME_ACTIONS();
   public STUDENT_PROFILE_TABS = STUDENT_PROFILE_TABS();
+  public availableRole = computed(() => {
+    return USER_ROLE_OPTIONS.filter(role => this.profileFacade.profile()?.roles!.includes(role.value))
+  });
+  public activeRole = computed(() => USER_ROLE_OPTIONS.filter(role => role.value === this.profileFacade.activeRole()));
 
   public userModel = signal({
-    role: '',
     email: '',
     creative_name: '',
     first_name: '',
@@ -106,12 +117,10 @@ export class ProfileComponent implements OnInit {
   });
 
   public ngOnInit(): void {
-    this.profileFacade.loadProfile();
   }
 
   private updateForm(): void {
       this.userModel.set({
-        role: this.profileFacade.profile()?.role ?? '',
         email: this.profileFacade.profile()?.email ?? '',
         creative_name: this.profileFacade.profile()?.creative_name ?? '',
         first_name: this.profileFacade.profile()?.first_name ?? '',
@@ -174,6 +183,11 @@ export class ProfileComponent implements OnInit {
     }));
 
     this.profileFacade.changeTheme(newTheme);
+  }
+
+  public changeRole(event: any): void {
+    const role = event.detail.value as EUserRole;
+    void this.profileFacade.switchRole(role);
   }
 
   private getTouched(key: string): WritableSignal<boolean> {

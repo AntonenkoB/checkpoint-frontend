@@ -1,0 +1,19 @@
+:host {
+  .role-list {
+    display: flex;
+    gap: 8px;
+  }
+
+  .role-btn {
+    --border-width: 2px;
+    --border-color: var(--color-border-primary);
+    --background: transparent;
+    font: var(--font-alumi-20-bold);
+
+    &.active {
+      --border-color: var(--color-border-primary);
+      --background: var(--color-background-secondary);
+      --color: var(--color-text-secondary);
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import {ETheme} from "@models/common.model";
+import {ETheme, IOptions} from "@models/common.model";
 import {EMarketPlanType, EPurchaseStatus} from "@market/models/market.model";
 
 export enum EUserRole {
@@ -8,6 +8,13 @@ export enum EUserRole {
   Student = 'student',
 }
 
+export const USER_ROLE_OPTIONS: IOptions<EUserRole>[] = [
+  { value: EUserRole.Student, title: 'common.roles.student' },
+  { value: EUserRole.Teacher, title: 'common.roles.teacher' },
+  { value: EUserRole.Admin, title: 'common.roles.admin' },
+  { value: EUserRole.Owner, title: 'common.roles.owner' },
+];
+
 export interface IUser {
   id: number;
   creative_name: string;
@@ -15,7 +22,7 @@ export interface IUser {
   last_name: string;
   email: string;
   phone: string;
-  role: EUserRole;
+  roles: EUserRole[];
   theme: ETheme;
   is_active: boolean;
   onboarding_completed: boolean;

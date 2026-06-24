@@ -9,11 +9,9 @@ import {EAppPages} from "@models/router.model";
 import {EAuthPages} from "../../auth/models/router.model";
 import {EUserPages} from "../models/user.model";
 import {EUserRole} from "@models/user.model";
-import {SettingsService} from "@shared/services/settings.service";
-import {ThemeService} from "@shared/services/theme.service";
-import {TokenService} from "@shared/services/token-service";
 import {HapticService} from "@shared/services/haptic.service";
 import {ImpactStyle} from "@capacitor/haptics";
+import {getHighestRole} from "@shared/permissions/role-priority";
 
 @Injectable()
 export class UserEffects {
@@ -114,10 +112,14 @@ export class UserEffects {
     this.actions$.pipe(
       ofType(UserActions.createUserSuccess),
       tap(() => void this.hapticService.impact(ImpactStyle.Medium)),
-      switchMap((data) => [
-        UserActions.allUsers({role: data.user.role}),
-        RouterActions.goTo({path: [EAppPages.Users, EUserPages.ListUsers]}),
-      ])
+      switchMap((data) => {
+        const highestRole = getHighestRole(data.user.roles)!;
+
+        return [
+          UserActions.allUsers({role: highestRole}),
+          RouterActions.goTo({path: [EAppPages.Users, EUserPages.ListUsers]}),
+        ]
+      })
     )
   );
 

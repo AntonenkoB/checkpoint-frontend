@@ -16,11 +16,12 @@ import {IUser, EUserRole} from "@models/user.model";
 export class HeaderMobileComponent {
   public profile = input<IUser | null>();
   public activeMenu = input<EHeaderMenu>();
+  public activeRole = input<EUserRole>();
   public amountStudents = model<string>();
   public selectMenu = output<EHeaderMenu>();
   public goToProfile = output();
   public USER_ROLE_TABS = computed(() => {
-    switch (this.profile()?.role) {
+    switch (this.activeRole()) {
       case EUserRole.Admin:
       case EUserRole.Owner:
         return ADMIN_TABS();

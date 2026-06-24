@@ -6,7 +6,7 @@
   ></cp-header-secondary>
 
   <ion-content class="user-create">
-    <form class="form container" [formRoot]="userForm" (ngSubmit)="onSubmit()">
+    <form class="form container" [formRoot]="userForm" (submit)="onSubmit()">
       <ion-list class="input-list" lines="none">
         <ion-item>
           <ion-input
@@ -109,6 +109,10 @@
               />
             </ion-input>
           </ion-item>
+        }
+
+        @if (userFacade.availableRoleOptions().length > 1 && (userFacade.isAdmin() || userFacade.isOwner())) {
+          <cp-role-list [roles]="userFacade.availableRoleOptions()" [(selectedRoles)]="selectedRoles"></cp-role-list>
         }
 
         @if (userFacade.roleCreate() === eUserRole.Student) {

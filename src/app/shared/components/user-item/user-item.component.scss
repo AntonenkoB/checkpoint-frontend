@@ -91,6 +91,25 @@
     text-overflow: ellipsis;
   }
 
+  .user-teachers {
+    display: flex;
+    gap: 4px;
+    min-height: 40px;
+  }
+
+
+  .user-teachers-avatar {
+    width: 24px;
+    height: 24px;
+
+    ::ng-deep {
+      svg {
+        height: 12px;
+        width: 12px;
+      }
+    }
+  }
+
   .user-acton {
     flex-shrink: 0
   }

@@ -22,6 +22,17 @@
     <div class="profile-wrap">
       <ion-content>
         <div class="container">
+          @if (availableRole().length > 1) {
+            <div class="role-list">
+              <ion-segment class="theme-btn btn-with-border" (ionChange)="changeRole($event)" [value]="this.profileFacade.activeRole()!">
+                @for (role of availableRole(); track role.value) {
+                  <ion-segment-button class="segment-button" [value]="role.value">
+                    <ion-label>{{ role.title | translate }}</ion-label>
+                  </ion-segment-button>
+                }
+              </ion-segment>
+            </div>
+          }
           <div class="theme-title">{{ 'profile.theme.title' | translate }}</div>
           <ion-segment class="theme-btn btn-with-border" (ionChange)="changeTheme($event)" [value]="profile.theme">
             @for (tab of THEME_ACTIONS; track tab.value) {

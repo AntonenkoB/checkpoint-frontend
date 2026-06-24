@@ -16,7 +16,6 @@ import {ProfileFacade} from "@profile/facade/profile.facade";
 import {StudentsStore} from "@users/store/students.store";
 import {debounceTime, distinctUntilChanged, Subject} from "rxjs";
 import {NavController} from "@ionic/angular";
-import {log} from "@capacitor/assets/dist/util/log";
 
 @Injectable({ providedIn: 'root' })
 export class UserListFacade {
@@ -31,7 +30,7 @@ export class UserListFacade {
   private queryParams = toSignal(this.route.queryParams);
   public currentTab = computed(() => {
     const tab = this.queryParams()?.['tab'] as EHeaderMenu;
-    return tab ?? EHeaderMenu.Student;
+    return tab ?? EHeaderMenu.Schedule;
   });
   public currentRacesTab = computed(() => this.queryParams()?.['ratesTab'] as ERateTabs);
   private searchSubject$ = new Subject<string>();
@@ -49,6 +48,7 @@ export class UserListFacade {
     return users ?? [];
   });
   public profile = this.profileFacade.profile;
+  public activeRole = this.profileFacade.activeRole;
   public isReadyStudent = this.studentsStore.isReady;
   public amountStudents = this.studentsStore.studentsListMeta;
   public userListPagination: Signal<IPagination> = this.store.selectSignal(selectAllUsersPagination);

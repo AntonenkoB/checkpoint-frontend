@@ -7,7 +7,13 @@
     "confirm-change-title": "Зберегти зміни?",
     "logout": "Вийти",
     "delete-profile": "Видалити профіль",
-    "to": "до"
+    "to": "до",
+    "roles": {
+      "owner": "Власник",
+      "admin": "Адмін",
+      "teacher": "Вчитель",
+      "student": "Учень"
+    }
   },
   "errors": {
     "required": "Обов'язкове поле",

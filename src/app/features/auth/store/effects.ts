@@ -16,6 +16,7 @@ import {SettingsService} from "@shared/services/settings.service";
 import {AppState} from "@capacitor/app";
 import {selectCodeConfirm} from "@auth/store/selectors";
 import {ProfileStore} from "@profile/store/profile.store";
+import {getHighestRole} from "@shared/permissions/role-priority";
 
 @Injectable()
 export class AuthEffects {
@@ -86,12 +87,13 @@ export class AuthEffects {
                   actions.push(AuthActions.authStep({step: EAuthStep.CreatePassword}));
                 } else {
                   this.profileStore.getProfile();
+                  const highestRole = getHighestRole(user.roles);
 
-                  user.role === EUserRole.Student
+                  highestRole === EUserRole.Student
                     ? actions.push(RouterActions.goTo({path: [EAppPages.Student]}))
                     : actions.push(RouterActions.goTo({
                       path: [EAppPages.Users, EUserPages.ListUsers],
-                      extras: {queryParams: {tab: EHeaderMenu.Student}}
+                      extras: {queryParams: {tab: EHeaderMenu.Schedule}}
                     }))
                 }
 
@@ -125,9 +127,17 @@ export class AuthEffects {
                 const actions: Action[] = [];
 
                 if (response?.success && response.data.user.onboarding_completed) {
-                  response.data.user.role === EUserRole.Student
+                  this.profileStore.getProfile();
+
+                  const highestRole = getHighestRole(response.data.user.roles);
+
+                  debugger
+                  highestRole === EUserRole.Student
                     ? actions.push(RouterActions.goTo({path: [EAppPages.Auth, EAuthPages.Onboarding]}))
-                    : actions.push(RouterActions.goTo({path: [EAppPages.Users, EUserPages.ListUsers]}))
+                    : actions.push(RouterActions.goTo({
+                      path: [EAppPages.Users, EUserPages.ListUsers],
+                      extras: {queryParams: {tab: EHeaderMenu.Schedule}}
+                    }))
                 }
 
                 return actions
@@ -196,7 +206,8 @@ export class AuthEffects {
       switchMap(() =>
         forkJoin([
           from(this.tokenService.clearToken()),
-          from(this.settingsService.clearSettings())
+          from(this.settingsService.clearSettings()),
+          from(this.profileStore.clearActiveRole())
         ]).pipe(
           switchMap(() => [
             AuthActions.authStep({step: EAuthStep.Identifier}),

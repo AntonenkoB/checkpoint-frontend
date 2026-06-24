@@ -6,7 +6,7 @@
       @if (lessonsFacade.lessonsStore.currentUser()!) {
         <cp-record-student-item [student]="lessonsFacade.lessonsStore.currentUser()!" [withAmountLesson]="false"></cp-record-student-item>
       } @else {
-        <div class="individual-lesson-title">{{ "lesson.type.independent-lesson" | translate }}</div>
+        <div class="individual-lesson-title">{{ "lessons.type.independent-lesson" | translate }}</div>
       }
     </div>
     <div class="lesson-date">{{lessonsFacade.lessonsStore.currentDateTime()!}}</div>

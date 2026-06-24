@@ -26,6 +26,7 @@ export class ScheduleFacade {
   private profileFacade = inject(ProfileFacade);
 
   public readonly profile = this.profileFacade.profile;
+  public readonly activeRole = this.profileFacade.activeRole;
   public readonly isAdmin = this.profileFacade.isAdmin;
   public readonly isTeacher = this.profileFacade.isTeacher;
   public selectRouteParams = this.store.selectSignal(selectRouteParams);

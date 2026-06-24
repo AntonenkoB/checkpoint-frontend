@@ -20,10 +20,18 @@
     bottom: 0;
     left: 0;
     z-index: -1;
-    background-image: url('/assets/img/student-bg.png');
+    background-image: url('/assets/img/student-bg.jpg');
     background-size: cover;
-    background-position: 60% center;
+    background-position: 43% center;
     background-repeat: no-repeat;
+
+    &.is-lessons {
+      &:after {
+        background: var(--color-no-reverse-black);
+        opacity: 0.8;
+        height: 100%;
+      }
+    }
 
     &:after {
       content: '';
@@ -33,24 +41,17 @@
       right: 0;
       bottom: 0;
       left: 0;
-      background-color: var(--color-no-reverse-black);
-      opacity: 0.56;
+      background: linear-gradient(to bottom, rgba(12, 12, 24, 0.9) 0%, rgba(12, 12, 24, 0) 100%);
+      height: 240px;
+      transition: height 0.1s ease-in-out;
     }
   }
 
-  .teacher-wrap {
-    padding-top: var(--spacing-20);
-    padding-bottom: var(--spacing-24);
-  }
-
   .teacher {
-    align-items: center;
-    background-color: var(--color-no-reverse-black);
-    border-radius: 8px;
     cursor: pointer;
     display: flex;
     gap: var(--spacing-16);
-    padding: var(--spacing-16) 0 var(--spacing-16) var(--spacing-16);
+    padding: var(--spacing-16) 0;
   }
 
   .teacher-icon {
@@ -69,7 +70,7 @@
 
     ::ng-deep {
       .avatar {
-        border-color: rgba(var(--color-no-reverse-white-rgb), 0.56);
+        border-color: var(--color-no-reverse-white);
       }
     }
   }
@@ -98,9 +99,11 @@
   }
 
   .student-action-btn {
+    --background: transparent;
+    --box-shadow: 0;
     flex: 0 0 40px;
     height: 40px;
-    width: 50px;
+    width: 30px;
   }
 
   .student-action-list {
@@ -119,6 +122,10 @@
     flex: 1 1 auto;
   }
 
+  .lessons {
+    padding-top: var(--spacing-24);
+  }
+
   .week-title {
     font: var(--font-alumi-20-black);
     padding-bottom: var(--spacing-8);
@@ -129,13 +136,16 @@
     margin-bottom: var(--spacing-8);
 
     ::ng-deep {
-      .user {
-        background-color: var(--color-no-reverse-black);
-        border-color: var(--color-no-reverse-black);
+      .avatar {
+        border: 0;
       }
 
-      .avatar {
-        border-color: rgba(var(--color-no-reverse-white-rgb), 0.56);
+      .user-read-creative-name {
+        font: var(--font-alumi-20-bold);
+      }
+
+      .user-read-name {
+        font: var(--font-open-13-regular);
       }
     }
   }
@@ -143,10 +153,6 @@
   .teacher-info {
     font: var(--font-alumi-24-bold);
     flex: 1 1 auto;
-  }
-
-  .individual-lesson-title {
-    font: var(--font-alumi-16-black);
   }
 
   .amount-lessons {
@@ -157,7 +163,7 @@
 
   .record-lesson {
     align-items: center;
-    background-color: var(--color-no-reverse-black);
+    border: 1px solid var(--color-no-reverse-white);
     border-radius: 8px;
     display: flex;
     justify-content: space-between;
@@ -165,6 +171,33 @@
     padding-left: var(--spacing-16);
     margin-bottom: var(--spacing-8);
     min-height: 40px;
+  }
+
+  .individual-lesson {
+    display: flex;
+    gap: var(--spacing-16);
+    align-items: center;
+    margin-top: var(--spacing-24);
+    margin-bottom: var(--spacing-16);
+  }
+
+  .individual-avatar {
+    height: 50px;
+    width: 50px;
+
+    ::ng-deep {
+      .avatar {
+        border: 0;
+      }
+    }
+  }
+
+  .individual-lesson-title {
+    font: var(--font-alumi-20-bold);
+  }
+
+  .individual-lesson-description {
+    font: var(--font-open-13-regular);
   }
 
   .date {
@@ -203,5 +236,7 @@
   .btn-planing {
     --ion-color-primary: var(--color-no-reverse-black);
     --ion-color-primary-contrast: var(--color-no-reverse-white);
+    border: 1px solid var(--color-no-reverse-white);
+    border-radius: 8px;
   }
 }

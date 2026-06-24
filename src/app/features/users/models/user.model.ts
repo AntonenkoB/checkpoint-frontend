@@ -1,8 +1,6 @@
-import {ETheme, IOptions} from "@models/common.model";
+import {IOptions} from "@models/common.model";
 import {ITimeRange} from "@schedule/models/schedule.model";
 import {IUser, EUserRole} from "@models/user.model";
-
-
 
 export enum EUserPages {
   ListUsers = 'list',
@@ -32,7 +30,7 @@ export interface IUserProfile {
   first_name: string;
   last_name: string;
   phone: string;
-  role: EUserRole;
+  roles: EUserRole[];
   temporary_password?: string;
 }
 
@@ -43,7 +41,7 @@ export interface IUserUpdate {
   first_name: string;
   last_name: string;
   phone: string;
-  role: EUserRole;
+  roles: EUserRole[];
   temporary_password?: string;
   teacher_ids?: number[];
 }
@@ -55,7 +53,18 @@ export interface IStudentLesson {
   time: ITimeRange
 }
 
+export const CREATABLE_ROLES_MAP: Record<EUserRole, EUserRole[]> = {
+  [EUserRole.Owner]: [EUserRole.Admin, EUserRole.Teacher, EUserRole.Student],
+  [EUserRole.Admin]: [EUserRole.Teacher, EUserRole.Student],
+  [EUserRole.Teacher]: [EUserRole.Student],
+  [EUserRole.Student]: [],
+};
+
 export const ADMIN_TABS = (): IOptions<EHeaderMenu>[] => [
+  {
+    value: EHeaderMenu.Schedule,
+    title: "schedule.title"
+  },
   {
     value: EHeaderMenu.Student,
     title: "users.student"
@@ -68,20 +77,16 @@ export const ADMIN_TABS = (): IOptions<EHeaderMenu>[] => [
     value: EHeaderMenu.Admin,
     title: "users.admin"
   },
-  {
-    value: EHeaderMenu.Schedule,
-    title: "schedule.title"
-  }
 ]
 
 export const TEACHER_TABS = (): IOptions<EHeaderMenu>[] => [
   {
-    value: EHeaderMenu.Student,
-    title: "users.student"
-  },
-  {
     value: EHeaderMenu.Schedule,
     title: "schedule.title"
+  },
+  {
+    value: EHeaderMenu.Student,
+    title: "users.student"
   },
   {
     value: EHeaderMenu.Salary,

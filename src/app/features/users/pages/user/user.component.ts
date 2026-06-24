@@ -26,6 +26,7 @@ import {LoaderComponent} from "@shared/components/loader/loader.component";
 import {PhoneMaskDirective} from "@shared/directives/phone-mask";
 import {ConfirmModalComponent} from "@shared/components/confirm-modal/confirm-modal.component";
 import {Platform} from "@ionic/angular";
+import {RoleListComponent} from "@shared/components/role-list/role-list.component";
 
 @Component({
   selector: 'cp-user',
@@ -48,6 +49,7 @@ import {Platform} from "@ionic/angular";
     LoaderComponent,
     PhoneMaskDirective,
     ConfirmModalComponent,
+    RoleListComponent,
   ],
   providers: [UserFacade]
 })
@@ -70,14 +72,17 @@ export class UserComponent implements OnInit {
       return this.translateService.instant(this.USER_UPDATE_TITLE[this.userFacade.menuActive()])
     }
   });
+  public selectedRoles = signal<EUserRole[]>([])
   public attachUser = signal<IUser[]>([]);
-  public isReadonly = computed(() => this.userFacade.isTeacher())
+  public isReadonly = computed(() =>
+    this.userFacade.isTeacher() || (this.selectedRoles().includes(EUserRole.Admin) && this.userFacade.isAdmin())
+  )
   public modalBreakpoints = this.platform.is('desktop') ? undefined : [0, 0.5, 1];
   public initialBreakpoint = this.platform.is('desktop') ? undefined : 0.5;
 
   public userModel = signal({
     id: 0,
-    role: this.userFacade.roleCreate(),
+    roles: this.selectedRoles(),
     email: '',
     creative_name: '',
     first_name: '',
@@ -92,18 +97,25 @@ export class UserComponent implements OnInit {
     effect(() => {
       this.user.set(this.userFacade.user())
       this.attachUser.set(this.user()?.teachers as IUser[] ?? []);
+      this.selectedRoles.set(this.user()?.roles ?? []);
+
       this.updateForm();
+    });
+
+    effect(() => {
+      this.userForm.roles().value.set(this.selectedRoles());
     });
   }
 
   public ngOnInit(): void {
     this.userFacade.getUser();
+    this.selectedRoles.set([this.userFacade.roleCreate()]);
   }
 
   private updateForm(): void {
     this.userModel.set({
       id: this.user()?.id ?? 0,
-      role: this.user()?.role ?? this.userFacade.roleCreate(),
+      roles: this.user()?.roles ?? [],
       email: this.user()?.email ?? '',
       creative_name: this.user()?.creative_name ?? '',
       first_name: this.user()?.first_name ?? '',
@@ -133,7 +145,7 @@ export class UserComponent implements OnInit {
     pattern(controls.phone, /^\+380 \d{2} \d{3} \d{2} \d{2}$/, { message: 'errors.format-phone' });
 
     hidden(controls.teacher_ids, ({ valueOf }) =>
-      valueOf(controls.role) !== EUserRole.Student
+      !valueOf(controls.roles).includes(EUserRole.Student)
     );
   });
 
@@ -165,7 +177,7 @@ export class UserComponent implements OnInit {
     values.phone = values.phone.replace(/\D/g, '');
     const payload: Record<string, any> = { ...values };
 
-    if (values.role !== EUserRole.Student) {
+    if (!values.roles.includes(EUserRole.Student)) {
       delete payload['teacher_ids'];
     }
 

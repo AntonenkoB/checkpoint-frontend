@@ -22,6 +22,7 @@ import {EUserRole, IUser} from "@models/user.model";
 import {addIcons} from "ionicons";
 import {FORM_PASSWORD_ICONS, FORM_SELECT_ICONS} from "@models/form.models";
 import {IUserUpdate, USER_CREATE_TITLE} from "@users/models/user.model";
+import {RoleListComponent} from "@shared/components/role-list/role-list.component";
 
 @Component({
   selector: "cp-user-create",
@@ -42,7 +43,8 @@ import {IUserUpdate, USER_CREATE_TITLE} from "@users/models/user.model";
     PhoneMaskDirective,
     SelectUserComponent,
     TranslatePipe,
-    UserItemComponent
+    UserItemComponent,
+    RoleListComponent
   ],
   providers: [UserFacade]
 })
@@ -58,9 +60,10 @@ export class UserCreateComponent implements OnInit {
   public user = signal(this.userFacade.user());
   public userTitle = computed(() => this.translateService.instant(this.USER_CREATE_TITLE[this.userFacade.menuActive()]));
   public attachUser = signal<IUser[]>([]);
-
+  public selectedRoles = signal<EUserRole[]>([this.userFacade.roleCreate()])
   public userModel = signal({
     role: this.userFacade.roleCreate(),
+    roles: this.selectedRoles(),
     email: '',
     creative_name: '',
     first_name: '',
@@ -78,12 +81,14 @@ export class UserCreateComponent implements OnInit {
         ...model,
         role: this.userFacade.roleCreate()
       }));
+
+      this.userForm.roles().value.set(this.selectedRoles());
     });
   }
 
   public ngOnInit(): void {
+    this.selectedRoles.set([this.userFacade.roleCreate()]);
   }
-
 
   public userForm = form(this.userModel, (controls) => {
     required(controls.email, { message: 'errors.required' });

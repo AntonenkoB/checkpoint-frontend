@@ -91,6 +91,10 @@
           ></ion-input>
         </ion-item>
 
+        @if (userFacade.availableRoleOptions().length > 1 && !isReadonly()) {
+          <cp-role-list [roles]="userFacade.availableRoleOptions()" [(selectedRoles)]="selectedRoles"></cp-role-list>
+        }
+
         @if (userFacade.roleCreate() === eUserRole.Student) {
           @if (userFacade.isAdmin()) {
             @for (selectedTeacher of attachUser(); track selectedTeacher.id) {

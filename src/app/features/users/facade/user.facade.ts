@@ -1,15 +1,15 @@
-import {computed, effect, inject, Injectable, Signal} from "@angular/core";
+import {computed, inject, Injectable, Signal} from "@angular/core";
 import {Store} from "@ngrx/store";
 import {AppState} from "../../../store/app-store";
-import {EHeaderMenu, EUserPages, IUserUpdate} from "../models/user.model";
-import {IUser, EUserRole} from "@models/user.model";
+import {CREATABLE_ROLES_MAP, EHeaderMenu, EUserPages, IUserUpdate} from "../models/user.model";
+import {IUser, EUserRole, USER_ROLE_OPTIONS} from "@models/user.model";
 import {UserActions} from "../store/actions";
 import {ActivatedRoute} from "@angular/router";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {selectAllTeachers, selectUser, selectUserLoading} from "../store/selectors";
 import {RouterActions} from "../../../store/router/actions";
 import {EAppPages, ERoutParams} from "@models/router.model";
-import {selectQueryParam, selectRouteParams} from "../../../store/router/selectors";
+import {selectRouteParams} from "../../../store/router/selectors";
 import {ProfileFacade} from "@profile/facade/profile.facade";
 import {StudentsStore} from "@users/store/students.store";
 import {TeachersStore} from "@users/store/teachers.store";
@@ -24,7 +24,6 @@ export class UserFacade {
   private queryParams = toSignal(this.route.queryParams);
   public menuActive = computed(() => this.queryParams()?.['role'] as EHeaderMenu);
   public roleCreate = computed(() => this.queryParams()?.['role'] as EUserRole);
-
   public selectRouteParams = this.store.selectSignal(selectRouteParams);
   public user = computed(() => {
     let user
@@ -41,13 +40,23 @@ export class UserFacade {
     }
 
     return user;
-  })
+  });
   public userLoading = this.store.selectSignal(selectUserLoading);
   public teachersList: Signal<IUser[]> = this.store.selectSignal(selectAllTeachers);
   public readonly profile = this.profileFacade.profile;
+  public readonly activeRole = this.profileFacade.activeRole;
   public readonly isOwner = this.profileFacade.isOwner;
   public readonly isAdmin = this.profileFacade.isAdmin;
   public readonly isTeacher = this.profileFacade.isTeacher;
+
+  public availableRoleOptions = computed(() => {
+    const creatorRole = this.activeRole()!;
+
+    if (this.menuActive() === EHeaderMenu.Student) return [];
+
+    const allowed = CREATABLE_ROLES_MAP[creatorRole] ?? [];
+    return USER_ROLE_OPTIONS.filter(option => allowed.includes(option.value));
+  });
 
   constructor() {
   }

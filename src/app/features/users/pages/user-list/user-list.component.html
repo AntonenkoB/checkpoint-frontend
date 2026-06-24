@@ -2,6 +2,7 @@
   <div class="user-list-header container">
     <cp-header-mobile
         [profile]="profile()"
+        [activeRole]="userListFacade.activeRole()!"
         [activeMenu]="userListFacade.currentTab()"
         [amountStudents]="amountStudents()"
         (selectMenu)="menuChange($event)"
@@ -24,7 +25,7 @@
     }
   </div>
 
-  @if (profile()?.role === eUserRole.Owner && activeMenu() === eHeaderMenu.Teacher ) {
+  @if (userListFacade.activeRole() === eUserRole.Owner && activeMenu() === eHeaderMenu.Teacher ) {
     <div class="owner-tabs container">
       <cp-tabs
           [bntStyle]="'btn-clear'"
@@ -43,17 +44,17 @@
         <ion-content class="user-list">
           <div class="user-list-content container">
             <div class="owner-additional-page">
-              @if (profile()?.role === eUserRole.Owner && activeRatesMenu() === eRateTabs.Price) {
+              @if (userListFacade.activeRole() === eUserRole.Owner && activeRatesMenu() === eRateTabs.Price) {
                 <cp-rete-list></cp-rete-list>
               }
 
-              @if (profile()?.role === eUserRole.Owner && activeRatesMenu() === eRateTabs.Salary) {
+              @if (userListFacade.activeRole() === eUserRole.Owner && activeRatesMenu() === eRateTabs.Salary) {
                 <cp-salary-list></cp-salary-list>
               }
             </div>
 
             @if (
-                profile()?.role === eUserRole.Owner
+                userListFacade.activeRole() === eUserRole.Owner
                 && activeRatesMenu() === eRateTabs.AllTeaches
                 && activeMenu() === eHeaderMenu.Teacher
             ) {
@@ -70,11 +71,12 @@
             }
 
 
-            @if (profile()?.role === eUserRole.Owner && activeMenu() !== eHeaderMenu.Teacher) {
+            @if (userListFacade.activeRole() === eUserRole.Owner && activeMenu() !== eHeaderMenu.Teacher) {
               @for (user of userListFacade.userList(); track user.id) {
                 <cp-user-item
                     class="user-item"
                     [user]="user"
+                    [showTeacher]="true"
                     [withAdditionalInfo]="true"
                     [withSalaryInfo]="activeRatesMenu() === eRateTabs.Salary"
                     (openUser)="userListFacade.goToUser(user.id, this.activeMenu(), activeRatesMenu())"
@@ -83,11 +85,12 @@
               }
             }
 
-            @if (profile()?.role !== eUserRole.Owner) {
+            @if (userListFacade.activeRole() !== eUserRole.Owner) {
               @for (user of userListFacade.userList(); track user.id) {
                 <cp-user-item
                     class="user-item"
                     [user]="user"
+                    [showTeacher]="userListFacade.activeRole() !== eUserRole.Teacher"
                     [withAdditionalInfo]="true"
                     [withSalaryInfo]="activeRatesMenu() === eRateTabs.Salary"
                     (openUser)="userListFacade.goToUser(user.id, this.activeMenu(), activeRatesMenu())"
@@ -114,7 +117,7 @@
   </div>
 
   @if (activeRatesMenu() !== eRateTabs.Price && activeRatesMenu() !== eRateTabs.Salary) {
-    @if (!(profile()?.role === eUserRole.Admin && activeMenu() === eHeaderMenu.Admin)) {
+    @if (!(userListFacade.activeRole() === eUserRole.Admin && activeMenu() === eHeaderMenu.Admin)) {
       <div class="buttons container">
         <ion-button (click)="userListFacade.create(activeMenu())">{{ this.USER_ACTIONS_BTN[activeMenu()] | translate }}</ion-button>
       </div>

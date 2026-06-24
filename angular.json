@@ -136,6 +136,10 @@
     "analytics": false
   },
   "schematics": {
+    "@schematics/angular:component": {
+      "style": "scss",
+      "type": "component"
+    },
     "@ionic/angular-toolkit:component": {
       "styleext": "scss"
     },

@@ -1,13 +1,13 @@
-import {AfterViewInit, Component, computed, effect, inject, OnInit} from "@angular/core";
+import {Component, computed, effect, inject, OnInit} from "@angular/core";
 import {IonButton, IonFab, IonFabButton, IonFabList, IonIcon} from "@ionic/angular/standalone";
 import {TranslatePipe} from "@shared/pipes/translate-pipe";
-import {UserItemComponent} from "@shared/components/user-item/user-item.component";
 import {DomSanitizer} from "@angular/platform-browser";
 import {DOTS_SVG, PLUS_SVG} from "@models/svg.models";
 import {StudentFacade} from "@student/facade/student.facade";
 import {ILesson} from "@models/lesson.model";
 import {AvatarComponent} from "@shared/components/avatar/avatar.component";
 import {LessonDateTimePipe} from "@shared/pipes/lesson-date-time-pipe";
+import {UserItemReadComponent} from "@shared/components/user-item-read/user-item-read.component";
 
 @Component({
   selector: "cp-student-dashboard",
@@ -16,12 +16,12 @@ import {LessonDateTimePipe} from "@shared/pipes/lesson-date-time-pipe";
   imports: [
     IonButton,
     TranslatePipe,
-    UserItemComponent,
     AvatarComponent,
     LessonDateTimePipe,
     IonFab,
     IonFabButton,
-    IonFabList
+    IonFabList,
+    UserItemReadComponent
   ],
   providers: [StudentFacade]
 })

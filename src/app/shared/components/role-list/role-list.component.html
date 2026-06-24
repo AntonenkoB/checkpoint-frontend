@@ -1,0 +1,13 @@
+<div class="role-list">
+  @for (role of roles(); track role.value) {
+    <ion-button
+        class="role-btn"
+        type="button"
+        fill="outline"
+        [class.active]="selectedRoles().includes(role.value)"
+        (click)="roleChange(role.value)"
+    >
+      {{ role.title | translate }}
+    </ion-button>
+  }
+</div>

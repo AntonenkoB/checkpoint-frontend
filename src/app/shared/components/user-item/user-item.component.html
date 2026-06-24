@@ -40,12 +40,20 @@
           ></div>
         }
 
-        @if (timeLesson() && user()?.role === EUserRole.Student && (!withTeacher() || !showTeacher())) {
+        @if (timeLesson() && user()?.roles?.includes(EUserRole.Student) && (!withTeacher() || !showTeacher())) {
           <div
               class="dots"
               [innerHTML]="DOTS_SVG"
               (click)="dotsEvent.emit(user()?.id)"
           ></div>
+        }
+
+        @if (user()?.teachers?.length! > 0 && showTeacher()) {
+          <div class="user-teachers">
+            @for (teacher of user()?.teachers; track teacher?.id) {
+              <cp-avatar class="user-teachers-avatar" [src]="teacher?.avatar ?? ''"></cp-avatar>
+            }
+          </div>
         }
 
         @if (withTeacher() && showTeacher()) {

@@ -69,7 +69,7 @@ export class UserListComponent implements OnInit {
 
   public ionViewWillEnter(): void {
     const snapshot = this.userListFacade.route.snapshot.queryParams;
-    const tab = (snapshot['tab'] || snapshot['role']) as EHeaderMenu ?? EHeaderMenu.Student;
+    const tab = (snapshot['tab'] || snapshot['role']) as EHeaderMenu ?? EHeaderMenu.Schedule;
     this.menuChange(tab);
   }
 

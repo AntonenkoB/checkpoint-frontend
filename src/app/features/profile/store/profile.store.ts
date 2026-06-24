@@ -13,16 +13,22 @@ import {Permission, ROLE_PERMISSIONS} from "@shared/permissions/permissions.conf
 import {ImpactStyle} from "@capacitor/haptics";
 import {HapticService} from "@shared/services/haptic.service";
 import {ToastService} from "@shared/services/toast.service";
+import {Preferences} from "@capacitor/preferences";
+import {getHighestRole} from "@shared/permissions/role-priority";
 
 export interface ProfileState {
   isLoading: boolean;
   profile: IUser | null;
+  activeRole: EUserRole | null;
 }
 
 const initialState: ProfileState = {
   isLoading: false,
   profile: null,
+  activeRole: null,
 };
+
+const ACTIVE_ROLE_KEY = 'active_role';
 
 export const ProfileStore = signalStore(
   {
@@ -33,17 +39,60 @@ export const ProfileStore = signalStore(
 
   withComputed((state, store = inject(Store)) => ({
     isReady: computed(() => !state.isLoading() && state.profile() !== null),
-    isOwner: computed(() => state.profile()?.role === EUserRole.Owner),
-    isAdmin: computed(() => state.profile()?.role === EUserRole.Admin),
-    isTeacher: computed(() => state.profile()?.role === EUserRole.Teacher),
-    isStudent: computed(() => state.profile()?.role === EUserRole.Student),
+    isOwner: computed(() => state.activeRole() === EUserRole.Owner),
+    isAdmin: computed(() => state.activeRole() === EUserRole.Admin),
+    isTeacher: computed(() => state.activeRole() === EUserRole.Teacher),
+    isStudent: computed(() => state.activeRole() === EUserRole.Student),
 
     effectivePermissions: computed(() => {
-      const role = state.profile()?.role;
+      const role = state.activeRole();
       if (!role) return [];
       return ROLE_PERMISSIONS[role] ?? [];
     }),
   })),
+
+  withMethods((state) => {
+    return {
+      hasPermission(permission: Permission): boolean {
+        return state.effectivePermissions().includes(permission);
+      },
+
+      hasAnyPermission(permissions: Permission[]): boolean {
+        return permissions.some(p => state.effectivePermissions().includes(p));
+      },
+
+      hasAllPermissions(permissions: Permission[]): boolean {
+        return permissions.every(p => state.effectivePermissions().includes(p));
+      },
+
+      async setActiveRole(role: EUserRole | null): Promise<void> {
+        if (!role) return;
+
+        const availableRoles = state.profile()?.roles ?? [];
+        if (!availableRoles.includes(role)) return;
+
+        patchState(state, { activeRole: role });
+        await Preferences.set({ key: ACTIVE_ROLE_KEY, value: role });
+      },
+
+      async restoreActiveRole(): Promise<void> {
+        const { value } = await Preferences.get({ key: ACTIVE_ROLE_KEY });
+        const available = state.profile()?.roles ?? [];
+        const saved = value as EUserRole | null;
+
+        const role = (saved && available.includes(saved))
+          ? saved
+          : getHighestRole(available);
+
+        void this.setActiveRole(role);
+        },
+
+      async clearActiveRole(): Promise<void> {
+        await Preferences.remove({ key: ACTIVE_ROLE_KEY});
+        patchState(state, { activeRole: null });
+      }
+    };
+  }),
 
   withMethods((
     state,
@@ -54,19 +103,6 @@ export const ProfileStore = signalStore(
     toastService = inject(ToastService),
     hapticService = inject(HapticService),
   ) => ({
-
-    hasPermission(permission: Permission): boolean {
-      return state.effectivePermissions().includes(permission);
-    },
-
-    hasAnyPermission(permissions: Permission[]): boolean {
-      return permissions.some(p => state.effectivePermissions().includes(p));
-    },
-
-    hasAllPermissions(permissions: Permission[]): boolean {
-      return permissions.every(p => state.effectivePermissions().includes(p));
-    },
-
     getProfile: rxMethod<void>(
       pipe(
         tap(() => patchState(state, {isLoading: true})),
@@ -78,6 +114,7 @@ export const ProfileStore = signalStore(
             });
 
             themeService.apply(response.data.theme);
+            state.restoreActiveRole();
           }),
           catchError((err) => {
             patchState(state, {isLoading: false});

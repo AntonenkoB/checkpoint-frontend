@@ -12,14 +12,20 @@ import {ProfileStore} from "@profile/store/profile.store";
 import {EStudentPages} from "@student/models/student.model";
 import {Permission} from "@shared/permissions/permissions.config";
 import {EStudentProfileTabs} from "@profile/models/profile.model";
+import {HapticService} from "@shared/services/haptic.service";
+import {ImpactStyle} from "@capacitor/haptics";
+import {NavController} from "@ionic/angular";
 
 @Injectable({ providedIn: 'root' })
 export class ProfileFacade {
+  private navController = inject(NavController);
   private store = inject<Store<AppState>>(Store);
   public profileStore = inject(ProfileStore);
   private themeService = inject(ThemeService);
+  private hapticService = inject(HapticService);
   public readonly profile = this.profileStore.profile;
   public readonly isLoading = this.profileStore.isLoading;
+  public readonly activeRole = this.profileStore.activeRole;
 
   public readonly isOwner = this.profileStore.isOwner;
   public readonly isAdmin = this.profileStore.isAdmin;
@@ -75,8 +81,15 @@ export class ProfileFacade {
     this.profileStore.deleteAccount()
   }
 
+  public async switchRole(role: EUserRole): Promise<void> {
+    if (role === this.activeRole()) return;
+    await this.profileStore.setActiveRole(role);
+    void this.hapticService.impact(ImpactStyle.Medium);
+    void this.navController.navigateRoot([EAppPages.Profile], { animated: false });
+  }
+
   public close(): void {
-    switch (this.profile()?.role) {
+    switch (this.profileStore.activeRole()) {
       case EUserRole.Student:
         this.store.dispatch(RouterActions.goTo({path: [EAppPages.Student, EStudentPages.StudentDashboard], back: true}));
         break;
@@ -85,7 +98,7 @@ export class ProfileFacade {
       case EUserRole.Owner:
         this.store.dispatch(RouterActions.goTo({
           path: [EAppPages.Users, EUserPages.ListUsers],
-          extras: {queryParams: {tab: EHeaderMenu.Student}},
+          extras: {queryParams: {tab: EHeaderMenu.Schedule}},
           back: true
         }));
         break;

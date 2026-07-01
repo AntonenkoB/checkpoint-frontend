@@ -1,0 +1,64 @@
+<div class="settings-general container">
+  <cp-header-secondary
+      [isBack]="true"
+      [title]="'settings.title' | translate"
+      (back)="settingsFacade.goToSettingsList()"
+  ></cp-header-secondary>
+
+  <div class="settings-general-content">
+
+    @if (settingsFacade.availableRole().length > 1) {
+      <div class="settings-general-item">
+        <div class="title">{{ 'settings.role-title' | translate }}</div>
+        <div class="role-list">
+          <ion-segment class="theme-btn btn-with-border" (ionChange)="settingsFacade.switchRole($event)" [value]="settingsFacade.activeRole()?.value">
+            @for (role of settingsFacade.availableRole(); track role.value) {
+              <ion-segment-button class="segment-button" [value]="role.value">
+                <ion-label>{{ role.title | translate }}</ion-label>
+              </ion-segment-button>
+            }
+          </ion-segment>
+        </div>
+      </div>
+    }
+
+    <div class="settings-general-item">
+      <div class="title">{{ 'settings.theme.title' | translate }}</div>
+      <cp-tabs
+          [tabList]="THEME_ACTIONS"
+          [bntStyle]="'btn-fill'"
+          [activeTab]="settingsFacade.profile()?.theme"
+          (segmentChange)="changeTheme($event)"
+      ></cp-tabs>
+    </div>
+    <div class="settings-general-item">
+      <div class="title">{{ 'settings.langs.title' | translate }}</div>
+      <cp-tabs
+          [tabList]="LANGS_TAB"
+          [bntStyle]="'btn-fill'"
+          [activeTab]="settingsFacade.profile()?.lang"
+          (segmentChange)="changeLang($event)"
+      ></cp-tabs>
+    </div>
+    <div class="settings-general-item">
+      <div class="title">{{ 'settings.notification.title' | translate }}</div>
+      <cp-tabs
+          [tabList]="NOTIFICATIONS_ENABLE_TAB"
+          [bntStyle]="'btn-fill'"
+          [activeTab]="NOTIFICATIONS_ENABLE_TAB[0].value"
+          (segmentChange)="changeNotificationEnabled($event)"
+      ></cp-tabs>
+    </div>
+    @if (settingsFacade.isStudent()) {
+      <div class="settings-general-item">
+        <div class="title">{{ 'settings.notification.reminder.title' | translate }}</div>
+        <cp-tabs
+            [tabList]="NOTIFICATIONS_REMAINDER_TAB"
+            [bntStyle]="'btn-fill'"
+            [activeTab]="NOTIFICATIONS_REMAINDER_TAB[0].value"
+            (segmentChange)="changeNotificationRemainder($event)"
+        ></cp-tabs>
+      </div>
+    }
+  </div>
+</div>

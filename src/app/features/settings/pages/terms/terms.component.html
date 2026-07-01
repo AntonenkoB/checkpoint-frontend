@@ -1,0 +1,18 @@
+<div class="terms container-large">
+  <div class="container">
+    <cp-header-secondary
+        [isBack]="true"
+        [title]="'settings.terms' | translate"
+        (back)="settingsFacade.goToSettingsList()"
+    ></cp-header-secondary>
+  </div>
+
+
+  <div class="pdf-viewer-wrap">
+    <ngx-extended-pdf-viewer
+        class="pdf-viewer"
+        [src]="pdfUrl"
+        [showToolbar]="false"
+    ></ngx-extended-pdf-viewer>
+  </div>
+</div>

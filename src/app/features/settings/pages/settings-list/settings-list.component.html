@@ -1,0 +1,85 @@
+<div class="container">
+  <cp-header-secondary
+      [isBack]="true"
+      [title]="'settings.list-title' | translate"
+      (back)="settingsFacade.close()"
+  ></cp-header-secondary>
+</div>
+
+<ion-content class="settings-list">
+  <div class="container">
+    @if (settingsFacade.isStudent()) {
+      <div class="settings-list-item lessons">
+        <div class="lessons-info">
+          {{ settingsFacade.amountTeacherLessons() }}
+          {{settingsFacade.amountTeacherLessons() | translatePlural: 'lessons.type.lesson'}} {{ "lessons.type.with-teacher" | translate }},
+          {{settingsFacade.amountIndividualLessons()}} {{settingsFacade.amountIndividualLessons() | translatePlural: 'lessons.type.independent'}}
+        </div>
+        <ion-button (click)="settingsFacade.goToSelectPaymentType()">{{"market.btn-purchase" | translate}}</ion-button>
+      </div>
+    }
+
+    @for (item of settingsFacade.settingsList(); track item.label) {
+      <div class="settings-list-item">
+        <div class="title" (click)="settingsFacade.goToLink(item.link, item.queryParams)">{{ item.label | translate }}</div>
+      </div>
+    }
+
+    <div class="settings-list-item">
+      <div class="title" (click)="settingsFacade.goToProfile()">{{ "profile.title" | translate }}</div>
+    </div>
+    <div class="settings-list-item">
+      <div class="title" (click)="settingsFacade.goToSettingsGeneral()">{{ "settings.title" | translate }}</div>
+    </div>
+    <div class="settings-list-item">
+      <div class="title" (click)="settingsFacade.goToSettingsTerms()">{{ "settings.terms" | translate }}</div>
+    </div>
+    <div class="settings-list-item">
+      <div class="title" (click)="settingsFacade.goToSettingsPrivacy()">{{ "settings.privacy" | translate }}</div>
+    </div>
+    <div class="settings-list-item">
+      <div class="title" id="open-delete-modal">{{ "profile.delete" | translate }}</div>
+    </div>
+    <div class="settings-list-item">
+      <div class="title" id="open-exit-modal">{{ "common.logout" | translate }}</div>
+    </div>
+  </div>
+</ion-content>
+
+<ion-modal
+    #exitModal
+    id="exit-modal"
+    trigger="open-exit-modal"
+    [initialBreakpoint]="initialBreakpoint"
+    [breakpoints]="modalBreakpoints"
+>
+  <ng-template>
+    <cp-confirm-modal
+        [title]="'profile.exit-title' | translate"
+        [btnConfirm]="'profile.exit' | translate"
+        [btnCansel]="'profile.no-exit' | translate"
+        (cansel)="exitModalCansel()"
+        (confirm)="exitModalConfirm()"
+    ></cp-confirm-modal>
+  </ng-template>
+</ion-modal>
+
+<ion-modal
+    #deleteModal
+    id="delete-modal"
+    trigger="open-delete-modal"
+    [initialBreakpoint]="initialBreakpoint"
+    [breakpoints]="modalBreakpoints"
+>
+  <ng-template>
+    <cp-confirm-modal
+        [title]="'profile.delete-title' | translate"
+        [btnConfirm]="'profile.delete' | translate"
+        [btnCansel]="'profile.no-delete' | translate"
+        [isDelete]="true"
+        (cansel)="deleteModalCansel()"
+        (confirm)="deleteModalConfirm()"
+    ></cp-confirm-modal>
+  </ng-template>
+</ion-modal>
+

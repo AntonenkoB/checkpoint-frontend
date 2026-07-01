@@ -1,0 +1,18 @@
+:host {
+  .terms {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .pdf-viewer-wrap {
+    flex: 1 1 auto;
+  }
+  .pdf-viewer {
+    --page-placeholder-background-color: var(--color-background-primary);
+    height: 100%;
+
+    .pdfViewer#viewer {
+      background-color: var(--color-background-primary);
+    }
+  }
+}

@@ -1,0 +1,11 @@
+:host {
+  .settings-general-item {
+    padding-top: var(--spacing-40);
+  }
+
+  .title {
+    font: var(--font-alumi-20-bold);
+    padding-bottom: var(--spacing-8);
+    text-transform: uppercase;
+  }
+}

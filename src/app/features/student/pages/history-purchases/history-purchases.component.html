@@ -1,5 +1,9 @@
 <div class="container">
-  <cp-header-secondary [title]="'student.pages.history-purchases' | translate" (close)="studentFacade.goToProfile(true)"></cp-header-secondary>
+  <cp-header-secondary
+      [isBack]="true"
+      [title]="'student.pages.history-purchases' | translate"
+      (back)="studentFacade.goToSettings(true)"
+  ></cp-header-secondary>
 </div>
 
 <ion-content class="purchases-wrap">

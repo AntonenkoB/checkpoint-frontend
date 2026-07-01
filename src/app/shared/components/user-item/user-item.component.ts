@@ -6,6 +6,7 @@ import {ARROW_SVG, CHECK_THIN_SVG, CLOSE_SVG, DOTS_SVG} from "@models/svg.models
 import {ITimeRange} from "@schedule/models/schedule.model";
 import {IUser, EUserRole} from "@models/user.model";
 import {DatePipe} from "@angular/common";
+import {TranslatePluralPipe} from "@shared/pipes/translate-plural.pipe";
 
 @Component({
   selector: "cp-user-item",
@@ -14,7 +15,8 @@ import {DatePipe} from "@angular/common";
   imports: [
     AvatarComponent,
     TranslatePipe,
-    DatePipe
+    DatePipe,
+    TranslatePluralPipe
   ]
 })
 export class UserItemComponent {

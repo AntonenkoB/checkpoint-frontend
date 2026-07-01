@@ -76,9 +76,9 @@
           }
           <div class="student-info-lessons">{{purchase.lessons_remaining}}
             @if (purchase.teacher) {
-              {{"lessons.type.lesson" | translate}}
+              {{purchase.lessons_remaining | translatePlural: 'lessons.type.lesson'}}
             } @else {
-              {{"lessons.type.independent" | translate }}
+              {{purchase.lessons_remaining | translatePlural: 'lessons.type.independent'}}
             }
 
             @if (purchase.expires_at) {

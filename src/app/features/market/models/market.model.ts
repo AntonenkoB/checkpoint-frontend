@@ -24,6 +24,7 @@ export type TPaymentStatus = 'pending' | 'success' | 'failed';
 export interface IMarketPurchaseLessons {
   "plan_id": number,
   "quantity": number
+  "student_id"?: number,
 }
 export const SELECTED_LESSONS_TYPE = (): Record<EMarketPlanType, string> => ({
   [EMarketPlanType.Single]: "market.select-lessons-count",

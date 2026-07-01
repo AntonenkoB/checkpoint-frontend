@@ -20,6 +20,7 @@ export enum ELessonsType {
 export enum ELessonFlow {
   Booking = 'booking',
   Purchase = 'purchase',
+  AddFree = 'free',
 }
 
 export interface ISetLesson {

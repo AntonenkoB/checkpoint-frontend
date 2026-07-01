@@ -7,9 +7,9 @@ import {pipe, switchMap, tap, catchError, of, forkJoin} from 'rxjs';
 import {IUser} from "@models/user.model";
 import {StudentService} from "@student/services/student.service";
 import {IIncomingStudentLessons} from "@student/models/student.model";
-import {StudentHelper} from "@shared/helpers/student.helper";
 import {IPurchase} from "@rates/models/rates.model";
 import {groupLessonsByWeek} from "@shared/utils/group-lessons-for-student.utils";
+import {TranslateService} from "@shared/services/translate.service";
 
 export interface StudentState {
   isLoading: boolean;
@@ -32,10 +32,19 @@ export const StudentStore = signalStore(
   withState(initialState),
   withEntities<IUser>(),
 
-  withComputed((state, store = inject(Store)) => ({
+  withComputed((
+    state,
+    translateService = inject(TranslateService),
+  ) => ({
     isReady: computed(() => !state.isLoading() !== null),
-    groupedFutureLessons: computed(() => groupLessonsByWeek(state.lessons(), 'future')),
-    groupedPastLessons: computed(() => groupLessonsByWeek(state.lessons(), 'past'))
+    groupedFutureLessons: computed(() => groupLessonsByWeek(state.lessons(), 'future', {
+      thisWeek: translateService.instant('lessons.this-week'),
+      nextWeek: translateService.instant('lessons.next-week'),
+    })),
+    groupedPastLessons: computed(() => groupLessonsByWeek(state.lessons(), 'past', {
+      thisWeek: translateService.instant('lessons.this-week'),
+      nextWeek: translateService.instant('lessons.next-week'),
+    }))
   })),
 
   withMethods((

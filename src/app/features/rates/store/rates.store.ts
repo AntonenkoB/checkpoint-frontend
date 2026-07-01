@@ -6,10 +6,9 @@ import {rxMethod} from '@ngrx/signals/rxjs-interop';
 import {catchError, concatMap, of, pipe, switchMap, tap} from 'rxjs';
 import {selectRouteParam} from '../../../store/router/selectors';
 import {EAppPages, ERoutParams} from '@shared/models/router.model';
-import {IRate, IUpdateRate} from '../models/rates.model';
+import {ERatePages, IRate, IUpdateRate} from '../models/rates.model';
 import {RatesService} from '../services/rates.service';
 import {RouterActions} from "../../../store/router/actions";
-import {EHeaderMenu, ERateTabs, EUserPages} from "@users/models/user.model";
 import {HapticService} from "@shared/services/haptic.service";
 import {ImpactStyle} from "@capacitor/haptics";
 
@@ -99,8 +98,7 @@ export const RatesStore = signalStore(
               state.getAllRates();
               void hapticService.impact(ImpactStyle.Medium);
               store.dispatch(RouterActions.goTo({
-                path: [EAppPages.Users, EUserPages.ListUsers],
-                extras: {queryParams: {tab: EHeaderMenu.Teacher, ratesTab: ERateTabs.Price}}
+                path: [EAppPages.Rates, ERatePages.RateList],
               }));
             } else {
               patchState(state, {isLoading: false});

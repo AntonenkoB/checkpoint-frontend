@@ -1,5 +1,5 @@
 <div class="lessons-type container">
-  <cp-header-secondary [title]="titleType() | translate" (close)="lessonsFacade.goToStudentMain()"></cp-header-secondary>
+  <cp-header-secondary [title]="titleType() | translate" (close)="lessonsFacade.closeLessonsPage()"></cp-header-secondary>
 
   <div class="lessons-type-chose">
     <div class="with-teacher" (click)="lessonsFacade.selectedLessonType(eLessonsType.TeacherGuided)">{{"market.with-teacher" | translate}}</div>

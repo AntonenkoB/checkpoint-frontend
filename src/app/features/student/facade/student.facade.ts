@@ -11,8 +11,9 @@ import {LessonsFacade} from "@lessons/facade/lessons.facade";
 import {ILesson} from "@models/lesson.model";
 import {IUser} from "@models/user.model";
 import {formatLessonToDateTime} from "@shared/utils/date.utils";
+import {ESettingsPages} from "@settings/models/settings.model";
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class StudentFacade {
   private store = inject<Store<AppState>>(Store);
   private profileFacade = inject(ProfileFacade);
@@ -47,6 +48,10 @@ export class StudentFacade {
     this.store.dispatch(RouterActions.goTo({path: [EAppPages.Profile], back}));
   }
 
+  public goToSettings(back = false): void {
+    this.store.dispatch(RouterActions.goTo({path: [EAppPages.Settings, ESettingsPages.List], back}));
+  }
+
   public goToLessonsType(teacherId: number): void {
     this.store.dispatch(RouterActions.goTo({path: [EAppPages.Market, EMarketPages.PaymentType, teacherId]}))
   }
@@ -55,13 +60,6 @@ export class StudentFacade {
     this.store.dispatch(RouterActions.goTo({
       path: [EAppPages.Lessons, ELessonPages.LessonType],
       extras: {queryParams: {lessonsFlow: ELessonFlow.Booking}}
-    }));
-  }
-
-  public goToSelectPaymentType(): void {
-    this.store.dispatch(RouterActions.goTo({
-      path: [EAppPages.Lessons, ELessonPages.LessonType],
-      extras: {queryParams: {lessonsFlow: ELessonFlow.Purchase}}
     }));
   }
 

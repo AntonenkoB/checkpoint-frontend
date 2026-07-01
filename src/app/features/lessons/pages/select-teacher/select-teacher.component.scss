@@ -1,6 +1,7 @@
 :host {
   background-color: var(--color-background-primary);
   display: block;
+  height: 100%;
 
   .teachers {
     display: flex;
@@ -9,11 +10,41 @@
     height: 100%;
   }
 
+  .teachers-header {
+    display: block;
+    padding-bottom: var(--spacing-16);
+  }
+
+  .search-wrap {
+    background-color: var(--color-background-primary);
+    padding-bottom: 10px;
+    font: var(--font-open-16-regular);
+
+    .search {
+      --min-height: 32px  !important;
+      height: 32px  !important;
+
+      ::ng-deep {
+        ion-input {
+          --padding-top: 0px;
+          --padding-bottom: 6px;
+
+          --min-height: 28px !important;
+          min-height: 28px !important;
+          height: 28px;
+        }
+
+        .input-wrapper {
+          border-bottom: 1px solid var(--color-border-primary);
+          --border-color: var(--color-border-primary);
+        }
+      }
+    }
+  }
+
   .teachers-info {
     flex: 1 1 auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    overflow-y: auto;
   }
 
   .title {
@@ -27,12 +58,12 @@
     display: flex;
     flex-direction: column;
     gap: var(--spacing-24);
-    padding-bottom: 120px;
+    padding-bottom: var(--spacing-20);
   }
 
   .teacher {
     border: 1px solid var(--color-border-primary);
     border-radius: 8px;
-    padding: 0 var(--spacing-16);
+    padding: 0 var(--spacing-8);
   }
 }

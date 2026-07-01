@@ -72,3 +72,13 @@ export function getRangeDateTwoMonth(): {from: string, to: string} {
     to: formatDate(dateTo)
   };
 }
+
+export function getCurrentMonth(): string {
+  // const month = this.datePipe.transform(new Date(), 'yyyy-MM');
+
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+
+  return `${year}-${month}`;
+}

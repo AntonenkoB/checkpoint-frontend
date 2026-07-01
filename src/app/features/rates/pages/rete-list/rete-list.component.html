@@ -1,68 +1,77 @@
-<div class="reate-list container">
-  @for (rate of ratesFacade.teachersRateList(); track rate.id) {
-    @if (rate.teacher) {
-      <div class="reate-item" (click)="ratesFacade.goToSettingRate(rate.teacher.id)">
-        <cp-user-item-read
-            [user]="rate.teacher"
-        ></cp-user-item-read>
+<div class="container reate-header">
+  <cp-header-secondary
+      [isBack]="true"
+      [title]="'rates.price-title' | translate"
+      (back)="ratesFacade.goToSettings()"
+  ></cp-header-secondary>
+</div>
 
-        <div class="rates-info">
-          @for (plan of rate.plans; track plan.type) {
-            @if (plan.type === eRatesType.Single) {
-              <div class="rates-info-item">
-                <div class="rates-info-title">{{ "rates.price.one-time-type" | translate }}</div>
-                <div class="rates-info-price-wrap">
-                  <div class="rates-info-name">{{ "rates.price.school" | translate}}</div>
-                  <div class="rates-info-price">{{plan.school_amount}} ₴</div>
-                </div>
-                <div class="rates-info-price-wrap">
-                  <div class="rates-info-name">{{ "rates.price.teacher" | translate}}</div>
-                  <div class="rates-info-price">{{plan.teacher_amount}} ₴</div>
-                </div>
-              </div>
-            }
+<ion-content class="reate-list">
+  <div class="container">
+    @for (rate of ratesFacade.teachersRateList(); track rate.id) {
+      @if (rate.teacher) {
+        <div class="reate-item" (click)="ratesFacade.goToSettingRate(rate.teacher.id)">
+          <cp-user-item-read
+              [user]="rate.teacher"
+          ></cp-user-item-read>
 
-            @if (plan.type === eRatesType.Subscription) {
-              <div class="rates-info-item">
-                <div class="rates-info-title">{{ "rates.price.abonnement-type" | translate }}</div>
-                <div class="rates-info-price-wrap">
-                  <div class="rates-info-name">{{ "rates.price.school" | translate}}</div>
-                  <div class="rates-info-price">{{plan.school_amount}} ₴</div>
-                </div>
-                <div class="rates-info-price-wrap">
-                  <div class="rates-info-name">{{ "rates.price.teacher" | translate}}</div>
-                  <div class="rates-info-price">{{plan.teacher_amount}} ₴</div>
-                </div>
-              </div>
-            }
-          }
-        </div>
-      </div>
-    } @else {
-      <div class="reate-item" (click)="ratesFacade.goToSettingRate(0)">
-        <div class="rates-item-title">{{ "rates.price.one-time-type" | translate }}</div>
-        <div class="rates-info">
-          @for (plan of rate.plans; track plan.type) {
-            <div class="rates-info-item">
+          <div class="rates-info">
+            @for (plan of rate.plans; track plan.type) {
               @if (plan.type === eRatesType.Single) {
-                <div class="rates-info-price-wrap">
-                  <div class="rates-info-name">{{ "rates.price.one-time-type" | translate }}</div>
-                  <div class="rates-info-price">{{plan.school_amount}} ₴</div>
+                <div class="rates-info-item">
+                  <div class="rates-info-title">{{ "rates.price.one-time-type" | translate }}</div>
+                  <div class="rates-info-price-wrap">
+                    <div class="rates-info-name">{{ "rates.price.school" | translate}}</div>
+                    <div class="rates-info-price">{{plan.school_amount}} ₴</div>
+                  </div>
+                  <div class="rates-info-price-wrap">
+                    <div class="rates-info-name">{{ "rates.price.teacher" | translate}}</div>
+                    <div class="rates-info-price">{{plan.teacher_amount}} ₴</div>
+                  </div>
                 </div>
               }
 
               @if (plan.type === eRatesType.Subscription) {
-                <div class="rates-info-price-wrap">
-                  <div class="rates-info-name">{{ "rates.price.abonnement-type" | translate }}</div>
-                  <div class="rates-info-price">{{plan.school_amount}} ₴</div>
+                <div class="rates-info-item">
+                  <div class="rates-info-title">{{ "rates.price.abonnement-type" | translate }}</div>
+                  <div class="rates-info-price-wrap">
+                    <div class="rates-info-name">{{ "rates.price.school" | translate}}</div>
+                    <div class="rates-info-price">{{plan.school_amount}} ₴</div>
+                  </div>
+                  <div class="rates-info-price-wrap">
+                    <div class="rates-info-name">{{ "rates.price.teacher" | translate}}</div>
+                    <div class="rates-info-price">{{plan.teacher_amount}} ₴</div>
+                  </div>
                 </div>
               }
-            </div>
-          }
+            }
+          </div>
         </div>
-      </div>
-    }
-  }
+      } @else {
+        <div class="reate-item" (click)="ratesFacade.goToSettingRate(0)">
+          <div class="rates-item-title">{{ "rates.price.one-time-type" | translate }}</div>
+          <div class="rates-info">
+            @for (plan of rate.plans; track plan.type) {
+              <div class="rates-info-item">
+                @if (plan.type === eRatesType.Single) {
+                  <div class="rates-info-price-wrap">
+                    <div class="rates-info-name">{{ "rates.price.one-time-type" | translate }}</div>
+                    <div class="rates-info-price">{{plan.school_amount}} ₴</div>
+                  </div>
+                }
 
+                @if (plan.type === eRatesType.Subscription) {
+                  <div class="rates-info-price-wrap">
+                    <div class="rates-info-name">{{ "rates.price.abonnement-type" | translate }}</div>
+                    <div class="rates-info-price">{{plan.school_amount}} ₴</div>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        </div>
+      }
+    }
+  </div>
   <cp-loader [isLoad]="ratesFacade.rateLoader"></cp-loader>
-</div>
+</ion-content>

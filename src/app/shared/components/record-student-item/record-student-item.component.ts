@@ -16,6 +16,7 @@ export class RecordStudentItemComponent implements OnInit {
   public select = output<IUser>()
   public lessonsAmount = computed(() =>
     this.student()?.purchases?.reduce((sum, item) => sum + item.lessons_remaining, 0))
+
   constructor() {}
 
   ngOnInit() {}

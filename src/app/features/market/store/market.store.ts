@@ -114,5 +114,29 @@ export const MarketStore = signalStore(
         ))
       )
     ),
+    addFreeLessons: rxMethod<IMarketPurchaseLessons>(
+      pipe(
+        tap(() => patchState(state, {isLoading: true})),
+        switchMap((data) => marketService.addFreeLessons(data).pipe(
+          map(response => response.data),
+          tap((responseData) => {
+            patchState(state, {
+              isLoading: false,
+              paymentSuccessData: responseData
+            });
+
+            void hapticService.impact(ImpactStyle.Medium);
+            store.dispatch(RouterActions.goTo({
+              path: [EAppPages.Market, EMarketPages.PaymentSuccess],
+              extras: {queryParamsHandling: 'merge'},
+            }));
+          }),
+          catchError((err) => {
+            patchState(state, {isLoading: false});
+            return of(null);
+          })
+        ))
+      )
+    ),
   })),
 );

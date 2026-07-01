@@ -15,6 +15,7 @@ export enum EAppPages {
   Lessons = 'lessons',
   Student = 'student',
   Profile = 'profile',
+  Settings = 'settings',
 }
 
 export enum ERoutParams {

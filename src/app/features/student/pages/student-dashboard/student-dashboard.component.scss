@@ -75,48 +75,6 @@
     }
   }
 
-  .icon-plus {
-    display: inline-flex;
-  }
-
-  .student-action-wrap {
-    position: relative;
-    height: 40px;
-    width: 50px;
-
-    .dots {
-      ::ng-deep {
-        svg {
-          display: block;
-          transform: rotate(90deg);
-        }
-      }
-    }
-  }
-
-  .student-action-container {
-    right: 0;
-  }
-
-  .student-action-btn {
-    --background: transparent;
-    --box-shadow: 0;
-    flex: 0 0 40px;
-    height: 40px;
-    width: 30px;
-  }
-
-  .student-action-list {
-    border-radius: 8px;
-    border: 1px solid var(--color-border-primary-secondary);
-    padding: var(--spacing-16);
-    margin: 60px 0 0 0;
-  }
-
-  .student-action-item {
-    font: var(--font-open-16-regular);
-  }
-
   .lessons-wrap {
     overflow: auto;
     flex: 1 1 auto;

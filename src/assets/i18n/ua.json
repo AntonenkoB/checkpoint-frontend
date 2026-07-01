@@ -8,6 +8,7 @@
     "logout": "Вийти",
     "delete-profile": "Видалити профіль",
     "to": "до",
+    "user-agreements": "Користувацькі угоди",
     "roles": {
       "owner": "Власник",
       "admin": "Адмін",
@@ -46,8 +47,17 @@
     "planned-success-btn": "До зустрічі на уроках",
     "edit-title": "Редагування уроку",
     "type": {
-      "lesson": "Урок",
-      "independent": "Самостійне",
+      "with-teacher": "з вчителем",
+      "lesson": {
+        "one": "урок",
+        "few": "уроки",
+        "many": "уроків"
+      },
+      "independent": {
+        "one": "самостійне",
+        "few": "самостійних",
+        "many": "самостійних"
+      },
       "independent-lesson": "Самостійний урок"
     }
   },
@@ -80,15 +90,9 @@
     "exit": "Вийти",
     "no-exit": "Не виходити",
     "delete-title": "Видалити акаунт?",
-    "delete": "Видалити профіль",
+    "delete": "Видалити акаунт",
     "no-delete": "Не видаляти",
     "password": "Пароль",
-    "theme": {
-      "title": "Кольорова тема застосунку",
-      "system": "Системна",
-      "light": "Світла",
-      "dark": "Темна"
-    },
     "photo": {
       "validation-info": "Оберіть фото формату JPG, PNG, WEBP <br/> з максимальним розміром 10MB",
       "title": "Обрати фото",
@@ -124,6 +128,7 @@
     "select-lessons-count": "Виберіть кількість уроків до покупки",
     "select-abonnement-count": "Виберіть кількість абонементів до покупки",
     "buy-for-price": "Купити за {{price}} ₴",
+    "btn-purchase": "Купити уроки",
     "select-session-type": "Виберіть тип уроків",
     "select-payment-type": "Виберіть тип оплати",
     "with-teacher": "З учителем",
@@ -170,6 +175,37 @@
     "pages": {
       "history-purchases": "Історія оплат",
       "history-lessons": "Історія уроків"
+    }
+  },
+  "settings": {
+    "title": "Налаштування",
+    "list-title": "Профіль та налаштування",
+    "add-free-lessons": "Додати безкоштовні уроки",
+    "terms": "Умови використання",
+    "privacy": "Політика конфіденційності",
+    "role-title": "Роль",
+    "langs": {
+      "title": "Мова",
+      "ua": "Українська",
+      "en": "Англійська"
+    },
+    "theme": {
+      "title": "Кольорова тема застосунку",
+      "system": "Системна",
+      "light": "Світла",
+      "dark": "Темна"
+    },
+    "notification": {
+      "title": "Сповіщення",
+      "enabled": "дозволено",
+      "disabled": "заборонено",
+      "reminder": {
+        "title": "Нагадування про урок за",
+        "hours": "Годину",
+        "three-hours": "3 годин",
+        "five-hours": "5 години",
+        "day": "за добу"
+      }
     }
   }
 }

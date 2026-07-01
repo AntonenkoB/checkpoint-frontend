@@ -1,5 +1,10 @@
 import { IIncomingStudentLessons, IWeekGroupStudentLessons } from "@student/models/student.model";
 
+export interface IWeekLabels {
+  thisWeek: string;
+  nextWeek: string;
+}
+
 export type LessonFilterMode = 'future' | 'past' | 'all';
 
 function getWeekStart(date: Date): Date {
@@ -17,13 +22,13 @@ function formatDay(date: Date): string {
   return `${d}.${m}`;
 }
 
-function getWeekLabel(weekStart: Date, now: Date): string {
+function getWeekLabel(weekStart: Date, now: Date, labels: IWeekLabels): string {
   const currentWeekStart = getWeekStart(now);
   const nextWeekStart = new Date(currentWeekStart);
   nextWeekStart.setDate(nextWeekStart.getDate() + 7);
 
-  if (weekStart.getTime() === currentWeekStart.getTime()) return 'Цього тижня';
-  if (weekStart.getTime() === nextWeekStart.getTime()) return 'Наступного тижня';
+  if (weekStart.getTime() === currentWeekStart.getTime()) return labels.thisWeek;
+  if (weekStart.getTime() === nextWeekStart.getTime()) return labels.nextWeek;
 
   const weekEnd = new Date(weekStart);
   weekEnd.setDate(weekEnd.getDate() + 6);
@@ -66,6 +71,7 @@ function isDateMatchingMode(lessonDateStr: string, mode: LessonFilterMode, now: 
 export function groupLessonsByWeek(
   data: IIncomingStudentLessons[],
   mode: LessonFilterMode = 'future',
+  labels: IWeekLabels,
   nowDateStr?: string
 ): IWeekGroupStudentLessons[] {
 
@@ -91,7 +97,7 @@ export function groupLessonsByWeek(
 
     if (!weekMap.has(weekKey)) {
       weekMap.set(weekKey, {
-        label: getWeekLabel(weekStart, validNow),
+        label: getWeekLabel(weekStart, validNow, labels),
         teacherMap: new Map(),
       });
     }

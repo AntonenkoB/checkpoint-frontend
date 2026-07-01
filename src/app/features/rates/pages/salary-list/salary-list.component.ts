@@ -6,7 +6,8 @@ import {EmptyStateComponent} from "@shared/components/empty-state/empty-state.co
 import {UserItemReadComponent} from "@shared/components/user-item-read/user-item-read.component";
 import {LoaderComponent} from "@shared/components/loader/loader.component";
 import {RatesFacade} from "@rates/facade/rates.facade";
-import {DatePipe} from "@angular/common";
+import {HeaderSecondaryComponent} from "@shared/components/header-secondary/header-secondary.component";
+import {IonContent} from "@ionic/angular/standalone";
 
 @Component({
   selector: "cp-salary-list",
@@ -17,7 +18,9 @@ import {DatePipe} from "@angular/common";
     TranslatePipe,
     EmptyStateComponent,
     UserItemReadComponent,
-    LoaderComponent
+    LoaderComponent,
+    HeaderSecondaryComponent,
+    IonContent
   ],
   providers: [RatesFacade]
 })

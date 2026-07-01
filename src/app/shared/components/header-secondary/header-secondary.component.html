@@ -1,4 +1,13 @@
-<div class="head">
+<div class="head" [class.back-header]="isBack()">
+  @if (isBack()) {
+    <div class="back" (click)="back.emit()">
+      <div class="icon" [innerHTML]="BACK_SVG"></div>
+    </div>
+  }
+
   <div class="title" [innerHTML]="title()"></div>
-  <cp-close (close)="close.emit()"></cp-close>
+
+  @if (!isBack()) {
+    <cp-close (close)="close.emit()"></cp-close>
+  }
 </div>

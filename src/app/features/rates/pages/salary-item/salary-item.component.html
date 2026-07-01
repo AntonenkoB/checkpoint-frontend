@@ -1,6 +1,10 @@
 <div class="salary-item">
   <div class="container">
-    <cp-header-secondary [title]="'Зарплата'" (close)="ratesFacade.goToSalaryList()"></cp-header-secondary>
+    <cp-header-secondary
+        [isBack]="true"
+        [title]="'salary.title' | translate"
+        (back)="ratesFacade.goToSalaryList()"
+    ></cp-header-secondary>
 
     @if (ratesFacade.currentTeacher()) {
       <cp-user-item-read class="teacher" [user]="ratesFacade.currentTeacher()"></cp-user-item-read>
@@ -18,7 +22,7 @@
     <div class="container">
       <div class="rates-info">
         <div class="rates-info-item">
-          @if (ratesFacade.profileFacade.isOwner()) {
+          @if (ratesFacade.isOwner()) {
             <div class="rates-info-price-wrap">
               <div class="rates-info-name">{{ "rates.salary.total-revenue" | translate}}</div>
               <div class="rates-info-price">{{salary.total_income | priceFormat: '₴'}}</div>
@@ -33,7 +37,7 @@
             </div>
           }
 
-          @if (ratesFacade.profileFacade.isTeacher()) {
+          @if (ratesFacade.isTeacher()) {
             <div class="rates-info-price-wrap">
               <div class="rates-info-name">{{ "rates.salary.salary-for-teacher-all-title" | translate}}</div>
               <div class="rates-info-price">{{salary.teacher_earned | priceFormat: '₴'}}</div>
@@ -50,16 +54,16 @@
             <div class="salary-payout-top">
               <div class="info">{{ formatDate(transaction.purchased_at) }}</div>
 
-              @if (ratesFacade.profileFacade.isOwner()) {
+              @if (ratesFacade.isOwner()) {
                 <div class="total">{{ "rates.receipt-teacher" | translate}} {{transaction.teacher_earned | priceFormat: '₴'}}</div>
               }
-              @if (ratesFacade.profileFacade.isTeacher()) {
+              @if (ratesFacade.isTeacher()) {
                 <div class="total">{{"rates.salary.salary-for-teacher-item" | translate}} {{transaction.teacher_earned | priceFormat: '₴'}}</div>
               }
             </div>
             <div class="salary-payout-bottom">
               <div class="info">{{transaction.student.first_name}} {{transaction.student.last_name}}</div>
-              @if (ratesFacade.profileFacade.isOwner()) {
+              @if (ratesFacade.isOwner()) {
                 <div class="total">{{"rates.payment" | translate}} {{transaction.price_paid | priceFormat: '₴'}}</div>
               }
             </div>

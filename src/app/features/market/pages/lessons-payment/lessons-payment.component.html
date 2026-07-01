@@ -1,5 +1,5 @@
 <div class="lessons-payment container">
-  <cp-header-secondary [title]="' '" (close)="marketFacade.goToStudentMain()"></cp-header-secondary>
+  <cp-header-secondary [title]="' '" (close)="marketFacade.closeMarketPage()"></cp-header-secondary>
 
   <div class="lessons-payment-info">
     @if(marketFacade.currentLessonsType() === eLessonsType.TeacherGuided) {

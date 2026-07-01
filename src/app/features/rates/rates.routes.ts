@@ -9,14 +9,19 @@ export const routesRates: Routes = [
       import('./pages/rete-list/rete-list.component').then((m) => m.ReteListComponent),
   },
   {
-    path: `${ERatePages.SalaryItem}/:${ERoutParams.TeacherId}`,
-    loadComponent: () =>
-      import('./pages/salary-item/salary-item.component').then((m) => m.SalaryItemComponent),
-  },
-  {
     path: `${ERatePages.RateItem}/:${ERoutParams.TeacherId}`,
     loadComponent: () =>
       import('./pages/rete-item/rete-item.component').then((m) => m.ReteItemComponent),
+  },
+  {
+    path: ERatePages.SalaryList,
+    loadComponent: () =>
+      import('./pages/salary-list/salary-list.component').then((m) => m.SalaryListComponent),
+  },
+  {
+    path: `${ERatePages.SalaryItem}/:${ERoutParams.TeacherId}`,
+    loadComponent: () =>
+      import('./pages/salary-item/salary-item.component').then((m) => m.SalaryItemComponent),
   },
   {
     path: '',

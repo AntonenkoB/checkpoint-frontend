@@ -2,27 +2,17 @@ import {computed, inject, Injectable, Signal} from "@angular/core";
 import {Store} from "@ngrx/store";
 import {AppState} from "../../../store/app-store";
 import {EAppPages} from "@models/router.model";
-import {AuthActions} from "@auth/store/actions";
 import {RouterActions} from "../../../store/router/actions";
-import {ThemeService} from "@shared/services/theme.service";
-import {ETheme} from "@models/common.model";
-import {EHeaderMenu, EUserPages} from "@users/models/user.model";
-import {IUser, EUserRole} from "@models/user.model";
+import {IUser} from "@models/user.model";
 import {ProfileStore} from "@profile/store/profile.store";
-import {EStudentPages} from "@student/models/student.model";
 import {Permission} from "@shared/permissions/permissions.config";
-import {EStudentProfileTabs} from "@profile/models/profile.model";
-import {HapticService} from "@shared/services/haptic.service";
-import {ImpactStyle} from "@capacitor/haptics";
-import {NavController} from "@ionic/angular";
+import {ESettingsPages} from "../../settings/models/settings.model";
 
 @Injectable({ providedIn: 'root' })
 export class ProfileFacade {
-  private navController = inject(NavController);
   private store = inject<Store<AppState>>(Store);
   public profileStore = inject(ProfileStore);
-  private themeService = inject(ThemeService);
-  private hapticService = inject(HapticService);
+
   public readonly profile = this.profileStore.profile;
   public readonly isLoading = this.profileStore.isLoading;
   public readonly activeRole = this.profileStore.activeRole;
@@ -32,7 +22,7 @@ export class ProfileFacade {
   public readonly isTeacher = this.profileStore.isTeacher;
   public readonly isStudent = this.profileStore.isStudent;
 
-  // ── Права доступу ──────────────────────────────────────────
+  // permissions
 
   public can(permission: Permission): Signal<boolean> {
     return computed(() => this.profileStore.hasPermission(permission));
@@ -54,16 +44,7 @@ export class ProfileFacade {
     return this.profileStore.hasAnyPermission(permissions);
   }
 
-  // ── Права доступу ──────────────────────────────────────────
-
-
-  public loadProfile(): void {
-    this.profileStore.getProfile();
-  }
-
-  public logout(): void {
-    this.store.dispatch(AuthActions.logout());
-  }
+  // permissions
 
   public update(profile: IUser): void {
     this.profileStore.updateProfile(profile)
@@ -77,46 +58,7 @@ export class ProfileFacade {
     this.profileStore.deleteAvatar()
   }
 
-  public deleteAccount(): void {
-    this.profileStore.deleteAccount()
-  }
-
-  public async switchRole(role: EUserRole): Promise<void> {
-    if (role === this.activeRole()) return;
-    await this.profileStore.setActiveRole(role);
-    void this.hapticService.impact(ImpactStyle.Medium);
-    void this.navController.navigateRoot([EAppPages.Profile], { animated: false });
-  }
-
-  public close(): void {
-    switch (this.profileStore.activeRole()) {
-      case EUserRole.Student:
-        this.store.dispatch(RouterActions.goTo({path: [EAppPages.Student, EStudentPages.StudentDashboard], back: true}));
-        break;
-      case EUserRole.Teacher:
-      case EUserRole.Admin:
-      case EUserRole.Owner:
-        this.store.dispatch(RouterActions.goTo({
-          path: [EAppPages.Users, EUserPages.ListUsers],
-          extras: {queryParams: {tab: EHeaderMenu.Schedule}},
-          back: true
-        }));
-        break;
-    }
-  }
-
-  public changeTheme(theme: ETheme): void {
-    this.themeService.apply(theme)
-  }
-
-  public goToStudentPage(page: EStudentProfileTabs): void {
-    switch (page) {
-      case EStudentProfileTabs.Purchases:
-        this.store.dispatch(RouterActions.goTo({path: [EAppPages.Student, EStudentPages.HistoryPurchases]}));
-        break;
-      case EStudentProfileTabs.Lessons:
-        this.store.dispatch(RouterActions.goTo({path: [EAppPages.Student, EStudentPages.HistoryLessons]}));
-        break;
-    }
+  public goToBack(): void {
+    this.store.dispatch(RouterActions.goTo({path: [EAppPages.Settings, ESettingsPages.List], back: true}));
   }
 }

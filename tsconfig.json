@@ -61,6 +61,9 @@
       "@lessons/*": [
         "src/app/features/lessons/*"
       ],
+      "@settings/*": [
+        "src/app/features/settings/*"
+      ],
     },
     "skipLibCheck": true,
     "useDefineForClassFields": false

@@ -78,8 +78,6 @@ export enum EApiEndpoints {
   CancelIndividualAtStudent = `individual/lessons/:${ERoutParams.LessonId}`,
   TransferringIndividualAtStudent = `individual/lessons/:${ERoutParams.LessonId}`,
 
-
-
   SetLessonAtTeacher = `students/:${ERoutParams.StudentId}/lessons`,
   CancelLessonAtTeacher = `students/:${ERoutParams.StudentId}/lessons/:${ERoutParams.LessonId}`,
   TransferringLessonAtTeacher = `students/:${ERoutParams.StudentId}/lessons/:${ERoutParams.LessonId}`,
@@ -87,6 +85,7 @@ export enum EApiEndpoints {
   SetIndividualAtAdmin = `students/:${ERoutParams.StudentId}/individual/lessons`,
   CancelIndividualAtAdmin = `students/:${ERoutParams.StudentId}/individual/lessons/:${ERoutParams.LessonId}`,
   TransferringIndividualAtAdmin = `students/:${ERoutParams.StudentId}/individual/lessons/:${ERoutParams.LessonId}`,
+  AddFreeLessonsForStudent = `students/:${ERoutParams.StudentId}/purchases`,
 
   // market
   PurchaseLessons = 'purchases',

@@ -45,6 +45,11 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: EAppPages.Settings,
+    loadChildren: () => import('./features/settings/settings.routes').then((m) => m.routesSettings),
+    canActivate: [AuthGuard],
+  },
+  {
     path: '',
     redirectTo: EAppPages.Users,
     pathMatch: 'full',

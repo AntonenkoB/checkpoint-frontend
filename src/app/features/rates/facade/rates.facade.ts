@@ -2,7 +2,7 @@ import {computed, inject, Injectable} from "@angular/core";
 import {Store} from "@ngrx/store";
 import {EAppPages, EQueryParams} from "@models/router.model";
 import {AppState} from "@capacitor/app";
-import {EHeaderMenu, ERateTabs, EUserPages} from "@users/models/user.model";
+import {EHeaderMenu, EUserPages} from "@users/models/user.model";
 import {selectAllUsers} from "@users/store/selectors";
 import {RouterActions} from "../../../store/router/actions";
 import {RatesStore} from "@rates/store/rates.store";
@@ -10,15 +10,15 @@ import {ERatePages, ITeacherRateGroup} from "@rates/models/rates.model";
 import {SalaryStore} from "@rates/store/salary.store";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ProfileFacade} from "@profile/facade/profile.facade";
-import {UserActions} from "@users/store/actions";
 import {toSignal} from "@angular/core/rxjs-interop";
+import {ESettingsPages} from "../../settings/models/settings.model";
 
 @Injectable()
 export class RatesFacade {
   private store = inject<Store<AppState>>(Store);
   private ratesStore = inject(RatesStore);
   private salaryStore = inject(SalaryStore);
-  public profileFacade = inject(ProfileFacade);
+  private profileFacade = inject(ProfileFacade);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private queryParams = toSignal(
@@ -33,6 +33,8 @@ export class RatesFacade {
   public currentTeacher = this.salaryStore.currentTeacher;
   public ratesList = this.ratesStore.allRates;
   public profile = this.profileFacade.profile;
+  public isOwner = this.profileFacade.isOwner;
+  public isTeacher = this.profileFacade.isTeacher;
   public rateLoader = this.ratesStore.isReady();
 
   public readonly teachersRateList = computed<ITeacherRateGroup[]>(() => {
@@ -85,8 +87,14 @@ export class RatesFacade {
 
   public goToRateList(): void {
     this.store.dispatch(RouterActions.goTo({
-      path: [EAppPages.Users, EUserPages.ListUsers],
-      extras: {queryParams: {tab: EHeaderMenu.Teacher, ratesTab: ERateTabs.Price}},
+      path: [EAppPages.Rates, ERatePages.RateList],
+      back: true
+    }));
+  }
+
+  public goToSettings(): void {
+    this.store.dispatch(RouterActions.goTo({
+      path: [EAppPages.Settings, ESettingsPages.List],
       back: true
     }));
   }
@@ -94,8 +102,8 @@ export class RatesFacade {
   public goToSalaryList(): void {
     if (this.profileFacade.isOwner()) {
       this.store.dispatch(RouterActions.goTo({
-        path: [EAppPages.Users, EUserPages.ListUsers],
-        extras: {queryParams: {tab: EHeaderMenu.Teacher, ratesTab: ERateTabs.Salary, month: this.currentMonth()}},
+        path: [EAppPages.Rates, ERatePages.SalaryList],
+        extras: {queryParams: {month: this.currentMonth()}},
         back: true
       }));
 

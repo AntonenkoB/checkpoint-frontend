@@ -1,5 +1,5 @@
 <div class="lessons-type-payment container">
-  <cp-header-secondary [title]="' '" (close)="marketFacade.goToStudentMain()"></cp-header-secondary>
+  <cp-header-secondary [title]="' '" (close)="marketFacade.closeMarketPage()"></cp-header-secondary>
 
   <div class="lessons-type-payment-info">
     @if (+marketFacade.routTeacherId()! > 0) {
@@ -14,15 +14,15 @@
 
     <div class="one-lesson" (click)="marketFacade.goToPayment(eMarketPlanType.Single)">
       <div class="name">{{"market.one-time-lessons" | translate}}</div>
-      <div class="price">{{ marketFacade.marketStore.teacherRate()?.[0]?.price }} ₴</div>
+      <div class="price">{{ marketFacade.marketStore.teacherRate()?.[0]?.price ?? 0 }} ₴</div>
     </div>
 
     <div class="abonnement-lesson" (click)="marketFacade.goToPayment(eMarketPlanType.Subscription)">
       <div class="name">{{"market.abonnement-lessons" | translate}}</div>
       <div class="price" [innerHTML]=" 'market.abonnement-details' | translate: {
-        total: abonnementParams()?.total ?? 0,
-        perLesson: abonnementParams()?.perLesson ?? 0,
-        count: abonnementParams()?.count ?? 0
+        total: marketFacade.abonnementParams()?.total ?? 0,
+        perLesson: marketFacade.abonnementParams()?.perLesson ?? 0,
+        count: marketFacade.abonnementParams()?.count ?? 0
       }"></div>
     </div>
 

@@ -18,12 +18,6 @@ export enum EHeaderMenu {
   Salary = 'salary',
 }
 
-export enum ERateTabs {
-  Price = 'price',
-  Salary = 'salary',
-  AllTeaches = 'all-teachers',
-}
-
 export interface IUserProfile {
   email: string;
   creative_name: string;
@@ -110,21 +104,6 @@ export const USER_ROLE_TABS = (): IOptions<EHeaderMenu>[] => [
   {
     value: EHeaderMenu.Schedule,
     title: "schedule.title"
-  }
-]
-
-export const SETTING_RATES_TABS = (): IOptions<ERateTabs>[] => [
-  {
-    value: ERateTabs.AllTeaches,
-    title: "rates.all-teachers-title"
-  },
-  {
-    value: ERateTabs.Price,
-    title: "rates.price-title"
-  },
-  {
-    value: ERateTabs.Salary,
-    title: "rates.salary-title"
   }
 ]
 

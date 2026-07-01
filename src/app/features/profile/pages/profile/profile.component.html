@@ -4,44 +4,15 @@
     <div class="container">
       <cp-header-secondary
           class="profile-header"
+          [isBack]="true"
           [title]="'profile.title' | translate"
-          (close)="profileFacade.close()"
+          (back)="profileFacade.goToBack()"
       ></cp-header-secondary>
-
-      @if (profileFacade.isStudent()) {
-        <div class="student-pages">
-          @for (page of STUDENT_PROFILE_TABS; track page.value) {
-            <div class="page-item" (click)="profileFacade.goToStudentPage(page.value)">
-              {{page.title | translate}}
-            </div>
-          }
-        </div>
-      }
     </div>
 
     <div class="profile-wrap">
       <ion-content>
         <div class="container">
-          @if (availableRole().length > 1) {
-            <div class="role-list">
-              <ion-segment class="theme-btn btn-with-border" (ionChange)="changeRole($event)" [value]="this.profileFacade.activeRole()!">
-                @for (role of availableRole(); track role.value) {
-                  <ion-segment-button class="segment-button" [value]="role.value">
-                    <ion-label>{{ role.title | translate }}</ion-label>
-                  </ion-segment-button>
-                }
-              </ion-segment>
-            </div>
-          }
-          <div class="theme-title">{{ 'profile.theme.title' | translate }}</div>
-          <ion-segment class="theme-btn btn-with-border" (ionChange)="changeTheme($event)" [value]="profile.theme">
-            @for (tab of THEME_ACTIONS; track tab.value) {
-              <ion-segment-button class="segment-button" [value]="tab.value">
-                <ion-label>{{ tab.title | translate }}</ion-label>
-              </ion-segment-button>
-            }
-          </ion-segment>
-
           <div class="avatar-title">{{ "profile.add-avatar" | translate }}</div>
 
           <div class="avatar-wrap">
@@ -143,52 +114,10 @@
 
             <ion-button class="submit" (click)="onSubmit()">{{ 'common.save' | translate }}</ion-button>
           </form>
-
-          <div id="open-exit-modal" class="exit">{{ 'profile.exit' | translate }}</div>
-          <br/>
-          <div id="open-delete-modal" class="delete">{{ 'profile.delete' | translate }}</div>
         </div>
 
       </ion-content>
     </div>
-
-
-    <ion-modal
-        #exitModal
-        id="exit-modal"
-        trigger="open-exit-modal"
-        [initialBreakpoint]="initialBreakpoint"
-        [breakpoints]="modalBreakpoints"
-    >
-      <ng-template>
-        <cp-confirm-modal
-            [title]="'profile.exit-title' | translate"
-            [btnConfirm]="'profile.exit' | translate"
-            [btnCansel]="'profile.no-exit' | translate"
-            (cansel)="exitModalCansel()"
-            (confirm)="exitModalConfirm()"
-        ></cp-confirm-modal>
-      </ng-template>
-    </ion-modal>
-
-    <ion-modal
-        #deleteModal
-        id="delete-modal"
-        trigger="open-delete-modal"
-        [initialBreakpoint]="initialBreakpoint"
-        [breakpoints]="modalBreakpoints"
-    >
-      <ng-template>
-        <cp-confirm-modal
-            [title]="'profile.delete-title' | translate"
-            [btnConfirm]="'profile.delete' | translate"
-            [btnCansel]="'profile.no-delete' | translate"
-            [isDelete]="true"
-            (cansel)="deleteModalCansel()"
-            (confirm)="deleteModalConfirm()"
-        ></cp-confirm-modal>
-      </ng-template>
-    </ion-modal>
   }
 
 <!--  <cp-loader [isLoad]="!profileFacade.isLoading()"></cp-loader>-->

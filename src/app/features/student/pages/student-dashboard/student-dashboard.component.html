@@ -2,39 +2,17 @@
   <div class="student-bg" [class.is-lessons]="studentFacade.groupFutureLessons().length > 0"></div>
   <div class="teacher-wrap container">
     <div class="teacher">
-      <div class="teacher-icon"  (click)="studentFacade.goToProfile()">
+      <div class="teacher-icon"  (click)="studentFacade.goToSettings()">
         <cp-avatar class="student-avatar" [src]="studentFacade.profile()?.avatar!"></cp-avatar>
       </div>
-      <div class="teacher-info"  (click)="studentFacade.goToProfile()">
+      <div class="teacher-info"  (click)="studentFacade.goToSettings()">
         <div class="teacher-name">
           {{name()}}
         </div>
         <div class="amount-lessons">
-          {{ studentFacade.amountTeacherLessons() }} урок з вчителем, {{studentFacade.amountIndividualLessons()}} самостійних
+          {{ studentFacade.amountTeacherLessons() }} {{studentFacade.amountTeacherLessons() | translatePlural: 'lessons.type.lesson'}} {{ "lessons.type.with-teacher" | translate }},
+          {{studentFacade.amountIndividualLessons()}} {{studentFacade.amountIndividualLessons() | translatePlural: 'lessons.type.independent'}}
         </div>
-      </div>
-      <div class="student-action-wrap">
-<!--        <div-->
-<!--            class="dots"-->
-<!--            [innerHTML]="DOTS_SVG"-->
-<!--            (click)="studentFacade.goToSelectPaymentType()"-->
-<!--        ></div>-->
-
-        <ion-fab #studentActions class="student-action-container" horizontal="end">
-          <ion-fab-button class="student-action-btn">
-            <div
-                class="dots"
-                [innerHTML]="DOTS_SVG"
-            ></div>
-          </ion-fab-button>
-          <ion-fab-list class="student-action-list" side="start">
-            <div class="student-action-item"
-                 (click)="studentFacade.goToSelectPaymentType(); studentActions.activated = false"
-            >
-              {{ "rates.payment" | translate}}
-            </div>
-          </ion-fab-list>
-        </ion-fab>
       </div>
     </div>
   </div>
@@ -42,10 +20,7 @@
   <div class="lessons-wrap">
     @for (item of studentFacade.groupFutureLessons(); track item) {
       <div class="lessons container">
-        <div
-          class="week-title"
-          [id]="item.label === 'Цього тижня' ? 'current-week-scroll-target' : ''"
-      >{{item.label}}</div>
+        <div class="week-title">{{item.label}}</div>
 
         @for (week of item.week; track week) {
           @if (week.teacher) {

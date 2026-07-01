@@ -19,7 +19,7 @@ import {NgClass} from "@angular/common";
 })
 export class TabsComponent {
   public tabList = input<IOptions[]>();
-  public activeTab = input<string>();
+  public activeTab = input<string | number>();
   public disabledTabs = input<(string | number)[]>();
   public amountStudents = model<string>();
   public bntStyle = input<'btn-clear' | 'btn-with-border' | 'btn-fill'>('btn-clear');

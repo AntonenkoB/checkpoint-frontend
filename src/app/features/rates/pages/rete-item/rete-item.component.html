@@ -1,7 +1,11 @@
 <div class="rate-item">
 
   <div class="container">
-    <cp-header-secondary [title]="'rates.price-title' | translate" (close)="ratesFacade.goToRateList()"></cp-header-secondary>
+    <cp-header-secondary
+        [isBack]="true"
+        [title]="'rates.price-title' | translate"
+        (back)="ratesFacade.goToRateList()"
+    ></cp-header-secondary>
     @if (teacher()) {
       <cp-user-item-read class="teacher" [user]="teacher()"></cp-user-item-read>
     }

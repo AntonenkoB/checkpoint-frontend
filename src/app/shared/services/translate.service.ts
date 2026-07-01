@@ -1,65 +1,58 @@
-import {Injectable, inject, DestroyRef} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {
-  BehaviorSubject,
-  Observable,
-  switchMap,
-  map,
-  shareReplay
-} from 'rxjs';
-import {ELang} from "@models/common.model";
-import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import { Injectable, inject, signal, computed, resource } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
+import { ELang } from "@models/common.model";
 
-
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class TranslateService {
   private http = inject(HttpClient);
+  private readonly intlLocale: Record<string, string> = {
+    'ua': 'uk',
+    'en': 'en',
+  };
 
-  private _lang$ = new BehaviorSubject<ELang>(ELang.UA);
-  private _translations: Record<string, any> = {};
+  public currentLang = signal<ELang>(ELang.UA);
 
-  readonly currentLang$ = this._lang$.asObservable();
+  private translationsResource = resource({
+    params: () => ({ lang: this.currentLang() }),
+    loader: async ({ params }) => {
+      return await firstValueFrom(
+        this.http.get<Record<string, any>>(`assets/i18n/${params.lang}.json`)
+      );
+    },
+  });
 
-  readonly translations$: Observable<Record<string, any>> = this._lang$.pipe(
-      switchMap(lang =>
-          this.http.get<Record<string, any>>(`assets/i18n/${lang}.json`)
-      ),
-      shareReplay(1)
-  );
-
-  readonly isLoaded$: Observable<boolean> = this.translations$.pipe(
-      map(t => Object.keys(t).length > 0)
-  );
+  public translations = computed(() => this.translationsResource.value() ?? {});
+  public isLoaded = computed(() => this.translationsResource.hasValue());
 
   use(lang: ELang): void {
-    this._lang$.next(lang);
+    this.currentLang.set(lang);
   }
 
-  translate(key: string, params?: Record<string, string | number>): Observable<string> {
-    return this.translations$.pipe(
-        map(translations => this.instant(key, translations, params))
-    );
-  }
-
-  instant(key: string, translations?: Record<string, any> | null, params?: Record<string, string | number>): string {
-    const t = translations ?? this._translations;
-    const value = this.resolve(t, key);
-    if (!value) return key;
+  instant(key: string, params?: Record<string, string | number>): string {
+    const value = this.resolve(this.translations(), key);
+    if (!value || typeof value !== 'string') return key;
     return this.interpolate(value, params);
   }
 
-  private resolve(translations: Record<string, any>, key: string): string | null {
-    const keys = key.split('.');
-    let node: any = translations;
-    for (const k of keys) {
-      node = node?.[k];
-      if (node === undefined) return null;
-    }
-    return typeof node === 'string' ? node : null;
+  plural(key: string, count: number, params?: Record<string, string | number>): string {
+    const forms = this.resolve(this.translations(), key);
+    if (!forms || typeof forms === 'string') return key;
+
+    const locale = this.intlLocale[this.currentLang()] ?? 'en';
+    const rules = new Intl.PluralRules(locale);
+    const form = rules.select(count);
+    const template = forms[form] ?? forms['other'] ?? key;
+
+    return this.interpolate(template, { count, ...params });
+  }
+
+  private resolve(translations: Record<string, any>, key: string): any {
+    return key.split('.').reduce((node, k) => node?.[k], translations) ?? null;
   }
 
   private interpolate(value: string, params?: Record<string, string | number>): string {
     if (!params) return value;
-    return value.replace(/{{(\w+)}}/g, (_, key) => String(params[key] ?? ''));
+    return value.replace(/{{(\w+)}}/g, (_, k) => String(params[k] ?? ''));
   }
 }

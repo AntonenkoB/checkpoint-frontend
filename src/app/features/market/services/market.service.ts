@@ -20,4 +20,8 @@ export class MarketService extends ApiService {
   public purchaseLessons(data: IMarketPurchaseLessons): Observable<IApiData<IPaymentSuccess>> {
     return this.post<IApiData<IPaymentSuccess>>(EApiEndpoints.PurchaseLessons, data);
   }
+
+  public addFreeLessons(data: IMarketPurchaseLessons): Observable<IApiData<IPaymentSuccess>> {
+    return this.post<IApiData<IPaymentSuccess>>([EApiEndpoints.AddFreeLessonsForStudent, {studentId: +data.student_id!}], data);
+  }
 }

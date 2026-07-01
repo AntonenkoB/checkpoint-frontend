@@ -1,11 +1,13 @@
-import {Component, computed, inject, OnInit} from "@angular/core";
+import {Component, computed, DestroyRef, effect, inject, OnInit, signal} from "@angular/core";
 import {HeaderSecondaryComponent} from "@shared/components/header-secondary/header-secondary.component";
 import {RecordStudentItemComponent} from "@shared/components/record-student-item/record-student-item.component";
 import {TranslatePipe} from "@shared/pipes/translate-pipe";
 import {ScheduleFacade} from "@schedule/facade/schedule.facade";
 import {LessonsFacade} from "@lessons/facade/lessons.facade";
-import {UserItemComponent} from "@shared/components/user-item/user-item.component";
 import {ELessonFlow} from "@lessons/models/lessons.model";
+import {IonInput, IonItem} from "@ionic/angular/standalone";
+import {debounceTime, distinctUntilChanged, Subject} from "rxjs";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: "cp-select-teacher",
@@ -14,8 +16,9 @@ import {ELessonFlow} from "@lessons/models/lessons.model";
   imports: [
     HeaderSecondaryComponent,
     TranslatePipe,
-    UserItemComponent,
-    RecordStudentItemComponent
+    RecordStudentItemComponent,
+    IonInput,
+    IonItem
   ],
   providers: [ScheduleFacade]
 })
@@ -24,8 +27,29 @@ export class SelectTeacherComponent implements OnInit {
   public titleHeader = computed(() => {
     return this.lessonsFacade.currentLessonsFlow() === ELessonFlow.Booking ? 'record.select-teacher-title' : 'market.select-teacher-to-buy'
   })
+  public searchUser = signal('');
+  protected readonly ELessonFlow = ELessonFlow;
+  private searchSubject$ = new Subject<string>();
+  private destroyRef = inject(DestroyRef);
 
-  constructor() {}
 
-  ngOnInit() {}
+  constructor() {
+    this.searchSubject$.pipe(
+      debounceTime(400),
+      distinctUntilChanged(),
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe((search) => {
+      this.lessonsFacade.getStudentsForFreeLessons(search)
+    })
+  }
+
+  ngOnInit() {
+    if (this.lessonsFacade.currentLessonsFlow() === ELessonFlow.AddFree) {
+      this.lessonsFacade.getStudentsForFreeLessons(this.searchUser());
+    }
+  }
+
+  public searchStudent(search: string): void {
+    this.searchSubject$.next(search);
+  }
 }

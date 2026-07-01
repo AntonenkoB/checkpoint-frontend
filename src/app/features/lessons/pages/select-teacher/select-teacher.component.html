@@ -1,14 +1,42 @@
-<div class="teachers container">
-  <cp-header-secondary [title]=" titleHeader() | translate" (close)="lessonsFacade.goToStudentMain()"></cp-header-secondary>
+<div class="teachers">
+  <div class="container">
+    <cp-header-secondary class="teachers-header" [title]=" titleHeader() | translate" (close)="lessonsFacade.closSelectedTeacher()"></cp-header-secondary>
+  </div>
+
+  @if (lessonsFacade.currentLessonsFlow() === ELessonFlow.AddFree && !lessonsFacade.choseTeacher()) {
+    <div class="search-wrap container">
+      <ion-item class="search">
+        <ion-input
+            fill="solid"
+            type="text"
+            autocomplete="one-time-code"
+            autocorrect="off"
+            [placeholder]="'common.search' | translate"
+            [value]="searchUser()"
+            (ionInput)="searchStudent($any($event).detail.value)"
+        ></ion-input>
+      </ion-item>
+    </div>
+  }
 
   <div class="teachers-info">
-    <div class="teachers-list">
-      @for (teacher of lessonsFacade.studentTeachers(); track teacher?.id) {
-        <cp-record-student-item
-            class="teacher"
-            [student]="teacher"
-            (select)="lessonsFacade.selectTeacher(teacher!)"
-        ></cp-record-student-item>
+    <div class="teachers-list container">
+      @if (lessonsFacade.currentLessonsFlow() === ELessonFlow.AddFree && lessonsFacade.choseTeacher()) {
+        @for (teacher of lessonsFacade.teacherListToFreeLessons(); track teacher?.id) {
+          <cp-record-student-item
+              class="teacher"
+              [student]="teacher"
+              (select)="lessonsFacade.selectTeacherToFreeLessons(teacher!)"
+          ></cp-record-student-item>
+        }
+      } @else {
+        @for (teacher of lessonsFacade.studentTeachers(); track teacher?.id) {
+          <cp-record-student-item
+              class="teacher"
+              [student]="teacher"
+              (select)="lessonsFacade.selectTeacher(teacher!)"
+          ></cp-record-student-item>
+        }
       }
     </div>
   </div>

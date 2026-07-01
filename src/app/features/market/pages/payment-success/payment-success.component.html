@@ -1,12 +1,13 @@
 <div class="payment-success container">
-  <cp-header-secondary class="payment-success-header"  [title]="' '" (close)="marketFacade.goToStudentMain()"></cp-header-secondary>
+  <cp-header-secondary class="payment-success-header"  [title]="' '" (close)="marketFacade.closeMarketPage()"></cp-header-secondary>
 
   <div class="payment-success-info">
     <div class="title">{{"market.payment-success-title" | translate}}</div>
+
     @if (successData().plan.type === mMarketPlanType.Single) {
       <div class="description">{{"market.payment-success-description-single" | translate: {
           quantity: successData().quantity,
-          price: successData().price_paid
+          price: marketFacade.addFreeLessons() ? 0 :successData().price_paid
         }
       }}</div>
     }
@@ -14,7 +15,7 @@
     @if (successData().plan.type === mMarketPlanType.Subscription) {
       <div class="description">{{"market.payment-success-description-abonnement" | translate: {
         quantity: successData().quantity,
-        price: successData().price_paid
+        price: marketFacade.addFreeLessons() ? 0 : successData().price_paid
       }
         }}</div>
     }

@@ -44,7 +44,6 @@ export class LessonsPaymentComponent implements OnInit {
   }));
 
   ngOnInit() {
-    this.marketFacade.loadTeacherRate();
   }
 
   public increment(): void {

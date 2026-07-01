@@ -20,21 +20,6 @@ export class LessonsTypePaymentComponent implements OnInit {
   public marketFacade = inject(MarketFacade);
   public eMarketPlanType = EMarketPlanType;
 
-  public readonly abonnementParams = computed(() => {
-    const rates = this.marketFacade.marketStore.teacherRate();
-    const rate = rates[1];
-
-    if (!rate) {
-      return null
-    }
-
-    return {
-      total: +rate.price,
-      perLesson: Math.round(rate.price / rate.lessons_per_unit),
-      count: +rate.lessons_per_unit
-    };
-  });
-
   constructor() {
   }
 

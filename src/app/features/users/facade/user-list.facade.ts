@@ -1,21 +1,20 @@
 import {computed, DestroyRef, inject, Injectable, Signal} from "@angular/core";
 import {Store} from "@ngrx/store";
 import {AppState} from "../../../store/app-store";
-import {EHeaderMenu, ERateTabs, EUserPages} from "../models/user.model";
+import {EHeaderMenu, EUserPages} from "../models/user.model";
 import {EUserRole} from "@models/user.model";
 import {selectAllUsers, selectAllUsersPagination, selectUserLoading} from "../store/selectors";
 import {UserActions} from "../store/actions";
 import {RouterActions} from "../../../store/router/actions";
-import {EAppPages, EQueryParams} from "@models/router.model";
+import {EAppPages} from "@models/router.model";
 import {IPagination} from "@models/api.models";
 import {takeUntilDestroyed, toSignal} from "@angular/core/rxjs-interop";
 import {ActivatedRoute, Router} from "@angular/router";
-import {ERatePages} from "@rates/models/rates.model";
 import {DatePipe} from "@angular/common";
 import {ProfileFacade} from "@profile/facade/profile.facade";
 import {StudentsStore} from "@users/store/students.store";
 import {debounceTime, distinctUntilChanged, Subject} from "rxjs";
-import {NavController} from "@ionic/angular";
+import {ESettingsPages} from "../../settings/models/settings.model";
 
 @Injectable({ providedIn: 'root' })
 export class UserListFacade {
@@ -25,14 +24,12 @@ export class UserListFacade {
   private studentsStore = inject(StudentsStore);
   private profileFacade = inject(ProfileFacade);
   private datePipe = inject(DatePipe);
-  private navController = inject(NavController);
 
   private queryParams = toSignal(this.route.queryParams);
   public currentTab = computed(() => {
     const tab = this.queryParams()?.['tab'] as EHeaderMenu;
     return tab ?? EHeaderMenu.Schedule;
   });
-  public currentRacesTab = computed(() => this.queryParams()?.['ratesTab'] as ERateTabs);
   private searchSubject$ = new Subject<string>();
   private destroyRef = inject(DestroyRef);
 
@@ -78,29 +75,7 @@ export class UserListFacade {
       case EHeaderMenu.Schedule:
         this.goToSchedule(EHeaderMenu.Schedule);
         break;
-      case EHeaderMenu.Salary:
-        this.goToSalary();
-        break;
     }
-  }
-
-  public selectRatesMenu(ratesTab: ERateTabs): void {
-    let params = { ratesTab }
-    if (ratesTab === ERateTabs.Salary) {
-      const date = new Date();
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-
-      params = {
-        ...params,
-        ...{ month : `${year}-${month}`}
-      }
-    }
-    void this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: params,
-      queryParamsHandling: 'merge',
-    });
   }
 
   private getStudents(page: number, search: string): void {
@@ -128,22 +103,6 @@ export class UserListFacade {
       tab: EUserRole.Teacher,
     }
 
-    if (this.profileFacade.isOwner()) {
-      let ratesTab = ERateTabs.AllTeaches;
-
-      if (this.currentRacesTab() === ERateTabs.Salary) {
-        ratesTab = ERateTabs.Salary
-      }
-
-      if (this.currentRacesTab() === ERateTabs.Price) {
-        ratesTab = ERateTabs.Price
-      }
-
-      queryParams = {
-        ...queryParams,
-        ...{ratesTab}
-      }
-    }
     void this.router.navigate([], {
       relativeTo: this.route,
       queryParams: queryParams,
@@ -189,16 +148,6 @@ export class UserListFacade {
     });
   }
 
-  public goToSalary(): void {
-    const teacherId = this.profile()?.id ?? 0;
-    const month = this.datePipe.transform(new Date(), 'yyyy-MM');
-
-    this.store.dispatch(RouterActions.goTo({
-      path: [EAppPages.Rates, ERatePages.SalaryItem, teacherId],
-      extras: {queryParams: {month}}
-    }))
-  }
-
   public create(role: EUserRole | string): void {
     if (role === EHeaderMenu.Schedule) {
       const userId = this.profile()?.id ?? 0
@@ -214,21 +163,11 @@ export class UserListFacade {
     this.store.dispatch(RouterActions.goTo({path: [EAppPages.Users, EUserPages.CreateUser], extras: {queryParams: {role}}}))
   }
 
-  public goToUser(id: number, role: EUserRole | string, ratesMenu?: ERateTabs): void {
-    if (ratesMenu === ERateTabs.Price && role === EHeaderMenu.Teacher) {
-      this.store.dispatch(RouterActions.goTo({path: [EAppPages.Rates, ERatePages.RateItem, id]}));
-      return
-    }
-
-    if (ratesMenu === ERateTabs.Salary && role === EHeaderMenu.Teacher) {
-      this.store.dispatch(RouterActions.goTo({path: [EAppPages.Rates, ERatePages.SalaryItem]}));
-      return;
-    }
-
+  public goToUser(id: number, role: EUserRole | string): void {
     this.store.dispatch(RouterActions.goTo({path: [EAppPages.Users, EUserPages.User, id], extras: {queryParams: {role}}}))
   }
 
-  public goToProfile(): void {
-    this.store.dispatch(RouterActions.goTo({path: [EAppPages.Profile]}))
+  public goToSettings(): void {
+    this.store.dispatch(RouterActions.goTo({path: [EAppPages.Settings, ESettingsPages.List]}))
   }
 }

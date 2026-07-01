@@ -1,13 +1,11 @@
-import {Component, DestroyRef, effect, inject, OnInit} from "@angular/core";
+import {Component, inject, OnInit} from "@angular/core";
 import {RatesFacade} from "@rates/facade/rates.facade";
 import {LoaderComponent} from "@shared/components/loader/loader.component";
 import {TranslatePipe} from "@shared/pipes/translate-pipe";
 import {UserItemReadComponent} from "@shared/components/user-item-read/user-item-read.component";
 import {ERatesType} from "@rates/models/rates.model";
-import {ViewWillEnter} from "@ionic/angular";
-import {filter, skip} from "rxjs/operators";
-import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
-import {NavigationEnd, Router} from "@angular/router";
+import {HeaderSecondaryComponent} from "@shared/components/header-secondary/header-secondary.component";
+import {IonContent, IonHeader} from "@ionic/angular/standalone";
 
 @Component({
   selector: "cp-rete-list",
@@ -16,14 +14,14 @@ import {NavigationEnd, Router} from "@angular/router";
   imports: [
     LoaderComponent,
     TranslatePipe,
-    UserItemReadComponent
+    UserItemReadComponent,
+    HeaderSecondaryComponent,
+    IonContent,
   ],
   providers: [RatesFacade]
 })
-export class ReteListComponent implements OnInit, ViewWillEnter {
+export class ReteListComponent implements OnInit {
   public ratesFacade = inject(RatesFacade);
-  private router  = inject(Router);
-  private destroy = inject(DestroyRef);
   public eRatesType = ERatesType;
 
   constructor() {
@@ -31,17 +29,5 @@ export class ReteListComponent implements OnInit, ViewWillEnter {
 
   ngOnInit() {
     this.ratesFacade.getAllRates();
-
-    // this.router.events.pipe(
-    //   filter(event => event instanceof NavigationEnd),
-    //   skip(1),
-    //   takeUntilDestroyed(this.destroy)
-    // ).subscribe(() => {
-    //   this.ratesFacade.getAllRates();
-    // });
-  }
-
-  public ionViewWillEnter() {
-    // this.ratesFacade.getAllRates();
   }
 }

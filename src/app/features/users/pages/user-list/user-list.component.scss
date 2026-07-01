@@ -44,17 +44,6 @@
     }
   }
 
-
-  .owner-tabs {
-    padding: var(--spacing-16) var(--spacing-20) 0;
-
-    ::ng-deep {
-      ion-segment {
-        justify-content: flex-start !important;
-      }
-    }
-  }
-
   .month-tabs {
     padding-left: var(--spacing-20);
     padding-top: var(--spacing-24);
@@ -80,11 +69,6 @@
     position: relative;
     flex: 1 1 auto;
     overflow: auto;
-  }
-
-  .owner-additional-page {
-    margin-left: -20px;
-    margin-right: -20px;
   }
 
   .user-item {

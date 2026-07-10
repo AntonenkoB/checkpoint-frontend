@@ -1,4 +1,4 @@
-import {inject, computed} from '@angular/core';
+import {inject, computed, Injector} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {patchState, signalStore, withComputed, withMethods, withState} from '@ngrx/signals';
 import {withEntities} from '@ngrx/signals/entities';
@@ -8,13 +8,13 @@ import {EUserRole, IUser} from "@models/user.model";
 import {ThemeService} from "@shared/services/theme.service";
 import {ProfileService} from "../services/profile.service";
 import {SettingsService} from "@shared/services/settings.service";
-import {AuthActions} from "@auth/store/actions";
 import {Permission, ROLE_PERMISSIONS} from "@shared/permissions/permissions.config";
 import {ImpactStyle} from "@capacitor/haptics";
 import {HapticService} from "@shared/services/haptic.service";
 import {ToastService} from "@shared/services/toast.service";
 import {Preferences} from "@capacitor/preferences";
 import {getHighestRole} from "@shared/permissions/role-priority";
+import {AuthStore} from "@auth/store/auth.store";
 
 export interface ProfileState {
   isLoading: boolean;
@@ -85,7 +85,7 @@ export const ProfileStore = signalStore(
           : getHighestRole(available);
 
         void this.setActiveRole(role);
-        },
+      },
 
       async clearActiveRole(): Promise<void> {
         await Preferences.remove({ key: ACTIVE_ROLE_KEY});
@@ -96,10 +96,10 @@ export const ProfileStore = signalStore(
 
   withMethods((
     state,
+    injector = inject(Injector),
     profileService = inject(ProfileService),
     themeService = inject(ThemeService),
     settingsService = inject(SettingsService),
-    store = inject(Store),
     toastService = inject(ToastService),
     hapticService = inject(HapticService),
   ) => ({
@@ -157,26 +157,26 @@ export const ProfileStore = signalStore(
         tap(() => patchState(state, {isLoading: true})),
         switchMap((blob) => {
 
-          const formData = new FormData();
-          const file = new File([blob], 'avatar.webp', {type: 'image/webp'});
-          formData.append('avatar', file);
+            const formData = new FormData();
+            const file = new File([blob], 'avatar.webp', {type: 'image/webp'});
+            formData.append('avatar', file);
 
-          return profileService.addAvatar(formData).pipe(
-            tap((response) => {
-              if (response?.data) {
-                patchState(state, {
-                  profile: response.data,
-                  isLoading: false
-                });
-              } else {
+            return profileService.addAvatar(formData).pipe(
+              tap((response) => {
+                if (response?.data) {
+                  patchState(state, {
+                    profile: response.data,
+                    isLoading: false
+                  });
+                } else {
+                  patchState(state, {isLoading: false});
+                }
+              }),
+              catchError((err) => {
                 patchState(state, {isLoading: false});
-              }
-            }),
-            catchError((err) => {
-              patchState(state, {isLoading: false});
-              return of(null);
-            })
-          )
+                return of(null);
+              })
+            )
           }
         )
       )
@@ -213,7 +213,8 @@ export const ProfileStore = signalStore(
           tap((response) => {
             if (response?.data) {
               patchState(state, {isLoading: false});
-              store.dispatch(AuthActions.logout());
+
+              injector.get(AuthStore).logout();
             } else {
               patchState(state, {isLoading: false});
             }

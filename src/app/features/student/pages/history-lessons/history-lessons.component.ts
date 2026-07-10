@@ -3,7 +3,6 @@ import {HeaderSecondaryComponent} from "@shared/components/header-secondary/head
 import {TranslatePipe} from "@shared/pipes/translate-pipe";
 import {IonContent} from "@ionic/angular/standalone";
 import {StudentFacade} from "@student/facade/student.facade";
-import {UserItemComponent} from "@shared/components/user-item/user-item.component";
 import {LessonDateTimePipe} from "@shared/pipes/lesson-date-time-pipe";
 
 @Component({
@@ -14,7 +13,6 @@ import {LessonDateTimePipe} from "@shared/pipes/lesson-date-time-pipe";
     HeaderSecondaryComponent,
     TranslatePipe,
     IonContent,
-    UserItemComponent,
     LessonDateTimePipe
   ],
   providers: [StudentFacade]

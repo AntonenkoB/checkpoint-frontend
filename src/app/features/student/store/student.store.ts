@@ -38,12 +38,12 @@ export const StudentStore = signalStore(
   ) => ({
     isReady: computed(() => !state.isLoading() !== null),
     groupedFutureLessons: computed(() => groupLessonsByWeek(state.lessons(), 'future', {
-      thisWeek: translateService.instant('lessons.this-week'),
-      nextWeek: translateService.instant('lessons.next-week'),
+      thisWeek: translateService.instant('date.this-week'),
+      nextWeek: translateService.instant('date.next-week'),
     })),
     groupedPastLessons: computed(() => groupLessonsByWeek(state.lessons(), 'past', {
-      thisWeek: translateService.instant('lessons.this-week'),
-      nextWeek: translateService.instant('lessons.next-week'),
+      thisWeek: translateService.instant('date.this-week'),
+      nextWeek: translateService.instant('date.next-week'),
     }))
   })),
 

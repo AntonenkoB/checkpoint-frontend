@@ -18,7 +18,7 @@ export const AuthGuard: CanActivateFn = () => {
       if (tokenService.isAuthenticated()) {
         return true;
       } else {
-        void router.navigate([EAppPages.Auth, EAuthPages.Login]);
+        void router.navigate([EAppPages.Auth, EAuthPages.LoginIdentifier]);
         return false;
       }
     })

@@ -1,28 +1,28 @@
 import {
   HttpInterceptorFn,
   HttpErrorResponse,
-  HttpEvent,
-  HttpRequest,
-  HttpHandlerFn, HttpContextToken,
+  HttpContextToken,
 } from '@angular/common/http';
 import {inject} from '@angular/core';
-import {Observable, switchMap, throwError} from 'rxjs';
-import {catchError, take} from 'rxjs/operators';
+import {toObservable} from '@angular/core/rxjs-interop';
+import {switchMap, throwError} from 'rxjs';
+import {catchError, filter, take} from 'rxjs/operators';
 import {TokenService} from "@shared/services/token-service";
-import {Store} from "@ngrx/store";
-import {Actions, ofType} from "@ngrx/effects";
 import {EApiEndpoints} from "@models/api.models";
-import {AuthActions} from "@auth/store/actions";
+import {AuthStore} from "@auth/store/auth.store";
 
 export const IS_AUTH_REQUEST = new HttpContextToken<boolean>(() => false);
 
-export const apiInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> => {
+export const apiInterceptor: HttpInterceptorFn = (req, next) => {
   const tokenService = inject(TokenService);
-  const store = inject(Store);
-  const actions$ = inject(Actions);
+  const authStore = inject(AuthStore);
+
+  const refreshState$ = toObservable(authStore.refreshState);
 
   const token = tokenService.token();
-  const authReq = token ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } }) : req;
+  const authReq = token
+    ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } })
+    : req;
 
   if (req.url.includes(EApiEndpoints.RefreshToken)) {
     return next(authReq);
@@ -35,20 +35,21 @@ export const apiInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, nex
           return throwError(() => error);
         }
 
-        store.dispatch(AuthActions.refreshToken());
+        authStore.refreshToken();
 
-        return actions$.pipe(
-          ofType(AuthActions.refreshTokenSuccess, AuthActions.logout),
+        return refreshState$.pipe(
+          filter(state => state === 'success' || state === 'logout'),
           take(1),
-          switchMap((action) => {
-            if (action.type === AuthActions.logout.type) return throwError(() => error);
+          switchMap(state => {
+            if (state === 'logout') return throwError(() => error);
 
             const newToken = tokenService.token();
             return next(req.clone({ setHeaders: { Authorization: `Bearer ${newToken}` } }));
           })
         );
       }
+
       return throwError(() => error);
     })
   );
-}
+};

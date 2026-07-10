@@ -11,8 +11,6 @@ import {Action} from "@ngrx/store";
 import {ThemeService} from "@shared/services/theme.service";
 import {ProfileStore} from "@profile/store/profile.store";
 import {SplashScreen} from "@capacitor/splash-screen";
-import {AuthActions} from "@auth/store/actions";
-import {EAuthStep} from "@auth/models/auth.model";
 
 @Injectable()
 export class CommonEffects {

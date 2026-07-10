@@ -1,4 +1,4 @@
-import {computed, inject, Injectable, signal, WritableSignal} from "@angular/core";
+import {computed, inject, Injectable, signal} from "@angular/core";
 import {Store} from "@ngrx/store";
 import {AppState} from "@capacitor/app";
 import {ProfileFacade} from "@profile/facade/profile.facade";
@@ -8,24 +8,23 @@ import {EMarketPages} from "@market/models/market.model";
 import {StudentFacade} from "@student/facade/student.facade";
 import {ESettingsPages, SETTINGS_LIST_MAP} from "../models/settings.model";
 import {NavController} from "@ionic/angular";
-import {AuthActions} from "@auth/store/actions";
 import {ProfileStore} from "@profile/store/profile.store";
-import {NavigationExtras} from "@angular/router";
 import {EUserRole, IUser, USER_ROLE_OPTIONS} from "@models/user.model";
 import {EStudentPages} from "@student/models/student.model";
 import {EHeaderMenu, EUserPages} from "@users/models/user.model";
-import {EStudentProfileTabs} from "@profile/models/profile.model";
 import {ETheme} from "@models/common.model";
 import {ThemeService} from "@shared/services/theme.service";
 import {ELessonFlow, ELessonPages} from "@lessons/models/lessons.model";
 import {ImpactStyle} from "@capacitor/haptics";
 import {HapticService} from "@shared/services/haptic.service";
+import {AuthStore} from "@auth/store/auth.store";
 
 @Injectable()
 export class SettingsFacade {
   private store = inject<Store<AppState>>(Store);
   private profileFacade = inject(ProfileFacade);
   private profileStore = inject(ProfileStore);
+  private authStore = inject(AuthStore);
   private studentFacade = inject(StudentFacade);
   private themeService = inject(ThemeService);
   private hapticService = inject(HapticService);
@@ -125,7 +124,7 @@ export class SettingsFacade {
   }
 
   public logout(): void {
-    this.store.dispatch(AuthActions.logout());
+    this.authStore.logout();
   }
 
   public deleteAccount(): void {

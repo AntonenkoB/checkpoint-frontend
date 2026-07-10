@@ -1,0 +1,30 @@
+<ion-content>
+  <div class="login">
+    <div class="back-container">
+      <div class="back-wrap container">
+        <div class="back" [innerHTML]="BACK_SVG" (click)="goBack()"></div>
+      </div>
+    </div>
+
+    <div class="logo-wrap">
+      <div class="logo" [innerHTML]="LOGO_SVG"></div>
+    </div>
+
+    <div class="login-container container">
+      <ion-input-otp
+          type="number"
+          color="primary"
+          shape="round"
+          [length]="6"
+          (ionInput)="changeCodeConfirm($event.detail.value ?? '')"
+      >
+        {{ "login.didnt-receive-code" | translate }}
+        <span class="send-new-code" (click)="sendNewCode()">
+          {{ "login.resend-code" | translate }}
+        </span>
+      </ion-input-otp>
+
+      <ion-button class="send" [disabled]="codeConfirm().length < 6" (click)="send()">{{ "login.continue" | translate }}</ion-button>
+    </div>
+  </div>
+</ion-content>

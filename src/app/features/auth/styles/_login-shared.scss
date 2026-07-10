@@ -1,5 +1,5 @@
-@use '../../../../../scss/mixins/app-padding' as *;
-@use 'src/scss/mixins/_breakpoints.scss' as *;
+@use '../../../../scss/mixins/app-padding' as *;
+@use '../../../../scss/mixins/breakpoints' as *;
 
 :host {
   background-color: var(--color-background-primary);
@@ -26,6 +26,7 @@
     width: 100%;
     padding-top: var(--cp-safe-area-top);
   }
+
   .back-wrap {
     position: relative;
 

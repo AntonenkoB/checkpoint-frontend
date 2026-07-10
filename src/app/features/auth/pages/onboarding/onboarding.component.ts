@@ -1,5 +1,5 @@
 import {Component, effect, ElementRef, inject, OnInit, signal, viewChild} from '@angular/core';
-import {IonIcon, IonProgressBar} from "@ionic/angular/standalone";
+import {IonProgressBar} from "@ionic/angular/standalone";
 import {AppState} from "../../../../store/app-store";
 import {Store} from "@ngrx/store";
 import {Capacitor} from "@capacitor/core";
@@ -17,7 +17,6 @@ import {SOUND_OFF_SVG, SOUND_SVG} from "@models/svg.models";
   styleUrls: ['./onboarding.component.scss'],
   imports: [
     IonProgressBar,
-    IonIcon
   ]
 })
 export class OnboardingComponent implements OnInit {

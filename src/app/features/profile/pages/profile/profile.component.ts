@@ -15,10 +15,8 @@ import {
   IonImg,
   IonInput,
   IonItem,
-  IonLabel,
   IonList,
-  IonSegment,
-  IonSegmentButton, ModalController
+  ModalController
 } from "@ionic/angular/standalone";
 import {TranslatePipe} from "@shared/pipes/translate-pipe";
 import {email, form, FormRoot, minLength, pattern, required} from "@angular/forms/signals";
@@ -30,7 +28,7 @@ import {AvatarUploadComponent} from "@shared/components/avatar-upload/avatar-upl
 import {DomSanitizer} from "@angular/platform-browser";
 import {DELETE_SVG, PLUS_SVG} from "@models/svg.models";
 import {PhoneMaskDirective} from "@shared/directives/phone-mask";
-import {EUserRole, IUser, USER_ROLE_OPTIONS} from "@models/user.model";
+import {IUser, USER_ROLE_OPTIONS} from "@models/user.model";
 
 
 @Component({
@@ -38,9 +36,6 @@ import {EUserRole, IUser, USER_ROLE_OPTIONS} from "@models/user.model";
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
   imports: [
-    IonLabel,
-    IonSegment,
-    IonSegmentButton,
     TranslatePipe,
     IonImg,
     IonButton,

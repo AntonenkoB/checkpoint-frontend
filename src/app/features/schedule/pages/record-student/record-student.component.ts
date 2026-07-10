@@ -1,10 +1,10 @@
-import {Component, effect, inject, OnInit, signal} from "@angular/core";
+import {Component, inject, OnInit, signal} from "@angular/core";
 import {HeaderSecondaryComponent} from "@shared/components/header-secondary/header-secondary.component";
 import {TranslatePipe} from "@shared/pipes/translate-pipe";
 import {RecordStudentFacade} from "../../facade/record-student.facade";
 import {ScheduleFacade} from "@schedule/facade/schedule.facade";
 import {UserItemComponent} from "@shared/components/user-item/user-item.component";
-import {IonButton, IonContent, IonInput, IonItem} from "@ionic/angular/standalone";
+import {IonButton, IonContent, IonInput} from "@ionic/angular/standalone";
 import {IUser} from "@models/user.model";
 import {EmptyStateComponent} from "@shared/components/empty-state/empty-state.component";
 
@@ -19,7 +19,6 @@ import {EmptyStateComponent} from "@shared/components/empty-state/empty-state.co
     IonButton,
     IonContent,
     IonInput,
-    IonItem,
     EmptyStateComponent
   ],
   providers: [RecordStudentFacade, ScheduleFacade]

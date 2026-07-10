@@ -16,7 +16,7 @@ import {TranslatePluralPipe} from "@shared/pipes/translate-plural.pipe";
     IonContent,
     ConfirmModalComponent,
     IonModal,
-    TranslatePluralPipe
+    TranslatePluralPipe,
   ],
   templateUrl: "./settings-list.component.html",
   styleUrl: "./settings-list.component.scss",

@@ -43,7 +43,7 @@ export class UserEffects {
     this.actions$.pipe(
       ofType(UserActions.allUsersFailure),
       map(() => {
-        return RouterActions.goTo({path: [EAppPages.Auth, EAuthPages.Login]});
+        return RouterActions.goTo({path: [EAppPages.Auth, EAuthPages.LoginIdentifier]});
       })
     )
   );

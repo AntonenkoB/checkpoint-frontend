@@ -6,7 +6,19 @@
       }
 
       @if (user()) {
-        <cp-avatar class="avatar" [src]="user()?.avatar ?? ''"></cp-avatar>
+        <div class="avatar-stack">
+          <cp-avatar class="avatar" [src]="user()?.avatar ?? ''"></cp-avatar>
+
+          @if (user()?.teachers?.length! > 0 && showTeacher()) {
+            @for (teacher of user()?.teachers; track teacher?.id) {
+              <cp-avatar class="avatar" [src]="teacher?.avatar ?? ''"></cp-avatar>
+            }
+          }
+
+          @if (withTeacher() && showTeacher()) {
+            <cp-avatar class="avatar" [src]="withTeacher()?.avatar ?? ''"></cp-avatar>
+          }
+        </div>
       }
       <div class="user-info">
         @if (user()) {
@@ -24,15 +36,6 @@
           <div class="" [innerHTML]="CHECK_THIN_SVG"></div>
         }
 
-<!--        @if (withAdditionalInfo()) {-->
-<!--          <div class="open-student-info"-->
-<!--               [class.open]="additionalInfoToggle()"-->
-<!--               (click)="additionalInfoToggle.set(!additionalInfoToggle())"-->
-<!--          >-->
-<!--            <div class="open-student-info-icon" [innerHTML]="ARROW_SVG"></div>-->
-<!--          </div>-->
-<!--        }-->
-
         @if (showDelete()) {
           <div class="delete"
                [innerHTML]="CLOSE_SVG"
@@ -46,20 +49,6 @@
               [innerHTML]="DOTS_SVG"
               (click)="dotsEvent.emit(user()?.id)"
           ></div>
-        }
-
-        @if (user()?.teachers?.length! > 0 && showTeacher()) {
-          <div class="user-teachers">
-            @for (teacher of user()?.teachers; track teacher?.id) {
-              <cp-avatar class="user-teachers-avatar" [src]="teacher?.avatar ?? ''"></cp-avatar>
-            }
-          </div>
-        }
-
-        @if (withTeacher() && showTeacher()) {
-          <div class="teacher-avatar-wrp">
-            <cp-avatar class="avatar teacher-avatar" [src]="withTeacher()?.avatar ?? ''"></cp-avatar>
-          </div>
         }
       </div>
     }

@@ -64,6 +64,9 @@
       "@settings/*": [
         "src/app/features/settings/*"
       ],
+      "@notifacations/*": [
+        "src/app/features/notifications/*"
+      ],
     },
     "skipLibCheck": true,
     "useDefineForClassFields": false

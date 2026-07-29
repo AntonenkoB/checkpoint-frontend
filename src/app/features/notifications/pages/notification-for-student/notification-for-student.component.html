@@ -1,0 +1,31 @@
+<div class="notification-content">
+  <div class="notification-head">
+    <div class="notification-title" [class]="action()">
+      {{ notificationTitle() | translate }}
+    </div>
+  </div>
+  @if (notification()?.sender) {
+    <cp-user-item-read
+        class="notification-user"
+        [user]="notification()?.sender"
+    ></cp-user-item-read>
+  } @else {
+    <cp-individual-lesson></cp-individual-lesson>
+  }
+  <div class="notification-description">
+    @if (notification()?.payload?.previous_date) {
+      <div class="notification-text">{{ "common.from" | translate }} - {{ notification()?.payload | lessonPreviousDateTime }}</div>
+      <div class="notification-text">{{ "common.for" | translate }} - {{ notification()?.payload | lessonDateTime }}</div>
+    } @else {
+      <div class="notification-text">{{ notification()?.payload | lessonDateTime }}</div>
+    }
+  </div>
+  <div class="notification-buttons">
+    @if (action() === eNotificationAction.Reminder) {
+      <ion-button class="notification-btn" (click)="read.emit(notification()?.id!)">{{ "common.ok" | translate }}</ion-button>
+    } @else {
+      <ion-button class="notification-btn" (click)="confirm.emit(notification()?.id!)">{{ "notification.agree" | translate }}</ion-button>
+      <div class="notification-btn reject" (click)="reject.emit(notification()?.id!)">{{ "notification.disagree" | translate }}</div>
+    }
+  </div>
+</div>

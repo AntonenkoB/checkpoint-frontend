@@ -16,6 +16,7 @@ export enum EAppPages {
   Student = 'student',
   Profile = 'profile',
   Settings = 'settings',
+  Notifications = 'notifications',
 }
 
 export enum ERoutParams {
@@ -25,6 +26,7 @@ export enum ERoutParams {
   LessonId = 'lessonId',
   PlanId = 'id',
   SlotId = 'id',
+  NotificationId = 'id',
 }
 
 export enum EQueryParams {

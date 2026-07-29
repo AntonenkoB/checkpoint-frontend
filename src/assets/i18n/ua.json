@@ -7,7 +7,10 @@
     "confirm-change-title": "Зберегти зміни?",
     "logout": "Вийти",
     "delete-profile": "Видалити профіль",
+    "ok": "ок",
     "to": "до",
+    "from": "з",
+    "for": "на",
     "user-agreements": "Користувацькі угоди",
     "roles": {
       "owner": "Власник",
@@ -194,18 +197,63 @@
       "system": "Системна",
       "light": "Світла",
       "dark": "Темна"
+    }
+  },
+  "notification": {
+    "title": "Сповіщення",
+    "enabled": "Дозволено",
+    "disabled": "Заборонено",
+    "agree": "Погодитись",
+    "disagree": "Не погодитись",
+    "booked": {
+      "one": "Запис",
+      "few": "Записи",
+      "many": "Записиів"
     },
-    "notification": {
-      "title": "Сповіщення",
-      "enabled": "дозволено",
-      "disabled": "заборонено",
-      "reminder": {
-        "title": "Нагадування про урок за",
-        "hours": "Годину",
-        "three-hours": "3 годин",
-        "five-hours": "5 години",
-        "day": "за добу"
-      }
+    "cancelled": {
+      "one": "Скасування",
+      "few": "Скасування",
+      "many": "Скасувань"
+    },
+    "rescheduled":{
+      "one": "Перенос",
+      "few": "Переноси",
+      "many": "Переносів"
+    },
+    "type": {
+      "student_booked": "Учень записався на урок",
+      "student_cancelled": "Учень відмінив урок",
+      "student_rescheduled": "Учень переніс урок",
+      "individual_student_booked": "Учень записався на самостійне",
+      "individual_student_cancelled": "Учень відмінив самостійне",
+      "individual_student_rescheduled": "Учень переніс самостійне",
+      "lesson_book_requested": "Учитель хоче записати на урок",
+      "lesson_cancel_requested": "Учитель хоче відмінити урок",
+      "lesson_reschedule_requested": "Учитель хоче перенести урок",
+      "individual_book_requested": "Адміністратор хоче записати на самостійне",
+      "individual_cancel_requested": "Адміністратор хоче відмінити самостійне",
+      "individual_reschedule_requested": "Адміністратор хоче перенести самостійне",
+      "lesson_book_confirmed": "Учень підтвердив запис на урок",
+      "lesson_book_rejected": "Учень не підтвердив запис на урок",
+      "lesson_cancel_confirmed": "Учень підтвердив відміну уроку",
+      "lesson_cancel_rejected": "Учень не підтвердив відміну уроку",
+      "lesson_reschedule_confirmed": "Учень підтвердив перенесення уроку",
+      "lesson_reschedule_rejected": "Учень не підтвердив перенесення уроку",
+      "individual_book_confirmed": "Учень підтвердив запис на самостійне",
+      "individual_book_rejected": "Учень не підтвердив запис на самостійне",
+      "individual_cancel_confirmed": "Учень підтвердив відміну самостійного",
+      "individual_cancel_rejected": "Учень не підтвердив відміну самостійного",
+      "individual_reschedule_confirmed": "Учень підтвердив перенесення самостійного",
+      "individual_reschedule_rejected": "Учень не підтвердив перенесення самостійного",
+      "lesson_reminder": "Нагадуємо про урок"
+    },
+    "reminder": {
+      "title": "Нагадування про урок за",
+      "no-remind": "Не нагадувати",
+      "hours": "Годину",
+      "three-hours": "3 години",
+      "five-hours": "5 годин",
+      "day": "за добу"
     }
   }
 }

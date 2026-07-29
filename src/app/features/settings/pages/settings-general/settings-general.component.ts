@@ -47,6 +47,6 @@ export class SettingsGeneralComponent {
   }
 
   public changeNotificationRemainder(hours: string): void {
-    // this.settingsFacade.changeTheme(theme as ETheme);
+    this.settingsFacade.setReminder(+hours);
   }
 }

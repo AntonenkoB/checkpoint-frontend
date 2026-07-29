@@ -111,10 +111,6 @@
           </ion-item>
         }
 
-        @if (userFacade.availableRoleOptions().length > 1 && (userFacade.isAdmin() || userFacade.isOwner())) {
-          <cp-role-list [roles]="userFacade.availableRoleOptions()" [(selectedRoles)]="selectedRoles"></cp-role-list>
-        }
-
         @if (userFacade.roleCreate() === eUserRole.Student) {
           @if (userModel().temporary_password && userFacade.isTeacher()) {
             <ion-item>

@@ -1,0 +1,20 @@
+<div class="notification-item">
+  <div class="notification-title" [class]="action()" [innerHTML]="notificationTitle() | translate"></div>
+  <cp-user-item-read
+      class="notification-user"
+      [user]="notification()?.sender"
+  ></cp-user-item-read>
+  <div class="notification-description">
+    @if (notification()?.payload?.previous_date) {
+      <div class="notification-text">{{"common.from" | translate}} - {{ notification()?.payload | lessonPreviousDateTime }}</div>
+      <div class="notification-text">{{"common.for" | translate}} - {{ notification()?.payload | lessonDateTime }}</div>
+    } @else {
+      <div class="notification-text">{{ notification()?.payload | lessonDateTime }}</div>
+    }
+  </div>
+  @if (notification()?.status === eNotificationStatus.Unread) {
+    <div class="notification-buttons">
+      <ion-button class="notification-btn" (click)="readNotification.emit(notification()?.id!)">{{ "common.ok" | translate }}</ion-button>
+    </div>
+  }
+</div>

@@ -18,6 +18,7 @@ import {ELessonFlow, ELessonPages} from "@lessons/models/lessons.model";
 import {ImpactStyle} from "@capacitor/haptics";
 import {HapticService} from "@shared/services/haptic.service";
 import {AuthStore} from "@auth/store/auth.store";
+import {PushNotificationService} from "@notifacations/services/push-notification.service";
 
 @Injectable()
 export class SettingsFacade {
@@ -27,6 +28,7 @@ export class SettingsFacade {
   private authStore = inject(AuthStore);
   private studentFacade = inject(StudentFacade);
   private themeService = inject(ThemeService);
+  private pushNotificationService = inject(PushNotificationService);
   private hapticService = inject(HapticService);
   private navController = inject(NavController);
 
@@ -62,6 +64,7 @@ export class SettingsFacade {
     await this.profileStore.setActiveRole(role);
     void this.hapticService.impact(ImpactStyle.Medium);
     void this.navController.navigateRoot([EAppPages.Settings, ESettingsPages.General], { animated: false });
+    void this.pushNotificationService.init();
   }
 
   public changeTheme(theme: ETheme): void {
@@ -78,8 +81,25 @@ export class SettingsFacade {
     this.profileFacade.update(user());
   }
 
+  public setReminder(hours: number): void {
+    const currentProfile = this.profileFacade.profile();
+    if (!currentProfile) return;
+
+    const user = signal<IUser>(currentProfile);
+    user.update((profile) => ({
+      ...profile,
+      reminder_hours_before: hours
+    }));
+
+    this.profileFacade.update(user());
+  }
+
   public goToPurchase(): void {
     this.store.dispatch(RouterActions.goTo({path: [EAppPages.Market, EMarketPages.PaymentType]}))
+  }
+
+  public goToNotifications(): void {
+    this.store.dispatch(RouterActions.goTo({path: [EAppPages.Notifications]}))
   }
 
   public goToProfile(): void {

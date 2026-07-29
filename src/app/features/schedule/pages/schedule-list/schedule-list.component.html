@@ -1,4 +1,17 @@
 <div class="schedule-list">
+  <div class="container">
+    <div class="notifications" (click)="scheduleFacade.goToNotifications()">
+      <div class="notification booked">
+        {{ scheduleFacade.notificationsCount()?.book_count! }} {{scheduleFacade.notificationsCount()?.book_count! | translatePlural: 'notification.booked'}}
+      </div>
+      <div class="notification cancelled">
+        {{ scheduleFacade.notificationsCount()?.cancel_count! }} {{scheduleFacade.notificationsCount()?.cancel_count! | translatePlural: 'notification.cancelled'}}
+      </div>
+      <div class="notification rescheduled">
+        {{ scheduleFacade.notificationsCount()?.reschedule_count! }} {{scheduleFacade.notificationsCount()?.reschedule_count! | translatePlural: 'notification.rescheduled'}}
+      </div>
+    </div>
+  </div>
   <div class="schedule-list-calendar container-large">
     <cp-calendar
         [activeDays]="recordedDays()"

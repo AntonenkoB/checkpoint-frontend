@@ -6,6 +6,7 @@ import {IonContent} from "@ionic/angular/standalone";
 import {PriceFormatPipe} from "@shared/pipes/price-format-pipe";
 import {DatePipe} from "@angular/common";
 import { ERatesType } from "@rates/models/rates.model";
+import {EmptyStateComponent} from "@shared/components/empty-state/empty-state.component";
 
 @Component({
   selector: "cp-history-purchases",
@@ -16,7 +17,8 @@ import { ERatesType } from "@rates/models/rates.model";
     TranslatePipe,
     IonContent,
     PriceFormatPipe,
-    DatePipe
+    DatePipe,
+    EmptyStateComponent
   ],
   providers: [StudentFacade]
 })

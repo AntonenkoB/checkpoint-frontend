@@ -1,11 +1,14 @@
 import {
   Component,
   computed,
+  DestroyRef,
   effect,
   inject,
   OnInit,
   signal,
 } from "@angular/core";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {interval} from "rxjs";
 import {EUserRole} from "@models/user.model";
 import {CalendarComponent} from "@shared/components/calendar/calendar.component";
 import {UserItemComponent} from "@shared/components/user-item/user-item.component";
@@ -17,6 +20,7 @@ import {EmptyStateComponent} from "@shared/components/empty-state/empty-state.co
 import {formatToDateTime} from "@shared/utils/date.utils";
 import {DayTitlePipe} from "@shared/pipes/day-title-pipe";
 import {ITimeRange} from "@schedule/models/schedule.model";
+import {TranslatePluralPipe} from "@shared/pipes/translate-plural.pipe";
 
 @Component({
   selector: "cp-schedule-list",
@@ -27,13 +31,17 @@ import {ITimeRange} from "@schedule/models/schedule.model";
     UserItemComponent,
     LoaderComponent,
     EmptyStateComponent,
-    DayTitlePipe
+    DayTitlePipe,
+    TranslatePluralPipe
   ]
 })
 export class ScheduleListComponent implements OnInit {
   public readonly scheduleFacade = inject(ScheduleFacade);
   public readonly scheduleListStore = inject(ScheduleListStore);
   public readonly scheduleStore = inject(ScheduleStore);
+  private readonly destroyRef = inject(DestroyRef);
+
+  private static readonly REFRESH_INTERVAL_MS = 60_000;
 
   public profile = computed(() => this.scheduleFacade.profile())
   public studentsList = signal(this.scheduleFacade.studentsList());
@@ -57,6 +65,17 @@ export class ScheduleListComponent implements OnInit {
     setTimeout(() => {
       this.scheduleFacade.getScheduleSlots();
     }, 0)
+
+    this.scheduleFacade.loadNotificationsCount();
+
+    interval(ScheduleListComponent.REFRESH_INTERVAL_MS)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => this.refreshData());
+  }
+
+  private refreshData(): void {
+    this.scheduleFacade.getScheduleSlots();
+    this.scheduleFacade.loadNotificationsCount();
   }
 
   public selectDay(event: CustomEvent): void {

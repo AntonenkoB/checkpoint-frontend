@@ -14,6 +14,7 @@ import {StudentsStore} from "@users/store/students.store";
 import {ELessonPages, ELessonsType} from "@lessons/models/lessons.model";
 import {LessonsStore} from "@lessons/store/lessons.store";
 import {formatToDateTime} from "@shared/utils/date.utils";
+import {NotificationsStore} from "@notifacations/store/notifications.store";
 
 
 @Injectable({ providedIn: 'root' })
@@ -23,6 +24,7 @@ export class ScheduleFacade {
   public scheduleListStore = inject(ScheduleListStore);
   private studentsStore = inject(StudentsStore);
   private lessonsStore = inject(LessonsStore);
+  private notificationsStore = inject(NotificationsStore);
   private profileFacade = inject(ProfileFacade);
 
   public readonly profile = this.profileFacade.profile;
@@ -32,6 +34,7 @@ export class ScheduleFacade {
   public selectRouteParams = this.store.selectSignal(selectRouteParams);
   public selectQueryParamFrom = computed(() => this.scheduleStore.form());
   public studentsList = this.studentsStore.studentsList;
+  public notificationsCount = this.notificationsStore.notificationsCount;
   public studentTeachers = computed(() => this.profile()?.teachers ?? []);
   public readonly scheduleByDate = computed<IScheduleItemToDate[]>(() => {
     const data = this.scheduleStore.slotsEntities() ?? [];
@@ -71,6 +74,12 @@ export class ScheduleFacade {
     } else {
       this.scheduleStore.getSlots();
     }
+  }
+
+  public loadNotificationsCount(): void {
+    if (!this.activeRole()) return;
+
+    this.notificationsStore.getNotificationCount(this.activeRole()!);
   }
 
   public saveWeekSlot(day: EDayOfWeek, slots: ITimeRange[] ): void {
@@ -132,6 +141,10 @@ export class ScheduleFacade {
 
   public goToRecordStudent(): void {
     this.store.dispatch(RouterActions.goTo({path: [EAppPages.Schedule, ESchedulePages.RecordStudent]}))
+  }
+
+  public goToNotifications(): void {
+    this.store.dispatch(RouterActions.goTo({path: [EAppPages.Notifications]}))
   }
 
   public goToTransferringLesson(user: IUser, time: string, lessonId: number): void {

@@ -36,26 +36,26 @@
       <cp-tabs
           [tabList]="LANGS_TAB"
           [bntStyle]="'btn-fill'"
-          [activeTab]="settingsFacade.profile()?.lang"
+          [activeTab]="settingsFacade.profile()?.language"
           (segmentChange)="changeLang($event)"
       ></cp-tabs>
     </div>
-    <div class="settings-general-item">
-      <div class="title">{{ 'settings.notification.title' | translate }}</div>
-      <cp-tabs
-          [tabList]="NOTIFICATIONS_ENABLE_TAB"
-          [bntStyle]="'btn-fill'"
-          [activeTab]="NOTIFICATIONS_ENABLE_TAB[0].value"
-          (segmentChange)="changeNotificationEnabled($event)"
-      ></cp-tabs>
-    </div>
+<!--    <div class="settings-general-item">-->
+<!--      <div class="title">{{ 'notification.title' | translate }}</div>-->
+<!--      <cp-tabs-->
+<!--          [tabList]="NOTIFICATIONS_ENABLE_TAB"-->
+<!--          [bntStyle]="'btn-fill'"-->
+<!--          [activeTab]="NOTIFICATIONS_ENABLE_TAB[0].value"-->
+<!--          (segmentChange)="changeNotificationEnabled($event)"-->
+<!--      ></cp-tabs>-->
+<!--    </div>-->
     @if (settingsFacade.isStudent()) {
       <div class="settings-general-item">
-        <div class="title">{{ 'settings.notification.reminder.title' | translate }}</div>
+        <div class="title">{{ 'notification.reminder.title' | translate }}</div>
         <cp-tabs
             [tabList]="NOTIFICATIONS_REMAINDER_TAB"
             [bntStyle]="'btn-fill'"
-            [activeTab]="NOTIFICATIONS_REMAINDER_TAB[0].value"
+            [activeTab]="settingsFacade.profile()?.reminder_hours_before"
             (segmentChange)="changeNotificationRemainder($event)"
         ></cp-tabs>
       </div>

@@ -1,4 +1,5 @@
 import { ILesson } from "@models/lesson.model";
+import {INotificationPayload} from "@notifacations/models/notifications.model";
 
 const resetTime = (d: Date): number =>
   new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
@@ -39,7 +40,15 @@ export function formatDayTitle(dateString: string): string {
   return `${dayName}, ${dayAndMonth}`;
 }
 
-export function formatLessonToDateTime(lesson: ILesson | null | undefined): string {
+export function formatPreviousLessonToDateTime(date: string, from: number, to: number): string {
+  const dayTitle = formatDayTitle(date);
+  const fromTime = formatTimeWithMinutes(from);
+  const toTime = formatTimeWithMinutes(to);
+
+  return `${dayTitle}, ${fromTime} - ${toTime}`;
+}
+
+export function formatLessonToDateTime(lesson: ILesson | INotificationPayload | null | undefined): string {
   if (!lesson || !lesson.date || !lesson.time) return '';
 
   const dayTitle = formatDayTitle(lesson.date);

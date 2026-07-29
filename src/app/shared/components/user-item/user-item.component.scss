@@ -48,6 +48,26 @@
     font: var(--font-open-12-regular);
   }
 
+  .avatar-stack {
+    display: flex;
+    justify-content: flex-end;
+
+    cp-avatar {
+      margin-left: -20px;
+      position: relative;
+
+      @for $i from 1 through 10 {
+        &:nth-child(#{$i}) {
+          z-index: #{10 - $i};
+        }
+      }
+
+      &:first-child {
+        margin-left: 0;
+      }
+    }
+  }
+
   .avatar {
     height: 50px;
     width: 50px;
@@ -78,7 +98,6 @@
 
   .creative-name {
     font: var(--font-alumi-20-black);
-    text-transform: uppercase;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;

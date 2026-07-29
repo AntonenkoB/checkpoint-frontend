@@ -25,6 +25,7 @@ import {TokenService} from '@shared/services/token-service';
 import {SettingsService} from '@shared/services/settings.service';
 import {getHighestRole} from '@shared/permissions/role-priority';
 import {ProfileStore} from '@profile/store/profile.store';
+import {PushNotificationService} from "@notifacations/services/push-notification.service";
 
 export type TRefreshState = 'idle' | 'pending' | 'success' | 'logout';
 
@@ -71,6 +72,7 @@ export const AuthStore = signalStore(
     settingsService = inject(SettingsService),
     profileStore = inject(ProfileStore),
     store = inject(Store),
+    pushService = inject(PushNotificationService)
   ) => ({
     clearCheckUserFailure(): void {
       patchState(state, {checkUserFailure: null});
@@ -133,6 +135,7 @@ export const AuthStore = signalStore(
                   }
 
                   profileStore.getProfile();
+                  void pushService.init();
                   const highestRole = getHighestRole(user.roles);
 
                   highestRole === EUserRole.Student
@@ -272,6 +275,7 @@ export const AuthStore = signalStore(
           ]).pipe(
             tap(() => {
               patchState(state, {...initialState, refreshState: 'logout'});
+              pushService.deleteToken();
               store.dispatch(RouterActions.goTo({path: [EAppPages.Auth, EAuthPages.LoginIdentifier]}));
             }),
           ),

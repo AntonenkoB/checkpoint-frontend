@@ -1,0 +1,27 @@
+:host {
+  .individual-lesson {
+    display: flex;
+    gap: var(--spacing-16);
+    align-items: center;
+    padding: var(--spacing-8) 0;
+  }
+
+  .individual-avatar {
+    height: 50px;
+    width: 50px;
+
+    ::ng-deep {
+      .avatar {
+        border: 0;
+      }
+    }
+  }
+
+  .individual-lesson-title {
+    font: var(--font-alumi-20-bold);
+  }
+
+  .individual-lesson-description {
+    font: var(--font-open-13-regular);
+  }
+}

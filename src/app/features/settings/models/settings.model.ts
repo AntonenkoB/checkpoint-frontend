@@ -80,29 +80,33 @@ export const THEME_ACTIONS = (): IOptions<ETheme>[] => [
 export const NOTIFICATIONS_ENABLE_TAB= (): IOptions<number>[] => [
   {
     value: 1,
-    title: "settings.notification.enabled"
+    title: "notification.enabled"
   },
   {
     value: 0,
-    title: "settings.notification.disabled"
+    title: "notification.disabled"
   },
 ]
 
 export const NOTIFICATIONS_REMAINDER_TAB= (): IOptions<number>[] => [
   {
     value: 1,
-    title: "settings.notification.reminder.hours"
+    title: "notification.reminder.hours"
   },
   {
     value: 3,
-    title: "settings.notification.reminder.three-hours"
+    title: "notification.reminder.three-hours"
   },
   {
     value: 5,
-    title: "settings.notification.reminder.five-hours"
+    title: "notification.reminder.five-hours"
   },
   {
     value: 24,
-    title: "settings.notification.reminder.day"
+    title: "notification.reminder.day"
+  },
+  {
+    value: 0,
+    title: "notification.reminder.no-remind"
   },
 ]

@@ -9,9 +9,11 @@ import {ProfileFacade} from "@profile/facade/profile.facade";
 import {StudentStore} from "@student/store/student.store";
 import {LessonsFacade} from "@lessons/facade/lessons.facade";
 import {ILesson} from "@models/lesson.model";
-import {IUser} from "@models/user.model";
+import {EUserRole, IUser} from "@models/user.model";
 import {formatLessonToDateTime} from "@shared/utils/date.utils";
 import {ESettingsPages} from "@settings/models/settings.model";
+import {NotificationsStore} from "@notifacations/store/notifications.store";
+import {ENotificationStatus} from "@notifacations/models/notifications.model";
 
 @Injectable({ providedIn: 'root' })
 export class StudentFacade {
@@ -19,12 +21,18 @@ export class StudentFacade {
   private profileFacade = inject(ProfileFacade);
   private lessonsFacade = inject(LessonsFacade);
   private studentStore = inject(StudentStore);
+  private notificationsStore = inject(NotificationsStore);
   public readonly profile = this.profileFacade.profile;
   public lessonsList = this.studentStore.lessons;
   public groupFutureLessons = this.studentStore.groupedFutureLessons;
   public groupPastLessons = this.studentStore.groupedPastLessons;
   public historyPurchases = this.studentStore.purchases
+  public notifications = this.notificationsStore.notifications;
 
+  public isEmptyInfo = computed(() => {
+    const all = this.groupFutureLessons().length + this.notifications().length
+    return all === 0;
+  });
   public amountTeacherLessons = computed(() => {
     const purchases = this.profile()?.purchases ?? [];
 
@@ -86,5 +94,26 @@ export class StudentFacade {
 
   public loadPurchases(): void {
     this.studentStore.getPurchases();
+  }
+
+  public loadNotifications(): void {
+    const params = {
+      role: EUserRole.Student,
+      status: ENotificationStatus.Unread,
+    }
+
+    this.notificationsStore.getNotifications(params);
+  }
+
+  public confirmNotification(id: number): void {
+    this.notificationsStore.confirmNotification(id);
+  }
+
+  public readNotification(id: number): void {
+    this.notificationsStore.readNotification(id);
+  }
+
+  public rejectNotification(id: number): void {
+    this.notificationsStore.rejectNotification(id);
   }
 }

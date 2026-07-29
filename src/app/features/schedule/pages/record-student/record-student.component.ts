@@ -33,6 +33,7 @@ export class RecordStudentComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.recordStudentFacade.getStudents('');
   }
 
   ionViewWillEnter(): void {

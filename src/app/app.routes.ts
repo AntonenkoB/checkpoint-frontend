@@ -50,6 +50,11 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: EAppPages.Notifications,
+    loadChildren: () => import('./features/notifications/notifications.routes').then((m) => m.routesNotifications),
+    canActivate: [AuthGuard],
+  },
+  {
     path: '',
     redirectTo: EAppPages.Users,
     pathMatch: 'full',

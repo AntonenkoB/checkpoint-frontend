@@ -29,6 +29,10 @@
           <div class="price">{{purchase.plan.price | priceFormat: '₴'}}</div>
         </div>
       </div>
+    } @empty {
+      <div class="empty">
+        <cp-empty-state></cp-empty-state>
+      </div>
     }
   </div>
 </ion-content>

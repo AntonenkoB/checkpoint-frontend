@@ -7,7 +7,9 @@
     <div class="lesson-title">{{ "lessons.planned-success" | translate }}</div>
     <div class="student">
       @if (lessonsFacade.lessonsStore.currentUser()!) {
-        <cp-record-student-item [student]="lessonsFacade.lessonsStore.currentUser()!" [withAmountLesson]="false"></cp-record-student-item>
+        <cp-record-student-item
+            [student]="lessonsFacade.lessonsStore.currentUser()!"
+            [withAmountLesson]="false"></cp-record-student-item>
       }
     </div>
 

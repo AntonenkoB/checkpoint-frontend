@@ -1,5 +1,4 @@
 import {inject, computed} from '@angular/core';
-import {Store} from '@ngrx/store';
 import {patchState, signalStore, withComputed, withMethods, withState} from '@ngrx/signals';
 import {withEntities} from '@ngrx/signals/entities';
 import {rxMethod} from '@ngrx/signals/rxjs-interop';
@@ -51,7 +50,6 @@ export const StudentStore = signalStore(
     state,
     studentService = inject(StudentService),
   ) => ({
-
     getTeachers: rxMethod<void>(
       pipe(
         tap(() => patchState(state, {isLoading: true})),

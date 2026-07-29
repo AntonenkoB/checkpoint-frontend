@@ -1,5 +1,5 @@
 <div class="student">
-  <div class="student-bg" [class.is-lessons]="studentFacade.groupFutureLessons().length > 0"></div>
+  <div class="student-bg" [class.is-empty]="studentFacade.isEmptyInfo()"></div>
   <div class="teacher-wrap container">
     <div class="teacher">
       <div class="teacher-icon"  (click)="studentFacade.goToSettings()">
@@ -18,6 +18,17 @@
   </div>
 
   <div class="lessons-wrap">
+    <div class="notifications container">
+      @for (notification of studentFacade.notifications(); track notification.id) {
+        <cp-notification-for-student
+            class="schedule-notification"
+            [notification]="notification"
+            (read)="studentFacade.readNotification($event)"
+            (confirm)="studentFacade.confirmNotification($event)"
+            (reject)="studentFacade.rejectNotification($event)"
+        ></cp-notification-for-student>
+      }
+    </div>
     @for (item of studentFacade.groupFutureLessons(); track item) {
       <div class="lessons container">
         <div class="week-title">{{item.label}}</div>
@@ -26,13 +37,7 @@
           @if (week.teacher) {
             <cp-user-item-read class="teacher-lessons" [user]="week.teacher"></cp-user-item-read>
           } @else {
-            <div class="individual-lesson">
-              <cp-avatar class="individual-avatar" [src]="'/assets/img/avatar-individual-lesson.jpg'"></cp-avatar>
-              <div class="individual-lesson-info">
-                <div class="individual-lesson-title">{{"schedule.independent" | translate}}</div>
-                <div class="individual-lesson-description">вул. Обсерваторна 13/15</div>
-              </div>
-            </div>
+            <cp-individual-lesson  class="individual-lessons-wrap"></cp-individual-lesson>
           }
 
           @for (lesson of week.lessons; track lesson) {

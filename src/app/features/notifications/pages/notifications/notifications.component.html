@@ -1,0 +1,24 @@
+<div class="container">
+  <cp-header-secondary
+      [title]="'notification.title' | translate"
+      (close)="notificationsFacade.toBackPage()"
+  ></cp-header-secondary>
+</div>
+<ion-content>
+<!--  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">-->
+<!--    <ion-refresher-content></ion-refresher-content>-->
+<!--  </ion-refresher>-->
+  <div class="notifications-wrap">
+    <div class="container">
+      <div class="notifications">
+          @for (notification of notificationsFacade.notifications(); track notification.id) {
+            <cp-notification-item
+                [notification]="notification"
+                (readNotification)="notificationsFacade.readNotification(notification.id)"
+            ></cp-notification-item>
+          }
+      </div>
+    </div>
+  </div>
+</ion-content>
+

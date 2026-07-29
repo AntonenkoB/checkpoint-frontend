@@ -32,7 +32,8 @@ export interface IUser {
   created_at: string;
   updated_at: string;
   avatar: string;
-  lang?: string;
+  reminder_hours_before: number;
+  language: string;
   teachers?: Partial<IUser[]>;
   purchases?: IProfilePurchases[];
 }

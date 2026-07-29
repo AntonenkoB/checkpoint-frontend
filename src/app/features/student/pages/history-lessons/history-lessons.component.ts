@@ -4,6 +4,7 @@ import {TranslatePipe} from "@shared/pipes/translate-pipe";
 import {IonContent} from "@ionic/angular/standalone";
 import {StudentFacade} from "@student/facade/student.facade";
 import {LessonDateTimePipe} from "@shared/pipes/lesson-date-time-pipe";
+import {EmptyStateComponent} from "@shared/components/empty-state/empty-state.component";
 
 @Component({
   selector: "cp-history-lessons",
@@ -13,7 +14,8 @@ import {LessonDateTimePipe} from "@shared/pipes/lesson-date-time-pipe";
     HeaderSecondaryComponent,
     TranslatePipe,
     IonContent,
-    LessonDateTimePipe
+    LessonDateTimePipe,
+    EmptyStateComponent
   ],
   providers: [StudentFacade]
 })

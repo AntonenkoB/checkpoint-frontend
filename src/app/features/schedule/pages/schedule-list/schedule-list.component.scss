@@ -15,6 +15,71 @@
     max-width: 488px;
   }
 
+  .notifications {
+    align-items: center;
+    display: flex;
+    cursor: pointer;
+    justify-content: space-between;
+    padding: var(--spacing-16);
+    width: 100%;
+    position: relative;
+    border-radius: 8px;
+    margin-top: var(--spacing-24);
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 8px;
+      padding: 2px;
+      background: linear-gradient(89.4deg, #00D660 1.33%, #FF0000 47.58%, #FF8C00 99.49%);
+      -webkit-mask:
+          linear-gradient(#fff 0 0) content-box,
+          linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+  }
+
+  .notification {
+    align-items: center;
+    display: flex;
+    gap: var(--spacing-8);
+    font: var(--font-open-12-regular);
+
+    &:before {
+      content: '';
+      display: block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-bottom: 1px;
+    }
+
+    &.booked {
+      &:before {
+        background-color: var(--color-green);
+      }
+    }
+
+    &.cancelled {
+      &:before {
+        background-color: var(--color-red);
+      }
+    }
+
+    &.rescheduled {
+      &:before {
+        background-color: var(--color-orange);
+      }
+    }
+  }
+
+  .schedule-notification {
+    margin-bottom: var(--spacing-16);
+  }
+
   .schedule-list-calendar {
     padding-top: var(--spacing-24);
   }

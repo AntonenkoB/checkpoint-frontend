@@ -10,9 +10,11 @@
       }
     </div>
     <div class="lesson-date">{{lessonsFacade.lessonsStore.currentDateTime()!}}</div>
-    <ion-button class="cansel-btn" (click)="lessonsFacade.goToTransferringTime()">{{ "schedule.transfer" | translate}}</ion-button>
-    <ion-button [color]="'danger'" (click)="lessonsFacade.cancelLesson()">{{ "schedule.cancel" | translate}}</ion-button>
     <div class="btn-wrap">
+      @if(lessonsFacade.isStudent()) {
+        <ion-button class="cansel-btn" (click)="lessonsFacade.goToTransferringTime()">{{ "schedule.transfer" | translate}}</ion-button>
+      }
+      <ion-button [color]="'danger'" (click)="lessonsFacade.cancelLesson()">{{ "schedule.cancel" | translate}}</ion-button>
     </div>
   </div>
 </div>

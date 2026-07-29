@@ -1,0 +1,92 @@
+:host {
+  display: block;
+
+  .notification-content {
+    border-radius: 8px;
+    border: 1px solid var(--color-no-reverse-white);
+    padding: var(--spacing-16);
+    margin-bottom: var(--spacing-8);
+  }
+
+  .notification-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+
+  .notification-title {
+    font: var(--font-open-13-regular);
+    align-items: center;
+    display: flex;
+    gap: var(--spacing-8);
+
+    &:before {
+      content: '';
+      display: block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-bottom: 1px;
+    }
+
+    &.booked,
+    &.reminder {
+      &:before {
+        background-color: var(--color-green);
+      }
+    }
+
+    &.cancelled {
+      &:before {
+        background-color: var(--color-red);
+      }
+    }
+
+    &.rescheduled {
+      &:before {
+        background-color: var(--color-orange);
+      }
+    }
+  }
+
+  .close {
+    cursor: pointer;
+  }
+
+  .notification-user {
+    ::ng-deep .avatar {
+      background-color: transparent;
+      border-color: var(--color-no-reverse-white);
+    }
+  }
+
+  .notification-description {
+  }
+
+  .notification-text {
+    font: var(--font-open-13-regular);
+  }
+
+  .notification-buttons {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-8);
+    padding-top: var(--spacing-8);
+  }
+
+  .notification-btn {
+    --background: var(--color-no-reverse-white);
+    --color: var(--color-no-reverse-black);
+    font: var(--font-alumi-24-medium);
+
+    &.reject {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      width: 100%;
+    }
+  }
+}

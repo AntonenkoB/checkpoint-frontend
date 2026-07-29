@@ -92,7 +92,16 @@ export enum EApiEndpoints {
 
   // record
   SlotListToRecord = `teachers/:${ERoutParams.TeacherId}/slots`,
-  GetIndividualSlotsToRecord = `individual/slots`
+  GetIndividualSlotsToRecord = `individual/slots`,
+
+  // notifications
+  GetNotifications = 'notifications',
+  GetNotificationCount = 'notifications/unread-count',
+  ReedNotification = `notifications/:${ERoutParams.NotificationId}/read`,
+  ConfirmNotification = `notifications/:${ERoutParams.NotificationId}/confirm`,
+  RejectNotification = `notifications/:${ERoutParams.NotificationId}/reject`,
+  SetDeviceTokens = 'profile/device-tokens',
+  DeleteDeviceTokens = 'profile/device-tokens',
 }
 
 export type IApiUrlParams =  Record<string | number, string | number>;

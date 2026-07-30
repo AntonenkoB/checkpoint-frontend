@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { FirebaseMessaging } from '@capacitor-firebase/messaging';
+import { FirebaseMessaging, Importance, Visibility } from '@capacitor-firebase/messaging';
 import { Capacitor } from '@capacitor/core';
 import { NotificationsService } from '@notifacations/services/notifications.service';
 
@@ -11,7 +11,11 @@ export class PushNotificationService {
   private currentToken = signal('');
 
   async init(): Promise<void> {
-    if (Capacitor.getPlatform() !== 'ios') return;
+    if (Capacitor.getPlatform() === 'web') return;
+
+    if (Capacitor.getPlatform() === 'android') {
+      await this.createDefaultChannel();
+    }
 
     this.registerListeners();
     await this.requestPermissionAndGetToken();
@@ -49,10 +53,23 @@ export class PushNotificationService {
   }
 
   private sendTokenToBackend(token: string): void {
-    this.notificationsService.setDeviceTokens(token, 'ios').subscribe({
+    const platform = Capacitor.getPlatform();
+
+    this.notificationsService.setDeviceTokens(token, platform).subscribe({
       next: () => this.currentToken.set(token),
       error: () => {},
     });
+  }
+
+  private async createDefaultChannel(): Promise<void> {
+    try {
+      await FirebaseMessaging.createChannel({
+        id: 'default',
+        name: 'Default',
+        importance: Importance.Max,
+        visibility: Visibility.Public,
+      });
+    } catch {}
   }
 
   private handleForegroundNotification(notification: any): void {

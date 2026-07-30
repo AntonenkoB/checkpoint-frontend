@@ -10,6 +10,8 @@ const config: CapacitorConfig = {
       launchAutoHide: false,
       useDialog: false,
       showSpinner: false,
+      androidSplashResourceName: 'splash',
+      androidScaleType: 'CENTER_CROP',
     },
     Keyboard: {
       resize: 'ionic',

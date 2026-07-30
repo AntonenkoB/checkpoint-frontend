@@ -1,7 +1,6 @@
 :host {
   background-color: var(--color-background-primary);
   display: block;
-  padding-bottom: var(--cp-safe-area-bottom);
   height: 100%;
 
   .user-wrap {
@@ -10,6 +9,7 @@
     height: 100%;
     margin: 0 auto;
     min-height: 100dvh;
+    padding-bottom: var(--cp-safe-area-bottom);
   }
 
   .user-list-header {

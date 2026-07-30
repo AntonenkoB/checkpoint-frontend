@@ -33,7 +33,7 @@ export class RecordStudentFacade {
     if (this.profileFacade.isAdmin()) {
       return this.store.selectSignal(selectAllUsers)();
     } else {
-      return this.studentsStore.studentsList();
+      return this.studentsStore.students();
     }
   });
 
@@ -51,7 +51,7 @@ export class RecordStudentFacade {
     if (this.profileFacade.isAdmin() || this.profileFacade.isOwner()) {
       this.store.dispatch(UserActions.allUsers({role: EUserRole.Student, page: 1, search}));
     } else {
-      this.studentsStore.loadStudentsList(search);
+      this.studentsStore.loadStudents(search);
     }
   }
 

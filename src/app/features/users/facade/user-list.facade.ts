@@ -34,7 +34,7 @@ export class UserListFacade {
   private destroyRef = inject(DestroyRef);
 
   public userList = computed(() => {
-    const students = this.studentsStore.studentsList();
+    const students = this.studentsStore.students();
     const users = this.store.selectSignal(selectAllUsers)();
     const currentTab = this.currentTab();
 
@@ -47,9 +47,19 @@ export class UserListFacade {
   public profile = this.profileFacade.profile;
   public activeRole = this.profileFacade.activeRole;
   public isReadyStudent = this.studentsStore.isReady;
-  public amountStudents = this.studentsStore.studentsListMeta;
+  public amountStudents = this.studentsStore.studentsMeta;
   public userListPagination: Signal<IPagination> = this.store.selectSignal(selectAllUsersPagination);
   public userListLoading: Signal<boolean> = this.store.selectSignal(selectUserLoading);
+
+  public canLoadMoreStudents = this.studentsStore.canLoadMore;
+
+  public loadMoreStudents(): void {
+    this.studentsStore.loadMoreStudents();
+  }
+
+  public refreshStudents(): void {
+    this.studentsStore.refreshStudents();
+  }
 
   constructor() {
     this.searchSubject$.pipe(
@@ -95,7 +105,7 @@ export class UserListFacade {
       return;
     }
 
-    this.studentsStore.loadStudentsList(search);
+    this.studentsStore.loadStudents(search);
   }
 
   private getTeachers(page: number): void {

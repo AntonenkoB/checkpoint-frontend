@@ -48,8 +48,8 @@ export class UserService extends ApiService {
     return this.get<IApiData<IStudentLesson[]>>(EApiEndpoints.GetLessons, data);
   }
 
-  public getStudentsList(search = '', page = 1): Observable<IApiData<IUser[]>> {
-    return this.get<IApiData<IUser[]>>(EApiEndpoints.GetStudentsList, { page, search, per_page: 100 });
+  public getStudents(search = '', page = 1): Observable<IApiData<IUser[]>> {
+    return this.get<IApiData<IUser[]>>(EApiEndpoints.GetStudentsList, { page, search });
   }
 
   public getStudent(studentId: number): Observable<IApiData<IUser>> {

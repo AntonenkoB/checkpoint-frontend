@@ -44,9 +44,11 @@
           </div>
 
           @if (activeMenu() === eHeaderMenu.Student) {
-<!--            <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">-->
-<!--              <ion-infinite-scroll-content loadingSpinner="crescent"></ion-infinite-scroll-content>-->
-<!--            </ion-infinite-scroll>-->
+            <ion-infinite-scroll
+                [disabled]="!userListFacade.canLoadMoreStudents()"
+                (ionInfinite)="onIonInfinite($event)">
+              <ion-infinite-scroll-content loadingSpinner="crescent"></ion-infinite-scroll-content>
+            </ion-infinite-scroll>
           }
         </ion-content>
       } @else {

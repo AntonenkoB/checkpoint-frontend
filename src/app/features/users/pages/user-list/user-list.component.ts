@@ -3,6 +3,8 @@ import {UserListFacade} from "../../facade/user-list.facade";
 import {
   IonButton,
   IonContent,
+  IonInfiniteScroll,
+  IonInfiniteScrollContent,
   IonInput,
   IonItem
 } from "@ionic/angular/standalone";
@@ -35,6 +37,8 @@ import {EmptyStateComponent} from "@shared/components/empty-state/empty-state.co
     EmptyStateComponent,
     IonInput,
     IonItem,
+    IonInfiniteScroll,
+    IonInfiniteScrollContent,
   ]
 })
 export class UserListComponent implements OnInit {
@@ -47,7 +51,6 @@ export class UserListComponent implements OnInit {
   public eHeaderMenu = EHeaderMenu;
   public eUserRole = EUserRole;
   public searchUser = signal('');
-  private currentPage = signal(1);
 
   constructor() {
   }
@@ -65,16 +68,8 @@ export class UserListComponent implements OnInit {
     this.userListFacade.selectMenu(tab);
   }
 
-  public onIonInfinite(event: InfiniteScrollCustomEvent) {
-    if (this.currentPage() < this.userListFacade.userListPagination().lastPage) {
-      this.currentPage.update(p => p + 1);
-      this.userListFacade.selectMenu(this.userListFacade.currentTab(), this.currentPage());
-    } else {
-      void event.target.complete();
-    }
-
-    if (this.isReady()) {
-     void event.target.complete();
-    }
+  public async onIonInfinite(event: InfiniteScrollCustomEvent): Promise<void> {
+    this.userListFacade.loadMoreStudents();
+    await event.target.complete();
   }
 }

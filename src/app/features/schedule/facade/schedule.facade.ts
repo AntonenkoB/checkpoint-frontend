@@ -33,7 +33,7 @@ export class ScheduleFacade {
   public readonly isTeacher = this.profileFacade.isTeacher;
   public selectRouteParams = this.store.selectSignal(selectRouteParams);
   public selectQueryParamFrom = computed(() => this.scheduleStore.form());
-  public studentsList = this.studentsStore.studentsList;
+  public studentsList = this.studentsStore.students;
   public notificationsCount = this.notificationsStore.notificationsCount;
   public studentTeachers = computed(() => this.profile()?.teachers ?? []);
   public readonly scheduleByDate = computed<IScheduleItemToDate[]>(() => {

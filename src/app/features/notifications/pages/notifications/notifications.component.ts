@@ -26,7 +26,7 @@ import {InfiniteScrollCustomEvent} from "@ionic/angular";
 export class NotificationsComponent implements OnInit {
   public notificationsFacade = inject(NotificationsFacade)
   private static readonly REFRESH_INTERVAL_MS = 60_000;
-  private refreshSubscription?: Subscription;
+  private refreshNotificationsSubscription?: Subscription;
 
 
   public ngOnInit(): void {
@@ -34,12 +34,12 @@ export class NotificationsComponent implements OnInit {
   }
 
   public ionViewWillEnter(): void {
-    this.refreshSubscription = interval(NotificationsComponent.REFRESH_INTERVAL_MS)
+    this.refreshNotificationsSubscription = interval(NotificationsComponent.REFRESH_INTERVAL_MS)
       .subscribe(() => this.notificationsFacade.autoRefreshNotifications());
   }
 
   public ionViewWillLeave(): void {
-    this.refreshSubscription?.unsubscribe();
+    this.refreshNotificationsSubscription?.unsubscribe();
   }
 
   public async onInfiniteLoadNotifications(event: InfiniteScrollCustomEvent): Promise<void> {

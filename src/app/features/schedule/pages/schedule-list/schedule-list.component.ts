@@ -82,8 +82,6 @@ export class ScheduleListComponent implements OnInit {
 
     this.scheduleFacade.loadNotificationsCount();
 
-    console.log('scheduleFacade.getScheduleSlots(')
-
     interval(ScheduleListComponent.REFRESH_INTERVAL_MS)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => this.refreshData());

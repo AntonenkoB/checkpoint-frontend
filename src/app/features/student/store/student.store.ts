@@ -7,7 +7,9 @@ import {IUser} from "@models/user.model";
 import {StudentService} from "@student/services/student.service";
 import {IIncomingStudentLessons} from "@student/models/student.model";
 import {IPurchase} from "@rates/models/rates.model";
+import {IPagination} from "@models/api.models";
 import {groupLessonsByWeek} from "@shared/utils/group-lessons-for-student.utils";
+import {handleApiResponse, hasNextPage, mergePage} from "@shared/utils/handle-api-response";
 import {TranslateService} from "@shared/services/translate.service";
 
 export interface StudentState {
@@ -15,6 +17,8 @@ export interface StudentState {
   teachers: IUser[];
   lessons: IIncomingStudentLessons[];
   purchases: IPurchase[];
+  purchasesMeta: IPagination | null;
+  purchasesLoading: boolean;
 }
 
 const initialState: StudentState = {
@@ -22,6 +26,8 @@ const initialState: StudentState = {
   teachers: [],
   lessons: [],
   purchases: [],
+  purchasesMeta: null,
+  purchasesLoading: false,
 };
 
 export const StudentStore = signalStore(
@@ -43,13 +49,31 @@ export const StudentStore = signalStore(
     groupedPastLessons: computed(() => groupLessonsByWeek(state.lessons(), 'past', {
       thisWeek: translateService.instant('date.this-week'),
       nextWeek: translateService.instant('date.next-week'),
-    }))
+    })),
+    canLoadMorePurchases: computed(() => hasNextPage(state.purchasesMeta())),
   })),
 
   withMethods((
     state,
     studentService = inject(StudentService),
-  ) => ({
+  ) => {
+    const fetchPurchases = rxMethod<{ page: number; append: boolean }>(
+      pipe(
+        tap(() => patchState(state, {purchasesLoading: true})),
+        switchMap(({page, append}) => studentService.getPurchases(page).pipe(
+          handleApiResponse<IPurchase[]>(
+            (data, meta) => patchState(state, {
+              purchases: mergePage(state.purchases(), data, append),
+              purchasesMeta: meta,
+              purchasesLoading: false,
+            }),
+            () => patchState(state, {purchasesLoading: false}),
+          ),
+        )),
+      )
+    );
+
+    return {
     getTeachers: rxMethod<void>(
       pipe(
         tap(() => patchState(state, {isLoading: true})),
@@ -97,19 +121,15 @@ export const StudentStore = signalStore(
       )
     ),
 
-    getPurchases: rxMethod<void>(
-      pipe(
-        tap(() => patchState(state, {isLoading: true})),
-        switchMap((teacherId) => studentService.getPurchases().pipe(
-          tap((response) => {
-            patchState(state, {isLoading: false, purchases: response.data});
-          }),
-          catchError((err) => {
-            patchState(state, {isLoading: false});
-            return of(null);
-          })
-        ))
-      )
-    ),
-  }))
+      getPurchases(): void {
+        fetchPurchases({page: 1, append: false});
+      },
+
+      loadMorePurchases(): void {
+        const meta = state.purchasesMeta();
+        if (state.purchasesLoading() || !hasNextPage(meta)) return;
+        fetchPurchases({page: meta!.currentPage + 1, append: true});
+      },
+    };
+  })
 );

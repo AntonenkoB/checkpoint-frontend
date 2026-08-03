@@ -43,7 +43,7 @@ export class StudentService extends ApiService {
     return this.get<IApiData<IIncomingStudentLessons[]>>(EApiEndpoints.GetIndividualStudentLessons);
   }
 
-  public getPurchases(): Observable<IApiData<IPurchase[]>> {
-    return this.get<IApiData<IPurchase[]>>(EApiEndpoints.GetPurchases);
+  public getPurchases(page = 1): Observable<IApiData<IPurchase[]>> {
+    return this.get<IApiData<IPurchase[]>>(EApiEndpoints.GetPurchases, { page });
   }
 }

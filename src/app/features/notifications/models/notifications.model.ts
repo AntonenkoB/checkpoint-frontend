@@ -142,5 +142,7 @@ export interface INotificationCount {
 export interface INotificationsParams {
   role: EUserRole;
   status?: ENotificationStatus;
+  page?: number;
+  append?: boolean;
 }
 

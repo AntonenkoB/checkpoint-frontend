@@ -23,7 +23,7 @@
   <div class="days-list schedule-list-wrap" #daysList>
     <div class="container">
       @for (day of scheduleFacade.scheduleByDate(); track day.date) {
-        <div class="day-item" [id]="day.date">
+        <div class="day-item" [id]="day.date" #dayItem>
           <div class="title day-section" >{{day.date | dayTitle}}</div>
 
           @for (slot of day.slots; track slot.id) {

@@ -4,9 +4,8 @@ import {HeaderSecondaryComponent} from "@shared/components/header-secondary/head
 import {TranslatePipe} from "@shared/pipes/translate-pipe";
 import {NotificationItemComponent} from "@notifacations/pages/notification-item/notification-item.component";
 import {interval, Subscription} from "rxjs";
-import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
-import {IonContent, IonRefresher, IonRefresherContent} from "@ionic/angular/standalone";
-import {RefresherCustomEvent} from "@ionic/angular";
+import {IonContent, IonInfiniteScroll, IonInfiniteScrollContent, IonRefresher, IonRefresherContent} from "@ionic/angular/standalone";
+import {InfiniteScrollCustomEvent} from "@ionic/angular";
 
 @Component({
   selector: "cp-notifications",
@@ -19,12 +18,13 @@ import {RefresherCustomEvent} from "@ionic/angular";
     NotificationItemComponent,
     IonRefresher,
     IonRefresherContent,
-    IonContent
+    IonContent,
+    IonInfiniteScroll,
+    IonInfiniteScrollContent
   ]
 })
 export class NotificationsComponent implements OnInit {
   public notificationsFacade = inject(NotificationsFacade)
-  private readonly destroyRef = inject(DestroyRef);
   private static readonly REFRESH_INTERVAL_MS = 60_000;
   private refreshSubscription?: Subscription;
 
@@ -35,11 +35,16 @@ export class NotificationsComponent implements OnInit {
 
   public ionViewWillEnter(): void {
     this.refreshSubscription = interval(NotificationsComponent.REFRESH_INTERVAL_MS)
-      .subscribe(() => this.notificationsFacade.loadNotifications());
+      .subscribe(() => this.notificationsFacade.autoRefreshNotifications());
   }
 
   public ionViewWillLeave(): void {
     this.refreshSubscription?.unsubscribe();
+  }
+
+  public async onInfiniteLoadNotifications(event: InfiniteScrollCustomEvent): Promise<void> {
+    this.notificationsFacade.loadMoreNotifications();
+    await event.target.complete();
   }
 
   // handleRefresh(event: RefresherCustomEvent) {

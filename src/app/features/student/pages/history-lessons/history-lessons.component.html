@@ -9,30 +9,20 @@
 <ion-content class="lessons-wrap">
   <div class="container">
     @for (item of studentFacade.groupPastLessons(); track $index) {
-      <div
-          class="week-title"
-      >{{item.label}}</div>
-
-      <div class="lessons-item">
         @for (week of item.week; track week) {
-          @if (week.teacher) {
-
-            @if (week.teacher.creative_name) {
-              <div class="lesson-type-title">{{week.teacher.creative_name}}</div>
-            } @else {
-              <div class="lesson-type-title">{{week.teacher.first_name}} {{week.teacher.last_name}}</div>
-            }
-          } @else {
-            <div class="lesson-type-title individual-type-title">{{"schedule.independent" | translate}}</div>
-          }
-
           @for (lesson of week.lessons; track lesson) {
+          <div class="lessons-item">
             <div class="record-lesson">
               <div class="date">{{lesson | lessonDateTime}}</div>
             </div>
+            @if (week.teacher) {
+              <cp-user-item-read class="teacher-lessons" [user]="week.teacher"></cp-user-item-read>
+            } @else {
+              <cp-individual-lesson  class="individual-lessons-wrap"></cp-individual-lesson>
+            }
+            </div>
           }
         }
-      </div>
     } @empty {
       <div class="empty">
         <cp-empty-state></cp-empty-state>

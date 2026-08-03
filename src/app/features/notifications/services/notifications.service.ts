@@ -9,8 +9,8 @@ import {EUserRole} from "@models/user.model";
   providedIn: "root",
 })
 export class NotificationsService extends ApiService {
-  public getNotifications(role: EUserRole, status?: ENotificationStatus): Observable<IApiData<INotification[]>> {
-    const params: Record<string, string> = { role };
+  public getNotifications(role: EUserRole, status?: ENotificationStatus, page = 1): Observable<IApiData<INotification[]>> {
+    const params: Record<string, string | number> = { role, page };
     if (status) params['status'] = status;
 
     return this.get<IApiData<INotification[]>>(EApiEndpoints.GetNotifications, params);

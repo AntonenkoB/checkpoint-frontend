@@ -2,7 +2,8 @@ import {Component, inject, OnInit} from "@angular/core";
 import {StudentFacade} from "@student/facade/student.facade";
 import {HeaderSecondaryComponent} from "@shared/components/header-secondary/header-secondary.component";
 import {TranslatePipe} from "@shared/pipes/translate-pipe";
-import {IonContent} from "@ionic/angular/standalone";
+import {IonContent, IonInfiniteScroll, IonInfiniteScrollContent} from "@ionic/angular/standalone";
+import {InfiniteScrollCustomEvent} from "@ionic/angular";
 import {PriceFormatPipe} from "@shared/pipes/price-format-pipe";
 import {DatePipe} from "@angular/common";
 import { ERatesType } from "@rates/models/rates.model";
@@ -16,6 +17,8 @@ import {EmptyStateComponent} from "@shared/components/empty-state/empty-state.co
     HeaderSecondaryComponent,
     TranslatePipe,
     IonContent,
+    IonInfiniteScroll,
+    IonInfiniteScrollContent,
     PriceFormatPipe,
     DatePipe,
     EmptyStateComponent
@@ -31,5 +34,10 @@ export class HistoryPurchasesComponent implements OnInit {
 
   ngOnInit() {
     this.studentFacade.loadPurchases();
+  }
+
+  public async onInfiniteLoadPurchases(event: InfiniteScrollCustomEvent): Promise<void> {
+    this.studentFacade.loadMorePurchases();
+    await event.target.complete();
   }
 }

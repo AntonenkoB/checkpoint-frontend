@@ -112,7 +112,7 @@ export class RatesFacade {
 
     this.store.dispatch(RouterActions.goTo({
       path: [EAppPages.Users, EUserPages.ListUsers],
-      extras: {queryParams: {tab: EHeaderMenu.Student}}
+      extras: {queryParams: {tab: EHeaderMenu.Schedule}}
     }));
   }
 

@@ -35,6 +35,11 @@
       </div>
     }
   </div>
+
+  <ion-infinite-scroll
+      [disabled]="!studentFacade.canLoadMorePurchases()"
+      (ionInfinite)="onInfiniteLoadPurchases($event)">
+    <ion-infinite-scroll-content loadingSpinner="crescent"></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>
-<!--</div>-->
 

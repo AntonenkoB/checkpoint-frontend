@@ -20,5 +20,11 @@
       </div>
     </div>
   </div>
+
+  <ion-infinite-scroll
+      [disabled]="!notificationsFacade.canLoadMoreNotifications()"
+      (ionInfinite)="onInfiniteLoadNotifications($event)">
+    <ion-infinite-scroll-content loadingSpinner="crescent"></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>
 

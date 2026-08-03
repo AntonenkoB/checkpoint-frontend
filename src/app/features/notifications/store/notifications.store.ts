@@ -8,11 +8,14 @@ import {HapticService} from "@shared/services/haptic.service";
 import {ImpactStyle} from "@capacitor/haptics";
 import {ProfileStore} from "@profile/store/profile.store";
 import {EUserRole} from "@models/user.model";
+import {IPagination} from "@models/api.models";
+import {hasNextPage, mergePage} from "@shared/utils/handle-api-response";
 
 export interface NotificationsState {
   isLoading: boolean;
   notifications: INotification[];
   notificationsCount: INotificationCount;
+  notificationsMeta: IPagination | null;
   lastParams: INotificationsParams | null;
 }
 
@@ -20,6 +23,7 @@ const initialState: NotificationsState = {
   isLoading: false,
   notifications: [],
   notificationsCount: {} as INotificationCount,
+  notificationsMeta: null,
   lastParams: null,
 };
 
@@ -33,6 +37,7 @@ export const NotificationsStore = signalStore(
     state,
   ) => ({
     isReady: computed(() => !state.isLoading()),
+    canLoadMoreNotifications: computed(() => hasNextPage(state.notificationsMeta())),
   })),
 
   withMethods((
@@ -43,11 +48,15 @@ export const NotificationsStore = signalStore(
   ) => ({
     getNotifications: rxMethod<INotificationsParams>(
       pipe(
-        tap((params) => patchState(state, {isLoading: true, lastParams: params})),
-        switchMap(({ role, status }) => notificationsService.getNotifications(role, status).pipe(
+        tap(({role, status}) => patchState(state, {isLoading: true, lastParams: {role, status}})),
+        switchMap(({role, status, page = 1, append = false}) => notificationsService.getNotifications(role, status, page).pipe(
           tap((response) => {
             if (response?.data) {
-              patchState(state, {notifications: response.data, isLoading: false});
+              patchState(state, {
+                notifications: mergePage(state.notifications(), response.data, append),
+                notificationsMeta: response.meta ?? null,
+                isLoading: false,
+              });
             } else {
               patchState(state, {isLoading: false});
             }
@@ -87,6 +96,12 @@ export const NotificationsStore = signalStore(
     notificationsService = inject(NotificationsService),
     hapticService = inject(HapticService),
   ) => ({
+    loadMoreNotifications(): void {
+      const meta = state.notificationsMeta();
+      const params = state.lastParams();
+      if (state.isLoading() || !params || !hasNextPage(meta)) return;
+      state.getNotifications({...params, page: meta!.currentPage + 1, append: true});
+    },
 
     readNotification: rxMethod<number>(
       pipe(

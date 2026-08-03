@@ -15,6 +15,8 @@ import {ProfileFacade} from "@profile/facade/profile.facade";
 import {StudentsStore} from "@users/store/students.store";
 import {debounceTime, distinctUntilChanged, Subject} from "rxjs";
 import {ESettingsPages} from "../../settings/models/settings.model";
+import {ERatePages} from "@rates/models/rates.model";
+import {getCurrentMonth} from "@shared/utils/date.utils";
 
 @Injectable({ providedIn: 'root' })
 export class UserListFacade {
@@ -72,6 +74,7 @@ export class UserListFacade {
   }
 
   public selectMenu(selectMenu: EHeaderMenu, page: number = 1, search: string = ''): void {
+    console.log('selectMenu', selectMenu)
     switch (selectMenu) {
       case EHeaderMenu.Student:
         this.getStudents(page, search);
@@ -84,6 +87,9 @@ export class UserListFacade {
         break;
       case EHeaderMenu.Schedule:
         this.goToSchedule(EHeaderMenu.Schedule);
+        break;
+      case EHeaderMenu.Salary:
+        this.goToSalaryTeacher();
         break;
     }
   }
@@ -179,5 +185,16 @@ export class UserListFacade {
 
   public goToSettings(): void {
     this.store.dispatch(RouterActions.goTo({path: [EAppPages.Settings, ESettingsPages.List]}))
+  }
+
+  public goToSalaryTeacher(): void {
+    const month = getCurrentMonth();
+    const teacherId = this.profile()?.id!;
+
+
+    this.store.dispatch(RouterActions.goTo({
+      path: [EAppPages.Rates, ERatePages.SalaryItem, teacherId],
+      extras: {queryParams: {month}}
+    }));
   }
 }

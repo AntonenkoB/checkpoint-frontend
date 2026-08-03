@@ -3,9 +3,12 @@ import {
   computed,
   DestroyRef,
   effect,
+  ElementRef,
   inject,
   OnInit,
   signal,
+  viewChild,
+  viewChildren,
 } from "@angular/core";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {interval} from "rxjs";
@@ -40,8 +43,11 @@ export class ScheduleListComponent implements OnInit {
   public readonly scheduleListStore = inject(ScheduleListStore);
   public readonly scheduleStore = inject(ScheduleStore);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly daysList = viewChild<ElementRef<HTMLElement>>('daysList');
+  private readonly dayItems = viewChildren<ElementRef<HTMLElement>>('dayItem');
 
   private static readonly REFRESH_INTERVAL_MS = 60_000;
+  private readonly DELAY_AFTER_SELECTED_DATE_MS = 1600;
 
   public profile = computed(() => this.scheduleFacade.profile())
   public studentsList = signal(this.scheduleFacade.studentsList());
@@ -49,15 +55,23 @@ export class ScheduleListComponent implements OnInit {
 
   public activeDate = signal<string>('');
   private isManualScrolling = false;
+  private observerIntersectionToDays?: IntersectionObserver;
 
   public recordedDays = computed(() => {
     return this.scheduleStore.slotsEntities().flatMap((item) => item.date)
   })
 
-
   constructor() {
     effect(() => {
       this.studentsList.set(this.scheduleFacade.studentsList());
+    });
+
+    effect(() => {
+      const items = this.dayItems();
+      const daysBlock = this.daysList()?.nativeElement;
+      if (daysBlock && items.length) {
+        this.observeDays(daysBlock, items);
+      }
     });
   }
 
@@ -68,9 +82,32 @@ export class ScheduleListComponent implements OnInit {
 
     this.scheduleFacade.loadNotificationsCount();
 
+    console.log('scheduleFacade.getScheduleSlots(')
+
     interval(ScheduleListComponent.REFRESH_INTERVAL_MS)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => this.refreshData());
+  }
+
+  private observeDays(root: HTMLElement, items: readonly ElementRef<HTMLElement>[]): void {
+    this.observerIntersectionToDays?.disconnect();
+    this.observerIntersectionToDays = new IntersectionObserver(
+      (entries) => this.onDaysIntersect(entries),
+      { root, rootMargin: '0px 0px -80% 0px' }
+    );
+    items.forEach((item) => this.observerIntersectionToDays!.observe(item.nativeElement));
+  }
+
+  private onDaysIntersect(entries: IntersectionObserverEntry[]): void {
+    if (this.isManualScrolling) return;
+
+    const topVisible = entries
+      .filter((e) => e.isIntersecting)
+      .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+
+    if (topVisible) {
+      this.activeDate.set(topVisible.target.id);
+    }
   }
 
   private refreshData(): void {
@@ -91,7 +128,7 @@ export class ScheduleListComponent implements OnInit {
         block: 'start',
       });
 
-      setTimeout(() => (this.isManualScrolling = false), 1000);
+      setTimeout(() => (this.isManualScrolling = false), this.DELAY_AFTER_SELECTED_DATE_MS);
     }
   }
 

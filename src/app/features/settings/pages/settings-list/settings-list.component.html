@@ -25,9 +25,13 @@
       </div>
     }
 
-    <div class="settings-list-item">
-      <div class="title" (click)="settingsFacade.goToNotifications()">{{ "notification.title" | translate }}</div>
-    </div>
+    <!--    add to settingsList   -->
+
+    @if (!settingsFacade.isOwner()) {
+      <div class="settings-list-item">
+        <div class="title" (click)="settingsFacade.goToNotifications()">{{ "notification.title" | translate }}</div>
+      </div>
+    }
     <div class="settings-list-item">
       <div class="title" (click)="settingsFacade.goToProfile()">{{ "profile.title" | translate }}</div>
     </div>
@@ -40,6 +44,11 @@
     <div class="settings-list-item">
       <div class="title" (click)="settingsFacade.goToSettingsPrivacy()">{{ "settings.privacy" | translate }}</div>
     </div>
+
+    <!--    add to settingsList   -->
+
+
+
     <div class="settings-list-item">
       <div class="title" id="open-delete-modal">{{ "profile.delete" | translate }}</div>
     </div>

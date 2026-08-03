@@ -1,4 +1,4 @@
-import {computed, inject, Injectable} from "@angular/core";
+import {inject, Injectable} from "@angular/core";
 import {Store} from "@ngrx/store";
 import {AppState} from "@capacitor/app";
 import {ActivatedRoute} from "@angular/router";
@@ -18,6 +18,7 @@ export class NotificationsFacade {
   private activeRole = this.profileFacade.activeRole();
   public notifications = this.notificationsStore.notifications
   public notificationsLoader = this.notificationsStore.isLoading;
+  public canLoadMoreNotifications = this.notificationsStore.canLoadMoreNotifications;
 
   public loadNotifications(): void {
     if (!this.activeRole) return;
@@ -26,6 +27,17 @@ export class NotificationsFacade {
       role: this.activeRole,
       status: this.profileFacade.isStudent() ? ENotificationStatus.Read : undefined,
     });
+  }
+
+  public autoRefreshNotifications(): void {
+    const meta = this.notificationsStore.notificationsMeta();
+    if (meta && meta.currentPage > 1) return;
+
+    this.loadNotifications();
+  }
+
+  public loadMoreNotifications(): void {
+    this.notificationsStore.loadMoreNotifications();
   }
 
   public readNotification(id: number): void {

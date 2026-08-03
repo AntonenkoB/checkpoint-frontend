@@ -27,6 +27,7 @@ export class StudentFacade {
   public groupFutureLessons = this.studentStore.groupedFutureLessons;
   public groupPastLessons = this.studentStore.groupedPastLessons;
   public historyPurchases = this.studentStore.purchases
+  public canLoadMorePurchases = this.studentStore.canLoadMorePurchases;
   public notifications = this.notificationsStore.notifications;
 
   public isEmptyInfo = computed(() => {
@@ -94,6 +95,10 @@ export class StudentFacade {
 
   public loadPurchases(): void {
     this.studentStore.getPurchases();
+  }
+
+  public loadMorePurchases(): void {
+    this.studentStore.loadMorePurchases();
   }
 
   public loadNotifications(): void {

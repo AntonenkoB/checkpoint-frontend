@@ -1,7 +1,7 @@
 import {Component, computed, input, model, output} from "@angular/core";
 import {TabsComponent} from "@shared/components/tabs/tabs.component";
 import {AvatarComponent} from "@shared/components/avatar/avatar.component";
-import {ADMIN_TABS, EHeaderMenu, TEACHER_TABS} from "../../../features/users/models/user.model";
+import {ADMIN_TABS, EHeaderMenu, OWNER_TABS, TEACHER_TABS} from "../../../features/users/models/user.model";
 import {IUser, EUserRole} from "@models/user.model";
 
 @Component({
@@ -22,8 +22,9 @@ export class HeaderMobileComponent {
   public goToProfile = output();
   public USER_ROLE_TABS = computed(() => {
     switch (this.activeRole()) {
-      case EUserRole.Admin:
       case EUserRole.Owner:
+        return OWNER_TABS();
+      case EUserRole.Admin:
         return ADMIN_TABS();
       default:
         return TEACHER_TABS();

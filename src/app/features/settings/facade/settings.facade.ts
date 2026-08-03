@@ -34,6 +34,7 @@ export class SettingsFacade {
 
   public readonly profile = this.profileFacade.profile;
   public readonly isStudent = this.profileFacade.isStudent;
+  public readonly isOwner = this.profileFacade.isOwner;
 
   public readonly amountTeacherLessons = this.studentFacade.amountTeacherLessons;
   public readonly amountIndividualLessons = this.studentFacade.amountIndividualLessons;

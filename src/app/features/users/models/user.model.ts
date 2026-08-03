@@ -54,6 +54,25 @@ export const CREATABLE_ROLES_MAP: Record<EUserRole, EUserRole[]> = {
   [EUserRole.Student]: [],
 };
 
+export const OWNER_TABS = (): IOptions<EHeaderMenu>[] => [
+  {
+    value: EHeaderMenu.Schedule,
+    title: "schedule.title"
+  },
+  {
+    value: EHeaderMenu.Student,
+    title: "users.student"
+  },
+  {
+    value: EHeaderMenu.Teacher,
+    title: "users.teacher"
+  },
+  {
+    value: EHeaderMenu.Admin,
+    title: "users.admin"
+  },
+]
+
 export const ADMIN_TABS = (): IOptions<EHeaderMenu>[] => [
   {
     value: EHeaderMenu.Schedule,

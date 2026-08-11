@@ -29,7 +29,6 @@ export class MarketFacade {
   public readonly profile = this.profileFacade.profile;
   public currentTypePlan = computed(() => (this.queryParams()?.['typePlan']) || null);
   public currentLessonsType = computed(() => this.queryParams()?.['lessonsType']);
-  public addFreeLessons = computed(() => !!this.queryParams()?.['free']);
   public currentLessonsFlow = computed(() => this.queryParams()?.['lessonsFlow']);
   public teachersList = computed(() => this.profile()?.teachers ?? []);
   public selectedTeacher = computed(() => this.lessonsStore.currentUser()!);

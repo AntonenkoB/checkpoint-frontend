@@ -19,7 +19,7 @@
 
   <div class="lessons-wrap">
     <div class="notifications container">
-      @for (notification of studentFacade.notifications(); track notification.id) {
+      @for (notification of studentFacade.notificationsUnread(); track notification.id) {
         <cp-notification-for-student
             class="schedule-notification"
             [notification]="notification"

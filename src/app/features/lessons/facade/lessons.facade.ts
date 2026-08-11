@@ -27,15 +27,14 @@ import {ESettingsPages} from "@settings/models/settings.model";
 export class LessonsFacade {
   private store = inject<Store<AppState>>(Store);
   private datePipe = inject(DatePipe);
+  private route = inject(ActivatedRoute);
   public lessonsStore = inject(LessonsStore);
   public profileFacade = inject(ProfileFacade);
-  private route = inject(ActivatedRoute);
 
   private queryParams = toSignal(this.route.queryParams);
   public currentRecordTab = computed(() => this.queryParams()?.['recordType']);
   public currentLessonsFlow = computed(() => this.queryParams()?.['lessonsFlow']);
   public currentLessonsType = computed(() => this.queryParams()?.['lessonsType']);
-  public addFreeLessons = computed(() => !!this.queryParams()?.['free']);
   public teacherListToFreeLessons = signal<IUser[]>([]);
   public choseTeacher = signal(false)
 
@@ -113,7 +112,7 @@ export class LessonsFacade {
     this.lessonsStore.updateCurrentUser(user);
 
     if (this.currentLessonsFlow() === ELessonFlow.Booking) {
-      this.goToSelectTime();
+      this.goToSelectTime(ELessonsType.TeacherGuided);
     }
 
     if (this.currentLessonsFlow() === ELessonFlow.Purchase) {
@@ -159,7 +158,7 @@ export class LessonsFacade {
 
     const from = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
     const to = this.datePipe.transform(dateTo, 'yyyy-MM-dd');
-    const teacherId = type === ELessonsType.TeacherGuided ? (this.profile()?.teachers?.[0]?.id ?? 0) : 0;
+    const teacherId = type === ELessonsType.TeacherGuided ? this.lessonsStore.currentUser()?.id! : 0;
     const lessonsType = type ? type : this.currentLessonsType();
 
     this.store.dispatch(RouterActions.goTo({
@@ -285,7 +284,7 @@ export class LessonsFacade {
   public closSelectedTeacher(): void {
     this.choseTeacher.set(false);
 
-    if (this.addFreeLessons()) {
+    if (this.currentLessonsFlow() === ELessonFlow.AddFree) {
       this.store.dispatch(RouterActions.goTo({
         path: [EAppPages.Settings, ESettingsPages.List],
         back: true

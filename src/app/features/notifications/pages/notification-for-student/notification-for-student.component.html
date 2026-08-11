@@ -21,11 +21,11 @@
     }
   </div>
   <div class="notification-buttons">
-    @if (action() === eNotificationAction.Reminder) {
-      <ion-button class="notification-btn" (click)="read.emit(notification()?.id!)">{{ "common.ok" | translate }}</ion-button>
-    } @else {
+   @if (action() === eNotificationAction.Booked) {
       <ion-button class="notification-btn" (click)="confirm.emit(notification()?.id!)">{{ "notification.agree" | translate }}</ion-button>
       <div class="notification-btn reject" (click)="reject.emit(notification()?.id!)">{{ "notification.disagree" | translate }}</div>
+    } @else {
+      <ion-button class="notification-btn" (click)="read.emit(notification()?.id!)">{{ "common.ok" | translate }}</ion-button>
     }
   </div>
 </div>

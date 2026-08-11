@@ -4,18 +4,18 @@
   <div class="payment-success-info">
     <div class="title">{{"market.payment-success-title" | translate}}</div>
 
-    @if (successData().plan.type === mMarketPlanType.Single) {
+    @if (successData().plan.type === eMarketPlanType.Single) {
       <div class="description">{{"market.payment-success-description-single" | translate: {
           quantity: successData().quantity,
-          price: marketFacade.addFreeLessons() ? 0 :successData().price_paid
+          price: marketFacade.currentLessonsFlow() === eLessonFlow.AddFree ? 0 :successData().price_paid
         }
       }}</div>
     }
 
-    @if (successData().plan.type === mMarketPlanType.Subscription) {
+    @if (successData().plan.type === eMarketPlanType.Subscription) {
       <div class="description">{{"market.payment-success-description-abonnement" | translate: {
         quantity: successData().quantity,
-        price: marketFacade.addFreeLessons() ? 0 : successData().price_paid
+        price: marketFacade.currentLessonsFlow() === eLessonFlow.AddFree ? 0 : successData().price_paid
       }
         }}</div>
     }

@@ -70,10 +70,16 @@ export class ScheduleComponent implements OnInit {
 
   public daySlotsPrepare = computed(() => {
     const entities = this.scheduleStore.slotsEntities();
+    const seen = new Set<number>();
 
     return entities
       .filter(slot => slot.date === this.activeDate())
-      .flatMap(item => item.time);
+      .flatMap(item => {
+        if (seen.has(item.time.from)) return [];
+
+        seen.add(item.time.from);
+        return item.time;
+      });
   });
 
   public daySlots = signal(this.daySlotsPrepare());
@@ -99,7 +105,11 @@ export class ScheduleComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
+  public ngOnInit() {
+    // this.scheduleFacade.getScheduleSetting();
+  }
+
+  public ionViewWillEnter(): void {
     this.scheduleFacade.getScheduleSetting();
   }
 
@@ -142,10 +152,6 @@ export class ScheduleComponent implements OnInit {
 
   public selectDay(event: CustomEvent): void {
     if (this.checkDirtySlots()) {
-      // const element = event.target as HTMLIonSelectElement | HTMLIonSegmentElement;
-      // element.value = this.activeDate();
-      // this.activeDate.set(this.activeDate());
-
       void this.confirmChangeModal.present();
       return
     }

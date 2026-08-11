@@ -28,11 +28,16 @@ export class StudentFacade {
   public groupPastLessons = this.studentStore.groupedPastLessons;
   public historyPurchases = this.studentStore.purchases
   public canLoadMorePurchases = this.studentStore.canLoadMorePurchases;
-  public notifications = this.notificationsStore.notifications;
+  public notificationsUnread = this.notificationsStore.notificationsUnread;
 
   public isEmptyInfo = computed(() => {
-    const all = this.groupFutureLessons().length + this.notifications().length
-    return all === 0;
+    const isReady = this.studentStore.isReady();
+    const lessonsCount = this.groupFutureLessons().length;
+    const notificationsCount = this.notificationsUnread().length;
+
+    if (!isReady) return false;
+
+    return lessonsCount + notificationsCount === 0;
   });
   public amountTeacherLessons = computed(() => {
     const purchases = this.profile()?.purchases ?? [];
@@ -108,6 +113,15 @@ export class StudentFacade {
     }
 
     this.notificationsStore.getNotifications(params);
+  }
+
+  public loadNotificationsUnread(): void {
+    const params = {
+      role: EUserRole.Student,
+      status: ENotificationStatus.Unread,
+    }
+
+    this.notificationsStore.getNotificationsUnread(params);
   }
 
   public confirmNotification(id: number): void {

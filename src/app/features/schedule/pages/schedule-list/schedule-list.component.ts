@@ -61,6 +61,12 @@ export class ScheduleListComponent implements OnInit {
     return this.scheduleStore.slotsEntities().flatMap((item) => item.date)
   })
 
+  public isNotificationsCount = computed(() =>
+    this.scheduleFacade.notificationsCount().book_count +
+    this.scheduleFacade.notificationsCount().cancel_count +
+    this.scheduleFacade.notificationsCount().reschedule_count > 0
+  );
+
   constructor() {
     effect(() => {
       this.studentsList.set(this.scheduleFacade.studentsList());

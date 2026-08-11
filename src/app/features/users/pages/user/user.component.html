@@ -2,7 +2,7 @@
   <cp-header-secondary
       class="user-header container"
       [title]="userTitle() | translate"
-      (close)="userFacade.close()"
+      (close)="userFacade.goBack()"
   ></cp-header-secondary>
 
   <ion-content class="user-create">
@@ -118,6 +118,13 @@
       @if (!isReadonly()) {
         <div class="btn-wrap-update">
           <ion-button class="submit" (click)="onSubmit()">{{ "common.save" | translate }}</ion-button>
+            <!--          @if (user()?.is_active && userFacade.isAdmin() || userFacade.isOwner()) {-->
+            <!--            <div class="delete-user" id="open-delete-user-modal" (click)="deactivateUser()">деактивувати</div>-->
+            <!--          }-->
+
+            <!--          @if (!user()?.is_active && userFacade.isAdmin() || userFacade.isOwner()) {-->
+            <!--            <div class="delete-user" (click)="activateUser()">активувати</div>-->
+            <!--          }</>-->
 
           @if (userFacade.isAdmin() || userFacade.isOwner()) {
             <div class="delete-user" id="open-delete-user-modal">видалити користувача</div>

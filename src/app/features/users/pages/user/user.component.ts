@@ -61,7 +61,6 @@ export class UserComponent implements OnInit {
   public userFacade = inject(UserFacade);
   public translateService = inject(TranslateService);
   private platform = inject(Platform);
-
   public USER_UPDATE_TITLE = USER_UPDATE_TITLE();
   public eUserRole = EUserRole;
   public user = signal(this.userFacade.user());

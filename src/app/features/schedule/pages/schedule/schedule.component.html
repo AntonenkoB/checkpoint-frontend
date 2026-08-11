@@ -6,12 +6,6 @@
         (close)="closeSettingSchedule()"
     ></cp-header-secondary>
 
-    @if(scheduleFacade.activeRole() === eUserRole.Admin) {
-      <div class="schedule-admin">
-        <div class="description">{{ "schedule.myself" | translate }}</div>
-      </div>
-    }
-
     <ion-segment
         class="segment teacher btn-clear"
         [value]="scheduleType()"

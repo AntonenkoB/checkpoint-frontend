@@ -14,6 +14,7 @@ import {TranslateService} from "@shared/services/translate.service";
 
 export interface StudentState {
   isLoading: boolean;
+  isLoaded: boolean;
   teachers: IUser[];
   lessons: IIncomingStudentLessons[];
   purchases: IPurchase[];
@@ -23,6 +24,7 @@ export interface StudentState {
 
 const initialState: StudentState = {
   isLoading: false,
+  isLoaded: false,
   teachers: [],
   lessons: [],
   purchases: [],
@@ -41,7 +43,7 @@ export const StudentStore = signalStore(
     state,
     translateService = inject(TranslateService),
   ) => ({
-    isReady: computed(() => !state.isLoading() !== null),
+    isReady: computed(() => state.isLoaded()),
     groupedFutureLessons: computed(() => groupLessonsByWeek(state.lessons(), 'future', {
       thisWeek: translateService.instant('date.this-week'),
       nextWeek: translateService.instant('date.next-week'),
@@ -108,6 +110,7 @@ export const StudentStore = signalStore(
 
               patchState(state, {
                 isLoading: false,
+                isLoaded: true,
                 lessons: allLessons
               });
             }),

@@ -6,6 +6,7 @@ import {MarketFacade} from "../../facade/market.facade";
 import {TranslatePipe} from "@shared/pipes/translate-pipe";
 import {MarketStore} from "@market/store/market.store";
 import {EMarketPlanType} from "@market/models/market.model";
+import {ELessonFlow} from "@lessons/models/lessons.model";
 
 @Component({
   selector: "cp-payment-success",
@@ -22,7 +23,8 @@ import {EMarketPlanType} from "@market/models/market.model";
 export class PaymentSuccessComponent implements OnInit {
   public marketFacade = inject(MarketFacade);
   public marketStore = inject(MarketStore);
-  public mMarketPlanType = EMarketPlanType
+  public eMarketPlanType = EMarketPlanType;
+  public eLessonFlow = ELessonFlow;
 
   public successData = computed(() => this.marketStore.paymentSuccessData());
 

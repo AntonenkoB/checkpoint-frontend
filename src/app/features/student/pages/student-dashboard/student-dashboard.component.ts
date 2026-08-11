@@ -49,7 +49,7 @@ export class StudentDashboardComponent implements OnInit {
   public ngOnInit(): void {
     this.studentFacade.getLessons();
     this.studentFacade.loadTeachers();
-    this.studentFacade.loadNotifications();
+    this.studentFacade.loadNotificationsUnread();
   }
 
   public ionViewWillEnter(): void {
@@ -63,7 +63,7 @@ export class StudentDashboardComponent implements OnInit {
 
   private refreshData(): void {
     this.studentFacade.getLessons();
-    this.studentFacade.loadNotifications();
+    this.studentFacade.loadNotificationsUnread();
   }
 
   public checkActions(lesson: ILesson): boolean {

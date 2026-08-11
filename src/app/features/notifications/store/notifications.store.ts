@@ -3,16 +3,23 @@ import {patchState, signalStore, withComputed, withMethods, withState} from '@ng
 import {rxMethod} from "@ngrx/signals/rxjs-interop";
 import {catchError, of, pipe, switchMap, tap} from "rxjs";
 import {NotificationsService} from "../services/notifications.service";
-import {INotification, INotificationCount, INotificationsParams} from "../models/notifications.model";
+import {
+  ENotificationStatus,
+  INotification,
+  INotificationCount,
+  INotificationsParams
+} from "../models/notifications.model";
 import {HapticService} from "@shared/services/haptic.service";
 import {ImpactStyle} from "@capacitor/haptics";
 import {ProfileStore} from "@profile/store/profile.store";
 import {EUserRole} from "@models/user.model";
 import {IPagination} from "@models/api.models";
 import {hasNextPage, mergePage} from "@shared/utils/handle-api-response";
+import {StudentStore} from "@student/store/student.store";
 
 export interface NotificationsState {
   isLoading: boolean;
+  notificationsUnread: INotification[];
   notifications: INotification[];
   notificationsCount: INotificationCount;
   notificationsMeta: IPagination | null;
@@ -21,6 +28,7 @@ export interface NotificationsState {
 
 const initialState: NotificationsState = {
   isLoading: false,
+  notificationsUnread: [],
   notifications: [],
   notificationsCount: {} as INotificationCount,
   notificationsMeta: null,
@@ -69,6 +77,28 @@ export const NotificationsStore = signalStore(
         ))
       )
     ),
+    getNotificationsUnread: rxMethod<INotificationsParams>(
+      pipe(
+        tap(({role, status}) => patchState(state, {isLoading: true, lastParams: {role, status}})),
+        switchMap(({role, status, page = 1, append = false}) => notificationsService.getNotifications(role, status, page).pipe(
+          tap((response) => {
+            if (response?.data) {
+              patchState(state, {
+                notificationsUnread: response.data,
+                isLoading: false,
+              });
+            } else {
+              patchState(state, {isLoading: false});
+            }
+          }),
+          catchError((err) => {
+            console.error(err);
+            patchState(state, {isLoading: false});
+            return of([]);
+          })
+        ))
+      )
+    ),
     getNotificationCount: rxMethod<EUserRole>(
       pipe(
         tap(() => patchState(state, {isLoading: true})),
@@ -93,6 +123,7 @@ export const NotificationsStore = signalStore(
   withMethods((
     state,
     profileStore = inject(ProfileStore),
+    studentStore = inject(StudentStore),
     notificationsService = inject(NotificationsService),
     hapticService = inject(HapticService),
   ) => ({
@@ -109,8 +140,13 @@ export const NotificationsStore = signalStore(
         switchMap((id) => notificationsService.readNotification(id).pipe(
           tap(() => {
             const params = state.lastParams();
+
             if (params) {
-              state.getNotifications(params);
+              if (params.status === ENotificationStatus.Unread) {
+                state.getNotificationsUnread(params);
+              } else {
+                state.getNotifications(params);
+              }
               state.getNotificationCount(params.role);
             }
 
@@ -130,12 +166,19 @@ export const NotificationsStore = signalStore(
         switchMap((id) => notificationsService.confirmNotification(id).pipe(
           tap(() => {
             const params = state.lastParams();
+
             if (params) {
-              state.getNotifications(params);
+              if (params.status === ENotificationStatus.Unread) {
+                state.getNotificationsUnread(params);
+              } else {
+                state.getNotifications(params);
+              }
               state.getNotificationCount(params.role);
             }
+
             void hapticService.impact(ImpactStyle.Medium);
             profileStore.getProfile();
+            studentStore.getLessons();
           }),
           catchError((err) => {
             console.error(err);
@@ -151,8 +194,13 @@ export const NotificationsStore = signalStore(
         switchMap((id) => notificationsService.rejectNotification(id).pipe(
           tap(() => {
             const params = state.lastParams();
+
             if (params) {
-              state.getNotifications(params);
+              if (params.status === ENotificationStatus.Unread) {
+                state.getNotificationsUnread(params);
+              } else {
+                state.getNotifications(params);
+              }
               state.getNotificationCount(params.role);
             }
 

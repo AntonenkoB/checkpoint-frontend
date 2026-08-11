@@ -1,9 +1,9 @@
-import {computed, inject, Injectable, Signal} from "@angular/core";
+import {computed, inject, Injectable} from "@angular/core";
 import {Store} from "@ngrx/store";
 import {EAppPages} from "@models/router.model";
 import {AppState} from "@capacitor/app";
-import {EHeaderMenu} from "@users/models/user.model";
-import {IUser} from "@models/user.model";
+import {EHeaderMenu, EUserPages} from "@users/models/user.model";
+import {EUserRole, IUser} from "@models/user.model";
 import { selectRouteParams } from "../../../store/router/selectors";
 import {RouterActions} from "../../../store/router/actions";
 import {EDayOfWeek, ESchedulePages, IScheduleItem, IScheduleItemToDate, ITimeRange} from "../models/schedule.model";
@@ -51,7 +51,7 @@ export class ScheduleFacade {
     }, {} as Record<string, IScheduleItem[]>);
 
     return Object.entries(groupedMap)
-      .map(([date, slots]) => ({ date, slots }))
+      .map(([date, slots]) => ({ date, slots: this.uniqueByFrom(slots) }))
       .sort((a, b) => a.date.localeCompare(b.date));
   });
 
@@ -161,7 +161,9 @@ export class ScheduleFacade {
 
   // schedule list
   public selectTime(id: number, date: string, time: ITimeRange, slotId: number): void {
-    if (!id) {
+    if (id) {
+      this.goToUser(id, EUserRole.Student)
+    } else {
       const prepareDate = formatToDateTime(date, time.from, time.to);
       this.lessonsStore.updateCurrentDateTime(prepareDate);
 
@@ -170,5 +172,20 @@ export class ScheduleFacade {
 
       this.goToRecordStudent()
     }
+  }
+
+  private goToUser(id: number, role: EUserRole | string): void {
+    this.store.dispatch(RouterActions.goTo({path: [EAppPages.Users, EUserPages.User, id], extras: {queryParams: {role}}}))
+  }
+
+  private uniqueByFrom(slots: IScheduleItem[]): IScheduleItem[] {
+    const seen = new Set<number>();
+
+    return slots.filter(slot => {
+      if (slot.lesson !== null) return true;
+      if (seen.has(slot.time.from)) return false;
+      seen.add(slot.time.from);
+      return true;
+    });
   }
 }

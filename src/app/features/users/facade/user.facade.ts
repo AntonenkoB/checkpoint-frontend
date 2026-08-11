@@ -13,6 +13,7 @@ import {selectRouteParams} from "../../../store/router/selectors";
 import {ProfileFacade} from "@profile/facade/profile.facade";
 import {StudentsStore} from "@users/store/students.store";
 import {TeachersStore} from "@users/store/teachers.store";
+import {NavController} from "@ionic/angular";
 
 @Injectable({ providedIn: 'root' })
 export class UserFacade {
@@ -21,6 +22,8 @@ export class UserFacade {
   private profileFacade = inject(ProfileFacade);
   private studentsStore = inject(StudentsStore);
   private teachersStore = inject(TeachersStore);
+  private navController = inject(NavController);
+
   private queryParams = toSignal(this.route.queryParams);
   public menuActive = computed(() => this.queryParams()?.['role'] as EHeaderMenu);
   public roleCreate = computed(() => this.queryParams()?.['role'] as EUserRole);
@@ -105,6 +108,18 @@ export class UserFacade {
       back: true
     }));
   }
+
+  public goBack(): void {
+    this.navController.back();
+  }
+
+  // public activateUser(): void {
+  //
+  // }
+  //
+  // public deactivateUser(): void {
+  //
+  // }
 
   public deleteUser(): void {
     const userId = this.user()?.id.toString() as string;

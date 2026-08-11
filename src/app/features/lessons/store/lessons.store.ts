@@ -17,6 +17,8 @@ import {ScheduleStore} from "@schedule/store/schedule.store";
 import {formatLessonToDateTime} from "@shared/utils/date.utils";
 import {HapticService} from "@shared/services/haptic.service";
 import {ImpactStyle} from "@capacitor/haptics";
+import {ToastService} from "@shared/services/toast.service";
+import {TranslateService} from "@shared/services/translate.service";
 
 export interface LessonsState {
   isLoading: boolean;
@@ -114,6 +116,8 @@ export const LessonsStore = signalStore(
     scheduleStore = inject(ScheduleStore),
     profileStore = inject(ProfileStore),
     hapticService = inject(HapticService),
+    toastService = inject(ToastService),
+    translateService = inject(TranslateService),
   ) => ({
     bookAsStudent: rxMethod<ISetLesson>(
       pipe(
@@ -131,6 +135,8 @@ export const LessonsStore = signalStore(
           }),
           catchError((err) => {
             patchState(state, {isLoading: false});
+            void hapticService.impact(ImpactStyle.Heavy);
+            toastService.error(translateService.instant('common.error-default'));
             return of(null);
           })
         ))
@@ -152,6 +158,8 @@ export const LessonsStore = signalStore(
             globalStore.dispatch(RouterActions.goTo({path: [EAppPages.Lessons, ELessonPages.LessonSuccess]}));
           }),
           catchError((err) => {
+            void hapticService.impact(ImpactStyle.Heavy);
+            toastService.error(translateService.instant('common.error-default'));
             patchState(state, {isLoading: false});
             return of(null);
           })
@@ -174,6 +182,8 @@ export const LessonsStore = signalStore(
           }),
           catchError((err) => {
             patchState(state, {isLoading: false});
+            void hapticService.impact(ImpactStyle.Heavy);
+            toastService.error(translateService.instant('common.error-default'));
             return of(null);
           })
         ))
@@ -196,6 +206,8 @@ export const LessonsStore = signalStore(
           }),
           catchError((err) => {
             patchState(state, {isLoading: false});
+            void hapticService.impact(ImpactStyle.Heavy);
+            toastService.error(translateService.instant('common.error-default'));
             return of(null);
           })
         ))
@@ -218,6 +230,8 @@ export const LessonsStore = signalStore(
           }),
           catchError((err) => {
             patchState(state, {isLoading: false});
+            void hapticService.impact(ImpactStyle.Heavy);
+            toastService.error(translateService.instant('common.error-default'));
             return of(null);
           })
         ))
@@ -237,6 +251,8 @@ export const LessonsStore = signalStore(
           }),
           catchError((err) => {
             patchState(state, {isLoading: false});
+            void hapticService.impact(ImpactStyle.Heavy);
+            toastService.error(translateService.instant('common.error-default'));
             return of(null);
           })
         ))
@@ -258,6 +274,8 @@ export const LessonsStore = signalStore(
           }),
           catchError((err) => {
             patchState(state, {isLoading: false});
+            void hapticService.impact(ImpactStyle.Heavy);
+            toastService.error(translateService.instant('common.error-default'));
             return of(null);
           })
         ))
@@ -279,6 +297,8 @@ export const LessonsStore = signalStore(
           }),
           catchError((err) => {
             patchState(state, {isLoading: false});
+            void hapticService.impact(ImpactStyle.Heavy);
+            toastService.error(translateService.instant('common.error-default'));
             return of(null);
           })
         ))
@@ -301,6 +321,8 @@ export const LessonsStore = signalStore(
           }),
           catchError((err) => {
             patchState(state, {isLoading: false});
+            void hapticService.impact(ImpactStyle.Heavy);
+            toastService.error(translateService.instant('common.error-default'));
             return of(null);
           })
         ))
@@ -322,6 +344,8 @@ export const LessonsStore = signalStore(
           }),
           catchError((err) => {
             patchState(state, {isLoading: false});
+            void hapticService.impact(ImpactStyle.Heavy);
+            toastService.error(translateService.instant('common.error-default'));
             return of(null);
           })
         ))
@@ -344,6 +368,8 @@ export const LessonsStore = signalStore(
           }),
           catchError((err) => {
             patchState(state, {isLoading: false});
+            void hapticService.impact(ImpactStyle.Heavy);
+            toastService.error(translateService.instant('common.error-default'));
             return of(null);
           })
         ))
@@ -366,6 +392,8 @@ export const LessonsStore = signalStore(
           }),
           catchError((err) => {
             patchState(state, {isLoading: false});
+            void hapticService.impact(ImpactStyle.Heavy);
+            toastService.error(translateService.instant('common.error-default'));
             return of(null);
           })
         ))

@@ -7,7 +7,6 @@ import {RouterActions} from "../../../store/router/actions";
 import {EAppPages} from "@models/router.model";
 import {EUserPages} from "@users/models/user.model";
 import {ProfileFacade} from "@profile/facade/profile.facade";
-import {ENotificationStatus} from "@notifacations/models/notifications.model";
 
 @Injectable()
 export class NotificationsFacade {
@@ -25,7 +24,6 @@ export class NotificationsFacade {
 
     this.notificationsStore.getNotifications({
       role: this.activeRole,
-      status: this.profileFacade.isStudent() ? ENotificationStatus.Read : undefined,
     });
   }
 

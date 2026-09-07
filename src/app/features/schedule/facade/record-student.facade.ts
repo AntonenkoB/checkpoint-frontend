@@ -2,9 +2,7 @@ import {computed, DestroyRef, effect, inject, Injectable, signal} from "@angular
 import {Store} from "@ngrx/store";
 import {AppState} from "@capacitor/app";
 import {EAppPages} from "@models/router.model";
-import {selectAllUsers} from "@users/store/selectors";
 import {RouterActions} from "../../../store/router/actions";
-import {UserActions} from "@users/store/actions";
 import {EHeaderMenu, EUserPages} from "@users/models/user.model";
 import {IUser, EUserRole} from "@models/user.model";
 import {ScheduleListStore} from "@schedule/store/schedule-list.store";
@@ -12,6 +10,7 @@ import {DatePipe} from "@angular/common";
 import {LessonsStore} from "@lessons/store/lessons.store";
 import {ProfileFacade} from "@profile/facade/profile.facade";
 import {StudentsStore} from "@users/store/students.store";
+import {UsersStore} from "@users/store/users.store";
 import {debounceTime, distinctUntilChanged, Subject} from "rxjs";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
@@ -21,6 +20,7 @@ export class RecordStudentFacade {
   public scheduleListStore = inject(ScheduleListStore);
   public lessonsStore = inject(LessonsStore);
   public studentsStore = inject(StudentsStore);
+  private usersStore = inject(UsersStore);
 
   private datePipe = inject(DatePipe);
   private profileFacade = inject(ProfileFacade);
@@ -31,7 +31,7 @@ export class RecordStudentFacade {
 
   public studentsList = computed(() => {
     if (this.profileFacade.isAdmin()) {
-      return this.store.selectSignal(selectAllUsers)();
+      return this.usersStore.usersList();
     } else {
       return this.studentsStore.students();
     }
@@ -49,7 +49,7 @@ export class RecordStudentFacade {
 
   public getStudents(search: string): void {
     if (this.profileFacade.isAdmin() || this.profileFacade.isOwner()) {
-      this.store.dispatch(UserActions.allUsers({role: EUserRole.Student, page: 1, search}));
+      this.usersStore.loadUsers(EUserRole.Student, 1, search);
     } else {
       this.studentsStore.loadStudents(search);
     }

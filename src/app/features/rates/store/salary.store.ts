@@ -8,7 +8,7 @@ import {selectQueryParam, selectRouteParam} from '../../../store/router/selector
 import {EQueryParams, ERoutParams} from '@shared/models/router.model';
 import {ISalary} from '../models/rates.model';
 import {SalaryService} from "@rates/services/salary.service";
-import {selectAllTeachers} from "@users/store/selectors";
+import {UsersStore} from "@users/store/users.store";
 
 export interface SalaryState {
   isLoading: boolean;
@@ -29,14 +29,18 @@ export const SalaryStore = signalStore(
   withState(initialState),
   withEntities<ISalary>(),
 
-  withComputed((state, store = inject(Store)) => ({
+  withComputed((
+    state,
+    store = inject(Store),
+    usersStore = inject(UsersStore)
+  ) => ({
     isReady: computed(() => !state.isLoading()),
     teacherId: store.selectSignal(selectRouteParam(ERoutParams.TeacherId)),
     month: store.selectSignal(selectQueryParam(EQueryParams.Month)),
 
     // remove after refactoring backend
     currentTeacher: computed(() => {
-      const teachers = store.selectSignal(selectAllTeachers);
+      const teachers = usersStore.usersList;
       const currentTeacherId = store.selectSignal(selectRouteParam(ERoutParams.TeacherId));
       return teachers().find((teacher) => teacher.id === +currentTeacherId()!);
     }),

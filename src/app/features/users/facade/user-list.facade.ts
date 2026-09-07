@@ -3,16 +3,14 @@ import {Store} from "@ngrx/store";
 import {AppState} from "../../../store/app-store";
 import {EHeaderMenu, EUserPages} from "../models/user.model";
 import {EUserRole} from "@models/user.model";
-import {selectAllUsers, selectAllUsersPagination, selectUserLoading} from "../store/selectors";
-import {UserActions} from "../store/actions";
 import {RouterActions} from "../../../store/router/actions";
 import {EAppPages} from "@models/router.model";
-import {IPagination} from "@models/api.models";
 import {takeUntilDestroyed, toSignal} from "@angular/core/rxjs-interop";
 import {ActivatedRoute, Router} from "@angular/router";
 import {DatePipe} from "@angular/common";
 import {ProfileFacade} from "@profile/facade/profile.facade";
 import {StudentsStore} from "@users/store/students.store";
+import {UsersStore} from "@users/store/users.store";
 import {debounceTime, distinctUntilChanged, Subject} from "rxjs";
 import {ESettingsPages} from "../../settings/models/settings.model";
 import {ERatePages} from "@rates/models/rates.model";
@@ -24,6 +22,7 @@ export class UserListFacade {
   private router = inject(Router);
   public route = inject(ActivatedRoute);
   private studentsStore = inject(StudentsStore);
+  private usersStore = inject(UsersStore);
   private profileFacade = inject(ProfileFacade);
   private datePipe = inject(DatePipe);
 
@@ -37,7 +36,7 @@ export class UserListFacade {
 
   public userList = computed(() => {
     const students = this.studentsStore.students();
-    const users = this.store.selectSignal(selectAllUsers)();
+    const users = this.usersStore.usersList();
     const currentTab = this.currentTab();
 
     if (currentTab === EHeaderMenu.Student && this.profileFacade.isTeacher()) {
@@ -50,8 +49,7 @@ export class UserListFacade {
   public activeRole = this.profileFacade.activeRole;
   public isReadyStudent = this.studentsStore.isReady;
   public amountStudents = this.studentsStore.studentsMeta;
-  public userListPagination: Signal<IPagination> = this.store.selectSignal(selectAllUsersPagination);
-  public userListLoading: Signal<boolean> = this.store.selectSignal(selectUserLoading);
+  public userListLoading: Signal<boolean> = this.usersStore.usersLoading;
 
   public canLoadMoreStudents = this.studentsStore.canLoadMore;
 
@@ -74,7 +72,6 @@ export class UserListFacade {
   }
 
   public selectMenu(selectMenu: EHeaderMenu, page: number = 1, search: string = ''): void {
-    console.log('selectMenu', selectMenu)
     switch (selectMenu) {
       case EHeaderMenu.Student:
         this.getStudents(page, search);
@@ -106,7 +103,7 @@ export class UserListFacade {
     });
 
     if (this.profileFacade.isAdmin() || this.profileFacade.isOwner()) {
-      this.store.dispatch(UserActions.allUsers({role: EUserRole.Student, page, search}))
+      this.usersStore.loadUsers(EUserRole.Student, page, search);
 
       return;
     }
@@ -125,7 +122,7 @@ export class UserListFacade {
       queryParamsHandling: 'merge',
     });
 
-    this.store.dispatch(UserActions.allUsers({role: EUserRole.Teacher, page}))
+    this.usersStore.loadUsers(EUserRole.Teacher, page);
   }
 
   private getAdmins(page: number): void {
@@ -138,7 +135,7 @@ export class UserListFacade {
       queryParams: queryParams,
     });
 
-    this.store.dispatch(UserActions.allUsers({role: EUserRole.Admin, page}))
+    this.usersStore.loadUsers(EUserRole.Admin, page);
   }
 
   public searchUser(search: string): void {

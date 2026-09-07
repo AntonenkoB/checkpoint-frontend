@@ -31,9 +31,10 @@ export class OnboardingComponent implements OnInit {
   protected isMuted = signal(true);
   public SOUND_SVG = this.sanitizer.bypassSecurityTrustHtml(SOUND_SVG);
   public SOUND_OFF_SVG = this.sanitizer.bypassSecurityTrustHtml(SOUND_OFF_SVG);
+  private linkToVideo = '';
 
   protected videoSrc = signal(
-    Capacitor.convertFileSrc('assets/img/onboarding.MP4')
+    Capacitor.convertFileSrc(this.linkToVideo)
   );
 
   constructor() {

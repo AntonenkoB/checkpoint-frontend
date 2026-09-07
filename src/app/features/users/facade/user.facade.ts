@@ -3,16 +3,15 @@ import {Store} from "@ngrx/store";
 import {AppState} from "../../../store/app-store";
 import {CREATABLE_ROLES_MAP, EHeaderMenu, EUserPages, IUserUpdate} from "../models/user.model";
 import {IUser, EUserRole, USER_ROLE_OPTIONS} from "@models/user.model";
-import {UserActions} from "../store/actions";
 import {ActivatedRoute} from "@angular/router";
 import {toSignal} from "@angular/core/rxjs-interop";
-import {selectAllTeachers, selectUser, selectUserLoading} from "../store/selectors";
 import {RouterActions} from "../../../store/router/actions";
 import {EAppPages, ERoutParams} from "@models/router.model";
 import {selectRouteParams} from "../../../store/router/selectors";
 import {ProfileFacade} from "@profile/facade/profile.facade";
 import {StudentsStore} from "@users/store/students.store";
 import {TeachersStore} from "@users/store/teachers.store";
+import {UsersStore} from "@users/store/users.store";
 import {NavController} from "@ionic/angular";
 
 @Injectable({ providedIn: 'root' })
@@ -22,6 +21,7 @@ export class UserFacade {
   private profileFacade = inject(ProfileFacade);
   private studentsStore = inject(StudentsStore);
   private teachersStore = inject(TeachersStore);
+  private usersStore = inject(UsersStore);
   private navController = inject(NavController);
 
   private queryParams = toSignal(this.route.queryParams);
@@ -31,7 +31,7 @@ export class UserFacade {
   public user = computed(() => {
     let user
     if (this.profileFacade.isAdmin() || this.profileFacade.isOwner()) {
-      user = this.store.selectSignal(selectUser)();
+      user = this.usersStore.user();
     } else {
       switch (this.menuActive()) {
         case EHeaderMenu.Student:
@@ -44,8 +44,8 @@ export class UserFacade {
 
     return user;
   });
-  public userLoading = this.store.selectSignal(selectUserLoading);
-  public teachersList: Signal<IUser[]> = this.store.selectSignal(selectAllTeachers);
+  public userLoading = this.usersStore.userLoading;
+  public teachersList: Signal<IUser[]> = this.usersStore.usersList;
   public readonly profile = this.profileFacade.profile;
   public readonly activeRole = this.profileFacade.activeRole;
   public readonly isOwner = this.profileFacade.isOwner;
@@ -68,7 +68,7 @@ export class UserFacade {
     const id = this.selectRouteParams()[ERoutParams.UserId];
     if (id) {
       if (this.profileFacade.isAdmin() || this.profileFacade.isOwner()) {
-        this.store.dispatch(UserActions.getUser({userId: +id}))
+        this.usersStore.loadUser(+id);
       } else {
         switch (this.menuActive()) {
           case EHeaderMenu.Student:
@@ -87,7 +87,7 @@ export class UserFacade {
     }
 
     if (this.profileFacade.isAdmin() || this.profileFacade.isOwner()) {
-      this.store.dispatch(UserActions.createUser({payload: user}))
+      this.usersStore.createUser(user);
     }
   }
 
@@ -97,7 +97,7 @@ export class UserFacade {
     }
 
     if (this.profileFacade.isAdmin() || this.profileFacade.isOwner()) {
-      this.store.dispatch(UserActions.updateUser({payload: user}))
+      this.usersStore.updateUser(user);
     }
   }
 
@@ -123,6 +123,6 @@ export class UserFacade {
 
   public deleteUser(): void {
     const userId = this.user()?.id.toString() as string;
-    this.store.dispatch(UserActions.deleteUser({userId}))
+    this.usersStore.deleteUser(userId);
   }
 }

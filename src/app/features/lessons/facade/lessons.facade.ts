@@ -18,8 +18,7 @@ import {ProfileFacade} from "@profile/facade/profile.facade";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {ActivatedRoute} from "@angular/router";
 import {EMarketPages} from "@market/models/market.model";
-import {UserActions} from "@users/store/actions";
-import {selectAllUsers} from "@users/store/selectors";
+import {UsersStore} from "@users/store/users.store";
 import {ESettingsPages} from "@settings/models/settings.model";
 
 
@@ -30,6 +29,7 @@ export class LessonsFacade {
   private route = inject(ActivatedRoute);
   public lessonsStore = inject(LessonsStore);
   public profileFacade = inject(ProfileFacade);
+  private usersStore = inject(UsersStore);
 
   private queryParams = toSignal(this.route.queryParams);
   public currentRecordTab = computed(() => this.queryParams()?.['recordType']);
@@ -44,7 +44,7 @@ export class LessonsFacade {
   public readonly currentActionUser = this.lessonsStore.currentUser;
   public readonly studentTeachers = computed(() => {
     if (this.currentLessonsFlow() === ELessonFlow.AddFree) {
-      return this.store.selectSignal(selectAllUsers)();
+      return this.usersStore.usersList();
     }
 
     let teachers =  this.profile()?.teachers ?? [];
@@ -278,7 +278,7 @@ export class LessonsFacade {
   }
 
   public getStudentsForFreeLessons(search: string): void {
-    this.store.dispatch(UserActions.allUsers({role: EUserRole.Student, page: 1, search}))
+    this.usersStore.loadUsers(EUserRole.Student, 1, search);
   }
 
   public closSelectedTeacher(): void {

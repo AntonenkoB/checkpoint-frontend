@@ -1,16 +1,13 @@
 import {inject, Injectable, Signal} from "@angular/core";
 import {IUser} from "@models/user.model";
-import {Store} from "@ngrx/store";
-import {AppState} from "../../../store/app-store";
-import {selectAllTeachers} from "../store/selectors";
-import {UserActions} from "../store/actions";
+import {UsersStore} from "@users/store/users.store";
 
 @Injectable()
 export class SelectUserFacade {
-  private store = inject<Store<AppState>>(Store);
-  public teachersList: Signal<IUser[]> = this.store.selectSignal(selectAllTeachers);
+  private usersStore = inject(UsersStore);
+  public teachersList: Signal<IUser[]> = this.usersStore.teachersList;
 
   constructor() {
-    this.store.dispatch(UserActions.allTeachers({}));
+    this.usersStore.loadTeachers();
   }
 }

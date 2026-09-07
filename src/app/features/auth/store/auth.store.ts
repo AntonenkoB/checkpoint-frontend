@@ -26,6 +26,7 @@ import {SettingsService} from '@shared/services/settings.service';
 import {getHighestRole} from '@shared/permissions/role-priority';
 import {ProfileStore} from '@profile/store/profile.store';
 import {PushNotificationService} from "@notifacations/services/push-notification.service";
+import {EStudentPages} from "@student/models/student.model";
 
 export type TRefreshState = 'idle' | 'pending' | 'success' | 'logout';
 
@@ -177,7 +178,9 @@ export const AuthStore = signalStore(
                     const highestRole = getHighestRole(user.roles);
 
                     highestRole === EUserRole.Student
-                      ? store.dispatch(RouterActions.goTo({path: [EAppPages.Auth, EAuthPages.Onboarding]}))
+                      // waiting new onboarding
+                      // ? store.dispatch(RouterActions.goTo({path: [EAppPages.Auth, EAuthPages.Onboarding]}))
+                      ? store.dispatch(RouterActions.goTo({path: [EAppPages.Student, EStudentPages.StudentDashboard]}))
                       : store.dispatch(RouterActions.goTo({
                         path: [EAppPages.Users, EUserPages.ListUsers],
                         extras: {queryParams: {tab: EHeaderMenu.Schedule}},

@@ -3,7 +3,6 @@ import {Store} from "@ngrx/store";
 import {EAppPages, EQueryParams} from "@models/router.model";
 import {AppState} from "@capacitor/app";
 import {EHeaderMenu, EUserPages} from "@users/models/user.model";
-import {selectAllUsers} from "@users/store/selectors";
 import {RouterActions} from "../../../store/router/actions";
 import {RatesStore} from "@rates/store/rates.store";
 import {ERatePages, ITeacherRateGroup} from "@rates/models/rates.model";
@@ -25,7 +24,6 @@ export class RatesFacade {
     this.router.routerState.root.queryParams,
     { initialValue: {} }
   );
-  public studentsList = this.store.selectSignal(selectAllUsers);
   public currentMonth = computed(() => {
     const params = this.queryParams() as Record<EQueryParams, string>;
     return params[EQueryParams.Month];

@@ -14,7 +14,17 @@
       @if(lessonsFacade.isStudent()) {
         <ion-button class="cansel-btn" (click)="lessonsFacade.goToTransferringTime()">{{ "schedule.transfer" | translate}}</ion-button>
       }
-      <ion-button [color]="'danger'" (click)="lessonsFacade.cancelLesson()">{{ "schedule.cancel" | translate}}</ion-button>
+      <ion-button [color]="'danger'" (click)="lessonsFacade.cancelLesson(!stillDisableSlotForm.return_slot().value())">{{ "schedule.cancel" | translate}}</ion-button>
     </div>
+
+    @if(!lessonsFacade.isStudent()) {
+      <ion-checkbox
+          class="still-disable-slot"
+          labelPlacement="end"
+          cpCustomCheckbox
+          [checked]="stillDisableSlotForm.return_slot().value()"
+          (ionChange)="stillDisableSlotForm.return_slot().value.set($event.detail.checked)"
+      >{{ "lessons.still-disable-slot" | translate }}</ion-checkbox>
+    }
   </div>
 </div>

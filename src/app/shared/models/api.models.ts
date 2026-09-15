@@ -104,7 +104,7 @@ export enum EApiEndpoints {
   DeleteDeviceTokens = 'profile/device-tokens',
 }
 
-export type IApiUrlParams =  Record<string | number, string | number>;
+export type IApiUrlParams =  Record<string | number, string | number | boolean>;
 export type IApiUrl =  EApiEndpoints | [EApiEndpoints, IApiUrlParams];
 
 export interface IApiData<T> {

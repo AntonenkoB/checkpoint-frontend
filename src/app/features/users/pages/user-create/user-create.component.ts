@@ -44,7 +44,6 @@ import {RoleListComponent} from "@shared/components/role-list/role-list.componen
     SelectUserComponent,
     TranslatePipe,
     UserItemComponent,
-    RoleListComponent
   ],
   providers: [UserFacade]
 })

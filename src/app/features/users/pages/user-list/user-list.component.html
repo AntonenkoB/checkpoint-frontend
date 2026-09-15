@@ -45,7 +45,7 @@
 
           @if (activeMenu() === eHeaderMenu.Student) {
             <ion-infinite-scroll
-                [disabled]="!userListFacade.canLoadMoreStudents()"
+                [disabled]="!userListFacade.usersCanLoadMore()"
                 (ionInfinite)="onIonInfinite($event)">
               <ion-infinite-scroll-content loadingSpinner="crescent"></ion-infinite-scroll-content>
             </ion-infinite-scroll>
@@ -57,7 +57,7 @@
     } @else {
       <cp-schedule-list></cp-schedule-list>
     }
-    <cp-loader [isLoad]="!isReady()"></cp-loader>
+<!--    <cp-loader [isLoad]="!isReady()"></cp-loader>-->
 <!--    <cp-loader [isLoad]="userListFacade.isReadyStudent()"></cp-loader>-->
   </div>
 

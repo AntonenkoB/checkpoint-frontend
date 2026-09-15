@@ -3,7 +3,10 @@
     <cp-header-secondary class="teachers-header" [title]=" titleHeader() | translate" (close)="lessonsFacade.closSelectedTeacher()"></cp-header-secondary>
   </div>
 
-  @if (lessonsFacade.currentLessonsFlow() === ELessonFlow.AddFree && !lessonsFacade.choseTeacher()) {
+  @if (
+      (lessonsFacade.currentLessonsFlow() === ELessonFlow.AddFree || lessonsFacade.currentLessonsFlow() === ELessonFlow.AddCash)
+      && !lessonsFacade.choseTeacher()
+  ) {
     <div class="search-wrap container">
       <ion-item class="search">
         <ion-input
@@ -21,7 +24,10 @@
 
   <div class="teachers-info">
     <div class="teachers-list container">
-      @if (lessonsFacade.currentLessonsFlow() === ELessonFlow.AddFree && lessonsFacade.choseTeacher()) {
+      @if (
+        (lessonsFacade.currentLessonsFlow() === ELessonFlow.AddFree || lessonsFacade.currentLessonsFlow() === ELessonFlow.AddCash)
+        && lessonsFacade.choseTeacher()
+      ) {
         @for (teacher of lessonsFacade.teacherListToFreeLessons(); track teacher?.id) {
           <cp-record-student-item
               class="teacher"

@@ -39,11 +39,11 @@ export class LessonsService extends ApiService {
   }
 
   public canceledLessonAtTeacher(data: ICancelLesson): Observable<IApiData<IScheduleItem>> {
-    return this.delete<IApiData<IScheduleItem>>([EApiEndpoints.CancelLessonAtTeacher, {studentId: data.student_id!, lessonId: data.lesson_id}]);
+    return this.delete<IApiData<IScheduleItem>>([EApiEndpoints.CancelLessonAtTeacher, {studentId: data.student_id!, lessonId: data.lesson_id}], {return_slot: data.return_slot!});
   }
 
   public canceledIndividualAtAdmin(data: ICancelLesson): Observable<IApiData<IScheduleItem>> {
-    return this.delete<IApiData<IScheduleItem>>([EApiEndpoints.CancelIndividualAtAdmin, {studentId: data.student_id!, lessonId: data.lesson_id}]);
+    return this.delete<IApiData<IScheduleItem>>([EApiEndpoints.CancelIndividualAtAdmin, {studentId: data.student_id!, lessonId: data.lesson_id}], {return_slot: data.return_slot!});
   }
 
   public canceledIndividualAtStudent(data: ICancelLesson): Observable<IApiData<IScheduleItem>> {

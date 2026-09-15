@@ -19,7 +19,7 @@ import {toSignal} from "@angular/core/rxjs-interop";
 import {ActivatedRoute} from "@angular/router";
 import {EMarketPages} from "@market/models/market.model";
 import {UsersStore} from "@users/store/users.store";
-import {ESettingsPages} from "@settings/models/settings.model";
+import {NavController} from "@ionic/angular";
 
 
 @Injectable({ providedIn: 'root' })
@@ -30,6 +30,7 @@ export class LessonsFacade {
   public lessonsStore = inject(LessonsStore);
   public profileFacade = inject(ProfileFacade);
   private usersStore = inject(UsersStore);
+  private navController = inject(NavController);
 
   private queryParams = toSignal(this.route.queryParams);
   public currentRecordTab = computed(() => this.queryParams()?.['recordType']);
@@ -43,7 +44,7 @@ export class LessonsFacade {
   public readonly slots = this.lessonsStore.slots;
   public readonly currentActionUser = this.lessonsStore.currentUser;
   public readonly studentTeachers = computed(() => {
-    if (this.currentLessonsFlow() === ELessonFlow.AddFree) {
+    if (this.currentLessonsFlow() === ELessonFlow.AddFree || this.currentLessonsFlow() === ELessonFlow.AddCash) {
       return this.usersStore.usersList();
     }
 
@@ -96,6 +97,10 @@ export class LessonsFacade {
     if (this.currentLessonsFlow() === ELessonFlow.AddFree) {
       this.goToSelectTeacher(type);
     }
+
+    if (this.currentLessonsFlow() === ELessonFlow.AddCash) {
+      this.goToSelectTeacher(type);
+    }
   }
 
   public goToSelectTeacher(lessonsType: ELessonsType): void {
@@ -120,7 +125,7 @@ export class LessonsFacade {
       this.goToPayment(teacherId);
     }
 
-    if (this.currentLessonsFlow() === ELessonFlow.AddFree) {
+    if (this.currentLessonsFlow() === ELessonFlow.AddFree || this.currentLessonsFlow() === ELessonFlow.AddCash) {
       let teacherId = user.id
       if (this.currentLessonsType() === ELessonsType.SelfStudy) {
         this.goToPayment(0);
@@ -235,7 +240,7 @@ export class LessonsFacade {
     }))
   }
 
-  public cancelLesson(): void {
+  public cancelLesson(stillDisableSlot?: boolean): void {
     if (this.profileFacade.isStudent()) {
       const data: ICancelLesson = {
         teacher_id: this.lessonsStore.currentUser()?.id ?? 0,
@@ -254,6 +259,7 @@ export class LessonsFacade {
       const data: ICancelLesson = {
         student_id: this.lessonsStore.currentUser()!.id,
         lesson_id: this.lessonsStore.currentLessonId()!,
+        return_slot: !stillDisableSlot,
       }
       this.lessonsStore.cancelAsTeacher(data);
       return;
@@ -263,6 +269,7 @@ export class LessonsFacade {
       const data: ICancelLesson = {
         student_id: this.lessonsStore.currentUser()!.id,
         lesson_id: this.lessonsStore.currentLessonId()!,
+        return_slot: !stillDisableSlot,
       }
       this.lessonsStore.cancelIndividualAsAdmin(data);
       return;
@@ -283,27 +290,15 @@ export class LessonsFacade {
 
   public closSelectedTeacher(): void {
     this.choseTeacher.set(false);
-
-    if (this.currentLessonsFlow() === ELessonFlow.AddFree) {
-      this.store.dispatch(RouterActions.goTo({
-        path: [EAppPages.Settings, ESettingsPages.List],
-        back: true
-      }))
-    } else {
-      this.goToStudentMain()
-    }
+    this.navController.back();
   }
 
   public closeLessonsPage(): void {
     this.choseTeacher.set(false);
+    this.navController.back();
+  }
 
-    if (this.currentLessonsFlow() === ELessonFlow.AddFree) {
-      this.store.dispatch(RouterActions.goTo({
-        path: [EAppPages.Settings, ESettingsPages.List],
-        back: true
-      }))
-    } else {
-      this.goToStudentMain()
-    }
+  public goToBack(): void {
+    this.navController.back();
   }
 }

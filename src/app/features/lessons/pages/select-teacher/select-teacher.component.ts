@@ -25,7 +25,15 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 export class SelectTeacherComponent implements OnInit {
   public lessonsFacade = inject(LessonsFacade);
   public titleHeader = computed(() => {
-    return this.lessonsFacade.currentLessonsFlow() === ELessonFlow.Booking ? 'record.select-teacher-title' : 'market.select-teacher-to-buy'
+    if (this.lessonsFacade.currentLessonsFlow() === ELessonFlow.Booking) {
+      return 'record.select-teacher-title'
+    }
+
+    if (this.lessonsFacade.currentLessonsFlow() === ELessonFlow.Purchase) {
+      return 'market.select-teacher-to-buy'
+    }
+
+    return 'market.select-user-to-buy'
   })
   public searchUser = signal('');
   protected readonly ELessonFlow = ELessonFlow;
@@ -44,7 +52,10 @@ export class SelectTeacherComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.lessonsFacade.currentLessonsFlow() === ELessonFlow.AddFree) {
+    if (
+      this.lessonsFacade.currentLessonsFlow() === ELessonFlow.AddFree ||
+      this.lessonsFacade.currentLessonsFlow() === ELessonFlow.AddCash
+    ) {
       this.lessonsFacade.getStudentsForFreeLessons(this.searchUser());
     }
   }

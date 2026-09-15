@@ -1,9 +1,11 @@
-import {Component, inject, OnInit} from "@angular/core";
+import {Component, inject, OnInit, signal} from "@angular/core";
+import {form} from "@angular/forms/signals";
 import {HeaderSecondaryComponent} from "@shared/components/header-secondary/header-secondary.component";
 import {RecordStudentItemComponent} from "@shared/components/record-student-item/record-student-item.component";
 import {TranslatePipe} from "@shared/pipes/translate-pipe";
 import {LessonsFacade} from "@lessons/facade/lessons.facade";
-import {IonButton} from "@ionic/angular/standalone";
+import {IonButton, IonCheckbox} from "@ionic/angular/standalone";
+import {CustomCheckbox} from "@shared/directives/custom-checkbox";
 
 @Component({
   selector: "cp-lesson-transferring-type",
@@ -13,11 +15,19 @@ import {IonButton} from "@ionic/angular/standalone";
     HeaderSecondaryComponent,
     RecordStudentItemComponent,
     TranslatePipe,
-    IonButton
+    IonButton,
+    CustomCheckbox,
+    IonCheckbox
   ]
 })
 export class LessonTransferringTypeComponent implements OnInit {
   public lessonsFacade = inject(LessonsFacade);
+
+  public stillDisableSlotModel = signal({
+    return_slot: true,
+  });
+
+  public stillDisableSlotForm = form(this.stillDisableSlotModel);
 
   constructor() {}
 

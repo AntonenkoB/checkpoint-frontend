@@ -15,7 +15,7 @@ export class UserService extends ApiService {
 
 
   public getAllUsers(role: EUserRole, page = 1, search = ''): Observable<IApiData<IUser[]>> {
-    return this.get<IApiData<IUser[]>>(EApiEndpoints.ListUsers, { role, page, search, per_page: 100 });
+    return this.get<IApiData<IUser[]>>(EApiEndpoints.ListUsers, { role, page, search});
   }
 
   public createUser(data: IUserProfile): Observable<IApiData<IUser>> {

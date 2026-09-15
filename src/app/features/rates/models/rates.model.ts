@@ -64,6 +64,7 @@ export interface ITransaction {
   teacher_earned: number;
   school_earned: number;
   price_paid: number;
+  payment_method: string;
 }
 
 export interface IPurchase {
@@ -80,4 +81,5 @@ export interface IPurchase {
   expires_at: string;
   teacher: IUser;
   plan: IRate;
+  payment_method: string;
 }

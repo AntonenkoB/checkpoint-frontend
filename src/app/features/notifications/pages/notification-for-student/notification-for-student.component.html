@@ -1,7 +1,11 @@
 <div class="notification-content">
   <div class="notification-head">
     <div class="notification-title" [class]="action()">
-      {{ notificationTitle() | translate }}
+      {{ notificationTitle() | translate: {
+          lessons: notification()?.payload?.lessons!,
+          date: notification()?.payload?.date!
+        }
+      }}
     </div>
   </div>
   @if (notification()?.sender) {

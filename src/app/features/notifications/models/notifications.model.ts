@@ -52,6 +52,26 @@ export enum ENotificationType {
 
   // Reminder
   LessonReminder = 'lesson_reminder',
+
+  // Cancellations by teacher/admin
+  LessonCancelledByTeacher = 'lesson_cancelled_by_teacher',
+  IndividualCancelledByAdmin = 'individual_cancelled_by_admin',
+
+  // Subscription activation/usage
+  SubscriptionActivationReminder = 'subscription_activation_reminder',
+  SubscriptionActivationExpired = 'subscription_activation_expired',
+  SubscriptionUsageReminder = 'subscription_usage_reminder',
+  SubscriptionUsageExpired = 'subscription_usage_expired',
+
+  // Lessons activation/usage
+  LessonsActivationReminder = 'lessons_activation_reminder',
+  LessonsActivationExpired = 'lessons_activation_expired',
+  LessonsUsageReminder = 'lessons_usage_reminder',
+  LessonsUsageExpired = 'lessons_usage_expired',
+
+  // Credits
+  SubscriptionCredited = 'subscription_credited',
+  LessonsCredited = 'lessons_credited',
 }
 
 export enum ENotificationAction {
@@ -90,6 +110,9 @@ export const NOTIFICATION_CANCELLED_TYPES = [
   ENotificationType.IndividualBookRejected,
   ENotificationType.LessonCancelRejected,
   ENotificationType.IndividualCancelRejected,
+
+  ENotificationType.LessonCancelledByTeacher,
+  ENotificationType.IndividualCancelledByAdmin,
 ];
 
 export const NOTIFICATION_RESCHEDULED_TYPES = [
@@ -103,6 +126,24 @@ export const NOTIFICATION_RESCHEDULED_TYPES = [
   ENotificationType.IndividualRescheduleRejected,
 ];
 
+export const NOTIFICATION_REMAINDER_TYPES = [
+  ENotificationType.LessonReminder,
+  ENotificationType.SubscriptionActivationReminder,
+  ENotificationType.SubscriptionUsageReminder,
+  ENotificationType.LessonsActivationReminder,
+  ENotificationType.LessonsUsageReminder,
+
+  ENotificationType.SubscriptionCredited,
+  ENotificationType.LessonsCredited,
+];
+
+export const NOTIFICATION_EXPIRED_TYPES = [
+  ENotificationType.SubscriptionActivationExpired,
+  ENotificationType.SubscriptionUsageExpired,
+  ENotificationType.LessonsActivationExpired,
+  ENotificationType.LessonsUsageExpired,
+];
+
 export enum ENotificationStatus {
   Unread = 'unread',
   Read = 'read',
@@ -113,6 +154,7 @@ export interface INotificationPayload {
   time: ITimeRange;
   previous_date: string;
   previous_time: ITimeRange;
+  lessons: string;
   lesson_id: number;
   student_id: number;
 }

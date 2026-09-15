@@ -50,6 +50,8 @@
     "planned-success": "Заплановано!",
     "planned-success-btn": "До зустрічі на уроках",
     "edit-title": "Редагування уроку",
+    "still-disable-slot": "Залишити цей час доступния для \u2028бронювання іншими студентами",
+    "activation-deadline": "Почати використовувати до",
     "type": {
       "with-teacher": "з вчителем",
       "lesson": {
@@ -148,7 +150,8 @@
     "payment-success-description-single": "Ви придбали {{quantity}} урок за {{price}} ₴",
     "payment-success-description-abonnement": "Ви придбали {{quantity}} абонемент за {{price}} ₴",
     "payment-success-btn": "До зустрічі на уроках",
-    "select-teacher-to-buy": "Виберіть вашого вчителя, <br /> щоб купити уроки"
+    "select-teacher-to-buy": "Виберіть вашого вчителя, <br /> щоб купити уроки",
+    "select-user-to-buy": "Виберіть користувача"
   },
   "rates": {
     "price-title": "Вартість навчання",
@@ -187,6 +190,7 @@
     "title": "Налаштування",
     "list-title": "Профіль та налаштування",
     "add-free-lessons": "Додати безкоштовні уроки",
+    "payment-cash": "Оплата готівкою",
     "terms": "Умови використання",
     "privacy": "Політика конфіденційності",
     "role-title": "Роль",
@@ -253,7 +257,20 @@
       "individual_reschedule_confirmed": "Учень підтвердив перенесення самостійного",
       "individual_reschedule_rejected": "Учень не підтвердив перенесення самостійного",
       "individual_reschedule_failed": "Не вдалося перенести самостійне",
-      "lesson_reminder": "Нагадуємо про урок"
+      "lesson_reminder": "Нагадуємо про урок",
+      "lesson_cancelled_by_teacher": "Вчитель скасував ваш урок",
+      "individual_cancelled_by_admin": "Школа скасувала ваше самостійне заняття",
+      "subscription_activation_reminder": "Вам потрібно почати використовувати абонемент до {{date}}. Абонемент анулюється після закінчення терміну дії.",
+      "subscription_activation_expired": "Ви не почали використовувати абонемент до {{date}}. Відповідно до умов навчання, абонемент анульовано.",
+      "subscription_usage_reminder": "Вам потрібно використати ще {{lessons}} з абонементу до {{date}}. Уроки анулюються після закінчення терміну дії.",
+      "subscription_usage_expired": "Ви не використали {{lessons}} з абонементу до {{date}}. Відповідно до умов навчання, уроки анульовано.",
+      "lessons_activation_reminder": "Вам потрібно почати використовувати уроки до {{date}}. Уроки анулюються після закінчення терміну дії.",
+      "lessons_activation_expired": "Ви не почали використовувати уроки до {{date}}. Відповідно до умов навчання, уроки анульовано.",
+      "lessons_usage_reminder": "Вам потрібно використати ще {{lessons}} до {{date}}. Уроки анулюються після закінчення терміну дії.",
+      "lessons_usage_expired": "Ви не використали {{lessons}} до {{date}}. Відповідно до умов навчання, уроки анульовано.",
+      "subscription_credited": "На ваш баланс зараховано {{lessons}} з абонементу. Час бронювати заняття.",
+      "lessons_credited": "На ваш баланс зараховано {{lessons}}. Час бронювати заняття."
+
     },
     "reminder": {
       "title": "Нагадування про урок за",

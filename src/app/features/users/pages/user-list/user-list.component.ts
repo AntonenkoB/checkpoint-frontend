@@ -20,6 +20,7 @@ import {UserItemComponent} from "@shared/components/user-item/user-item.componen
 import {HeaderMobileComponent} from "@shared/components/header-mobile/header-mobile.component";
 import {ScheduleListComponent} from "@schedule/pages/schedule-list/schedule-list.component";
 import {EmptyStateComponent} from "@shared/components/empty-state/empty-state.component";
+import {ScheduleFacade} from "@schedule/facade/schedule.facade";
 
 @Component({
   selector: 'cp-user-list',
@@ -29,7 +30,6 @@ import {EmptyStateComponent} from "@shared/components/empty-state/empty-state.co
   imports: [
     IonButton,
     TranslatePipe,
-    LoaderComponent,
     IonContent,
     UserItemComponent,
     HeaderMobileComponent,
@@ -43,6 +43,7 @@ import {EmptyStateComponent} from "@shared/components/empty-state/empty-state.co
 })
 export class UserListComponent implements OnInit {
   public readonly userListFacade = inject(UserListFacade);
+  public readonly scheduleFacade = inject(ScheduleFacade);
   public USER_ACTIONS_BTN = USER_CREATE_BTN();
   public profile = computed(() => this.userListFacade.profile());
   public isReady = computed(() => this.userListFacade.userListLoading());
@@ -58,6 +59,11 @@ export class UserListComponent implements OnInit {
   public ionViewWillEnter(): void {
     const snapshot = this.userListFacade.route.snapshot.queryParams;
     const tab = (snapshot['tab'] || snapshot['role']) as EHeaderMenu ?? EHeaderMenu.Schedule;
+
+    if (tab === EHeaderMenu.Schedule) {
+      this.scheduleFacade.getScheduleSlots();
+    }
+
     this.menuChange(tab);
   }
 
@@ -69,7 +75,7 @@ export class UserListComponent implements OnInit {
   }
 
   public async onIonInfinite(event: InfiniteScrollCustomEvent): Promise<void> {
-    this.userListFacade.loadMoreStudents();
+    this.userListFacade.loadMoreUsers();
     await event.target.complete();
   }
 }

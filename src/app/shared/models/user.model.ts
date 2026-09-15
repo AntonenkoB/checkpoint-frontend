@@ -44,5 +44,6 @@ export interface IProfilePurchases {
   type: EMarketPlanType;
   lessons_remaining: number;
   expires_at: string;
+  activation_deadline: string;
   teacher: Partial<IUser>;
 }

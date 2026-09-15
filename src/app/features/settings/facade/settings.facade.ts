@@ -19,6 +19,8 @@ import {ImpactStyle} from "@capacitor/haptics";
 import {HapticService} from "@shared/services/haptic.service";
 import {AuthStore} from "@auth/store/auth.store";
 import {PushNotificationService} from "@notifacations/services/push-notification.service";
+import {getCurrentMonth} from "@shared/utils/date.utils";
+import {ERatePages} from "@rates/models/rates.model";
 
 @Injectable()
 export class SettingsFacade {
@@ -34,6 +36,7 @@ export class SettingsFacade {
 
   public readonly profile = this.profileFacade.profile;
   public readonly isStudent = this.profileFacade.isStudent;
+  public readonly isAdmin = this.profileFacade.isAdmin;
   public readonly isOwner = this.profileFacade.isOwner;
 
   public readonly amountTeacherLessons = this.studentFacade.amountTeacherLessons;
@@ -121,6 +124,16 @@ export class SettingsFacade {
 
   public goToSettingsPrivacy(): void {
     this.store.dispatch(RouterActions.goTo({path: [EAppPages.Settings, ESettingsPages.Privacy]}))
+  }
+
+  public goToSalaryAdmin(): void {
+    const month = getCurrentMonth();
+    const teacherId = this.profile()?.id!;
+
+    this.store.dispatch(RouterActions.goTo({
+      path: [EAppPages.Rates, ERatePages.SalaryItem, teacherId],
+      extras: {queryParams: {month}}
+    }));
   }
 
   public goToLink(link: TRouter[], queryParams?: Record<string, string>): void {

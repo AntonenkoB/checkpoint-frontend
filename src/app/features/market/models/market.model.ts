@@ -13,6 +13,12 @@ export enum EMarketPlanType {
   Subscription = 'subscription',
 }
 
+export enum EMarketPaymentType {
+  Card = 'card',
+  Cash = 'cash',
+  Free = 'free',
+}
+
 export enum EPurchaseStatus {
   Pending = 'pending',
   Active = 'active',
@@ -25,6 +31,7 @@ export interface IMarketPurchaseLessons {
   "plan_id": number,
   "quantity": number
   "student_id"?: number,
+  "payment_method"?: EMarketPaymentType,
 }
 export const SELECTED_LESSONS_TYPE = (): Record<EMarketPlanType, string> => ({
   [EMarketPlanType.Single]: "market.select-lessons-count",

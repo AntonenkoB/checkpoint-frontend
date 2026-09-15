@@ -72,6 +72,8 @@
 
             @if (purchase.expires_at) {
               {{ "common.to" | translate}} {{ purchase.expires_at | date:'dd.MM'}}
+            } @else if(purchase.activation_deadline) {
+              {{ "lessons.activation-deadline" | translate}} {{ purchase.activation_deadline | date:'dd.MM'}}
             }
           </div>
         </div>

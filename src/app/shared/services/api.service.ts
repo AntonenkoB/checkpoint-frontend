@@ -29,8 +29,8 @@ export class ApiService {
     return this.executeRequest<T>('PATCH', path, body, { context });
   }
 
-  delete<T>(path: IApiUrl, context?: HttpContext): Observable<T> {
-    return this.executeRequest<T>('DELETE', path, undefined, { context });
+  delete<T>(path: IApiUrl, params?: Record<string, any>, context?: HttpContext): Observable<T> {
+    return this.executeRequest<T>('DELETE', path, undefined, { params, context });
   }
 
   private executeRequest<T>(

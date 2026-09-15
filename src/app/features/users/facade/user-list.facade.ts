@@ -45,6 +45,19 @@ export class UserListFacade {
 
     return users ?? [];
   });
+
+  public usersCanLoadMore = computed(() => {
+    const students = this.studentsStore.canLoadMore();
+    const users = this.usersStore.canLoadMore();
+    const currentTab = this.currentTab();
+
+    if (currentTab === EHeaderMenu.Student && this.profileFacade.isTeacher()) {
+      return students;
+    }
+
+    return users;
+  })
+
   public profile = this.profileFacade.profile;
   public activeRole = this.profileFacade.activeRole;
   public isReadyStudent = this.studentsStore.isReady;
@@ -52,6 +65,7 @@ export class UserListFacade {
   public userListLoading: Signal<boolean> = this.usersStore.usersLoading;
 
   public canLoadMoreStudents = this.studentsStore.canLoadMore;
+  public canLoadMoreUsers = this.usersStore.canLoadMore;
 
   public loadMoreStudents(): void {
     this.studentsStore.loadMoreStudents();
@@ -89,6 +103,14 @@ export class UserListFacade {
         this.goToSalaryTeacher();
         break;
     }
+  }
+
+  public loadMoreUsers(): void {
+    if (this.currentTab() === EHeaderMenu.Student && this.profileFacade.isTeacher()) {
+      this.studentsStore.loadMoreStudents();
+    }
+
+    this.usersStore.loadMoreUsers();
   }
 
   private getStudents(page: number, search: string): void {

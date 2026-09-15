@@ -29,6 +29,19 @@
     font: var(--font-alumi-32-black);
   }
 
+
+  .still-disable-slot {
+    --size: 24px;
+    margin-top: 40px;
+    font: var(--font-open-16-regular);
+    width: 100%;
+    align-items: flex-start;
+
+    .label-text-wrapper {
+      margin-inline-start: 12px;
+    }
+  }
+
   .cansel-btn {
     margin-bottom: var(--spacing-24);
   }

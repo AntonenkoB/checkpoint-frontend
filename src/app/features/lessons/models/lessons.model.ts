@@ -21,6 +21,7 @@ export enum ELessonFlow {
   Booking = 'booking',
   Purchase = 'purchase',
   AddFree = 'free',
+  AddCash = 'cash',
 }
 
 export interface ISetLesson {
@@ -33,6 +34,7 @@ export interface ICancelLesson {
   student_id?: number,
   teacher_id?: number,
   lesson_id: number
+  return_slot?: boolean;
 }
 
 export interface ITransferringLesson {

@@ -79,6 +79,12 @@ export class UserFacade {
         }
       }
     }
+
+    this.loadTeachers();
+  }
+
+  public loadTeachers(): void {
+    this.usersStore.loadUsers(EUserRole.Teacher, 1);
   }
 
   public createUser(user: IUserUpdate): void {

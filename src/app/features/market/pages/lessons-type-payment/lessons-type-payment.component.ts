@@ -1,4 +1,4 @@
-import {Component, computed, inject, OnInit} from "@angular/core";
+import {Component, inject, OnInit} from "@angular/core";
 import {HeaderSecondaryComponent} from "@shared/components/header-secondary/header-secondary.component";
 import {MarketFacade} from "../../facade/market.facade";
 import {RecordStudentItemComponent} from "@shared/components/record-student-item/record-student-item.component";

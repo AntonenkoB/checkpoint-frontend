@@ -2,9 +2,9 @@ import {inject, computed} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {patchState, signalStore, withComputed, withMethods, withState} from '@ngrx/signals';
 import {rxMethod} from "@ngrx/signals/rxjs-interop";
-import {catchError, map, of, pipe, switchMap, tap} from "rxjs";
+import {catchError, from, map, of, pipe, switchMap, tap} from "rxjs";
 import {withEntities} from "@ngrx/signals/entities";
-import {EMarketPages, IMarketPurchaseLessons, IPaymentSuccess} from "../models/market.model";
+import {EMarketPages, IMarketPurchaseLessons, IPaymentInvoice, IPaymentSuccess} from "../models/market.model";
 import {MarketService} from "../services/market.service";
 import {IRate} from "@rates/models/rates.model";
 import {selectQueryParam, selectRouteParam} from "../../../store/router/selectors";
@@ -14,17 +14,20 @@ import {RouterActions} from "../../../store/router/actions";
 import {ProfileStore} from "@profile/store/profile.store";
 import {ImpactStyle} from "@capacitor/haptics";
 import {HapticService} from "@shared/services/haptic.service";
+import {PaymentBrowserService} from "@shared/services/payment-browser.service";
 
 export interface MarketState {
   isLoading: boolean;
   teacherRate: IRate[];
   paymentSuccessData: IPaymentSuccess;
+  paymentInvoice: IPaymentInvoice | null;
 }
 
 const initialState: MarketState = {
   isLoading: false,
   teacherRate: [],
   paymentSuccessData: {} as IPaymentSuccess,
+  paymentInvoice: null,
 };
 
 export const MarketStore = signalStore(
@@ -49,6 +52,7 @@ export const MarketStore = signalStore(
     store = inject(Store),
     profileStore = inject(ProfileStore),
     hapticService = inject(HapticService),
+    paymentBrowser = inject(PaymentBrowserService),
   ) => ({
     loadTeacherRate: rxMethod<void>(
       pipe(
@@ -114,7 +118,53 @@ export const MarketStore = signalStore(
         ))
       )
     ),
-    addFreeLessons: rxMethod<IMarketPurchaseLessons>(
+    paymentLessons: rxMethod<IMarketPurchaseLessons>(
+      pipe(
+        tap(() => patchState(state, {isLoading: true})),
+        switchMap((data) => marketService.paymentLessons(data).pipe(
+          map(response => response.data),
+          switchMap((invoice) => from(paymentBrowser.open(invoice.page_url)).pipe(
+            tap(() => patchState(state, {isLoading: false, paymentInvoice: invoice})),
+            catchError((err) => {
+              console.error(err);
+              patchState(state, {isLoading: false});
+              return of(null);
+            }),
+          )),
+          catchError((err) => {
+            console.error(err);
+            patchState(state, {isLoading: false});
+            return of(null);
+          })
+        ))
+      )
+    ),
+    loadPaymentLesson: rxMethod<string>(
+      pipe(
+        tap(() => patchState(state, {isLoading: true})),
+        switchMap((data) => marketService.getPayment(data).pipe(
+          map(response => response.data),
+          tap((responseData) => {
+            patchState(state, {
+              isLoading: false,
+              paymentSuccessData: responseData
+            });
+
+            void hapticService.impact(ImpactStyle.Medium);
+            profileStore.getProfile();
+            store.dispatch(RouterActions.goTo({
+              path: [EAppPages.Market, EMarketPages.PaymentSuccess, responseData.id],
+            }));
+          }),
+          catchError((err) => {
+            console.error(err);
+            patchState(state, {isLoading: false});
+            return of(null);
+          })
+        ))
+      )
+    ),
+    addLessons: rxMethod<IMarketPurchaseLessons>(
       pipe(
         tap(() => patchState(state, {isLoading: true})),
         switchMap((data) => marketService.addFreeLessons(data).pipe(

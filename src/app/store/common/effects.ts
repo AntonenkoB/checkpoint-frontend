@@ -9,6 +9,7 @@ import {SettingsService} from "@shared/services/settings.service";
 import {PlatformService} from "@shared/services/platform.service";
 import {Action} from "@ngrx/store";
 import {ThemeService} from "@shared/services/theme.service";
+import {DeepLinkService} from "@shared/services/deep-link.service";
 import {ProfileStore} from "@profile/store/profile.store";
 import {SplashScreen} from "@capacitor/splash-screen";
 
@@ -21,6 +22,7 @@ export class CommonEffects {
   private settingsService = inject(SettingsService);
   private platformService = inject(PlatformService);
   private themeService = inject(ThemeService);
+  private deepLinkService = inject(DeepLinkService);
 
   init$ = createEffect(() =>
     this.actions$.pipe(
@@ -63,6 +65,7 @@ export class CommonEffects {
     const currentLang = this.settingsService.lang();
     this.translateService.use(currentLang);
     this.themeService.apply(this.settingsService.theme());
+    void this.deepLinkService.init();
 
 
     const appSetting: IAppSettings = {

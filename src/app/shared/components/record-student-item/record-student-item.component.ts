@@ -1,13 +1,15 @@
 import {Component, computed, input, model, OnInit, output} from "@angular/core";
 import {AvatarComponent} from "@shared/components/avatar/avatar.component";
 import {IUser} from "@models/user.model";
+import {TranslatePluralPipe} from "@shared/pipes/translate-plural.pipe";
 
 @Component({
   selector: "cp-record-student-item",
   templateUrl: "./record-student-item.component.html",
   styleUrls: ["./record-student-item.component.scss"],
   imports: [
-    AvatarComponent
+    AvatarComponent,
+    TranslatePluralPipe
   ]
 })
 export class RecordStudentItemComponent implements OnInit {

@@ -89,6 +89,8 @@ export enum EApiEndpoints {
 
   // market
   PurchaseLessons = 'purchases',
+  PaymentLessons = 'payments',
+  GetPaymentLesson = `payments/:${ERoutParams.PaymentId}`,
 
   // record
   SlotListToRecord = `teachers/:${ERoutParams.TeacherId}/slots`,

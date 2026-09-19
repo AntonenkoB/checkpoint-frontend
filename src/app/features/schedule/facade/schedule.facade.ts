@@ -69,7 +69,7 @@ export class ScheduleFacade {
   }
 
   public getScheduleSlots(): void {
-    if (this.profileFacade.isAdmin()) {
+    if (this.profileFacade.isAdmin() || this.profileFacade.isOwner()) {
       this.scheduleStore.getOverviewSlots();
     } else {
       this.scheduleStore.getSlots();

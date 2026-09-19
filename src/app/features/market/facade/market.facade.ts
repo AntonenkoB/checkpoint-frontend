@@ -9,7 +9,7 @@ import {ActivatedRoute} from "@angular/router";
 import {MarketStore} from "@market/store/market.store";
 import {ProfileFacade} from "@profile/facade/profile.facade";
 import {ELessonFlow, ELessonsType} from "@lessons/models/lessons.model";
-import {selectRouteParam} from "../../../store/router/selectors";
+import {selectRouteParam, selectRouteParams} from "../../../store/router/selectors";
 import {LessonsStore} from "@lessons/store/lessons.store";
 import {RatesStore} from "@rates/store/rates.store";
 import {ERatesType} from "@rates/models/rates.model";
@@ -27,6 +27,7 @@ export class MarketFacade {
   private navController = inject(NavController);
 
   private queryParams = toSignal(this.route.queryParams);
+  private selectRouteParams = this.store.selectSignal(selectRouteParams);
   public routTeacherId = this.store.selectSignal(selectRouteParam(ERoutParams.TeacherId));
   public readonly profile = this.profileFacade.profile;
   public currentTypePlan = computed(() => (this.queryParams()?.['typePlan']) || null);
@@ -175,7 +176,7 @@ export class MarketFacade {
 
   public purchaseLessons(paymentLessons: IMarketPurchaseLessons): void {
     if (this.currentLessonsFlow() === ELessonFlow.Purchase) {
-      this.marketStore.purchaseLessons(paymentLessons as IMarketPurchaseLessons)
+      this.marketStore.paymentLessons(paymentLessons as IMarketPurchaseLessons);
     }
 
     if (this.currentLessonsFlow() === ELessonFlow.AddFree) {
@@ -184,7 +185,7 @@ export class MarketFacade {
         student_id: this.lessonsStore.currentUser()?.id,
         payment_method: EMarketPaymentType.Free,
       } as IMarketPurchaseLessons
-      this.marketStore.addFreeLessons(data);
+      this.marketStore.addLessons(data);
     }
 
     if (this.currentLessonsFlow() === ELessonFlow.AddCash) {
@@ -193,7 +194,7 @@ export class MarketFacade {
         student_id: this.lessonsStore.currentUser()?.id,
         payment_method: EMarketPaymentType.Cash,
       } as IMarketPurchaseLessons
-      this.marketStore.addFreeLessons(data);
+      this.marketStore.addLessons(data);
     }
   }
 
@@ -223,6 +224,14 @@ export class MarketFacade {
     }
 
     return rawPrice.toLocaleString('uk-UA');
+  }
+
+  public getPayment(): void {
+    const id = this.selectRouteParams()[ERoutParams.PaymentId];
+
+    if (id) {
+      this.marketStore.loadPaymentLesson(id);
+    }
   }
 
   public closeMarketPage(): void {

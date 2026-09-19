@@ -12,7 +12,9 @@
     <div class="record-info-bottom">
       <div class="record-name">{{getName()}}</div>
       @if (withAmountLesson()) {
-        <div class="record-lessons">урок</div>
+        <div class="record-lessons">
+          {{lessonsAmount() ?? 0 | translatePlural: 'lessons.type.lesson'}}
+        </div>
       }
     </div>
   </div>

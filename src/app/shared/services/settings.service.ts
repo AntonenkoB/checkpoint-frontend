@@ -7,7 +7,7 @@ import {ThemeService} from "@shared/services/theme.service";
 @Injectable({ providedIn: 'root' })
 export class SettingsService {
   public lang = signal<ELang>(ELang.UA);
-  public theme = signal<ETheme>(ETheme.System);
+  public theme = signal<ETheme>(ETheme.Light);
   public repeat = signal<boolean>(!Capacitor.isNativePlatform());
   private themeService = inject(ThemeService);
 

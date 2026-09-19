@@ -27,6 +27,7 @@ export enum ERoutParams {
   PlanId = 'id',
   SlotId = 'id',
   NotificationId = 'id',
+  PaymentId = 'paymentId',
 }
 
 export enum EQueryParams {

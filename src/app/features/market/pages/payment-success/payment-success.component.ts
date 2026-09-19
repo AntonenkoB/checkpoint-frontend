@@ -29,5 +29,6 @@ export class PaymentSuccessComponent implements OnInit {
   public successData = computed(() => this.marketStore.paymentSuccessData());
 
   ngOnInit() {
+    this.marketFacade.getPayment();
   }
 }

@@ -12,9 +12,13 @@ export const routesMarket: Routes = [
     loadComponent: () =>
       import('./pages/lessons-payment/lessons-payment.component').then((m) => m.LessonsPaymentComponent),
   },
-
   {
     path: EMarketPages.PaymentSuccess,
+    loadComponent: () =>
+      import('./pages/payment-success/payment-success.component').then((m) => m.PaymentSuccessComponent),
+  },
+  {
+    path: `${EMarketPages.PaymentSuccess}/:paymentId`,
     loadComponent: () =>
       import('./pages/payment-success/payment-success.component').then((m) => m.PaymentSuccessComponent),
   },

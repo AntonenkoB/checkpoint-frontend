@@ -38,6 +38,24 @@ export const SELECTED_LESSONS_TYPE = (): Record<EMarketPlanType, string> => ({
   [EMarketPlanType.Subscription]: "market.select-abonnement-count",
 });
 
+export interface IPaymentInvoice {
+  id: number;
+  status: TPaymentStatus;
+  amount: number;
+  currency: number;
+  quantity: number;
+  page_url: string;
+  app_url: string;
+  expires_at: string;
+  paid_at: string | null;
+  failure_reason: string | null;
+  plan: IMarketPlan;
+  purchase: IPaymentSuccess;
+  payment_method?: EMarketPaymentType;
+  has_receipt?: boolean;
+  activation_deadline?: string;
+}
+
 export interface IPaymentSuccess {
   id: number;
   type: EMarketPlanType;
@@ -61,6 +79,8 @@ export interface IMarketPlan {
   price: number;
   is_active: boolean;
   teacher: IUser;
+  teacher_amount?: number;
+  school_amount?: number;
 }
 
 

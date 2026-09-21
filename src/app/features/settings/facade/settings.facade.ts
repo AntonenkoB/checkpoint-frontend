@@ -5,7 +5,6 @@ import {ProfileFacade} from "@profile/facade/profile.facade";
 import {RouterActions} from "../../../store/router/actions";
 import {EAppPages, TRouter} from "@models/router.model";
 import {EMarketPages} from "@market/models/market.model";
-import {StudentFacade} from "@student/facade/student.facade";
 import {ESettingsPages, SETTINGS_LIST_MAP} from "../models/settings.model";
 import {NavController} from "@ionic/angular";
 import {ProfileStore} from "@profile/store/profile.store";
@@ -20,7 +19,8 @@ import {HapticService} from "@shared/services/haptic.service";
 import {AuthStore} from "@auth/store/auth.store";
 import {PushNotificationService} from "@notifacations/services/push-notification.service";
 import {getCurrentMonth} from "@shared/utils/date.utils";
-import {ERatePages} from "@rates/models/rates.model";
+import {ERatePages, IPurchaseGroup} from "@rates/models/rates.model";
+import {groupPurchasesByTeacher} from "@shared/utils/group-purchases-for-student.utils";
 
 @Injectable()
 export class SettingsFacade {
@@ -28,7 +28,6 @@ export class SettingsFacade {
   private profileFacade = inject(ProfileFacade);
   private profileStore = inject(ProfileStore);
   private authStore = inject(AuthStore);
-  private studentFacade = inject(StudentFacade);
   private themeService = inject(ThemeService);
   private pushNotificationService = inject(PushNotificationService);
   private hapticService = inject(HapticService);
@@ -39,8 +38,9 @@ export class SettingsFacade {
   public readonly isAdmin = this.profileFacade.isAdmin;
   public readonly isOwner = this.profileFacade.isOwner;
 
-  public readonly amountTeacherLessons = this.studentFacade.amountTeacherLessons;
-  public readonly amountIndividualLessons = this.studentFacade.amountIndividualLessons;
+  public readonly purchaseGroupsForStudent = computed<IPurchaseGroup[]>(() =>
+    groupPurchasesByTeacher(this.profile()?.purchases!),
+  );
 
   public readonly settingsList = computed(() => {
     return SETTINGS_LIST_MAP[this.profileFacade.activeRole()!] ?? []
@@ -49,7 +49,6 @@ export class SettingsFacade {
     return USER_ROLE_OPTIONS.filter(role => this.profileFacade.profile()?.roles!.includes(role.value))
   });
   public activeRole = computed(() => USER_ROLE_OPTIONS.find(role => role.value === this.profileFacade.activeRole()));
-
 
   constructor() {
   }
@@ -161,7 +160,7 @@ export class SettingsFacade {
     this.authStore.logout();
   }
 
-  public deleteAccount(): void {
-    this.profileStore.deleteAccount()
+  public goToBack(): void {
+    this.navController.back();
   }
 }

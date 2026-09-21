@@ -6,7 +6,7 @@ import {pipe, switchMap, tap} from "rxjs";
 import {IUser, EUserRole} from "@models/user.model";
 import {UserService} from "@users/services/user.service";
 import {IPagination} from "@models/api.models";
-import {EUserPages, IUserUpdate} from "@users/models/user.model";
+import {EHeaderMenu, EUserPages, IUserUpdate} from "@users/models/user.model";
 import {RouterActions} from "../../../store/router/actions";
 import {EAppPages} from "@models/router.model";
 import {EAuthPages} from "../../auth/models/router.model";
@@ -164,7 +164,42 @@ export const UsersStore = signalStore(
         )),
       )
     ),
-
+    activateUser: rxMethod<string>(
+      pipe(
+        tap(() => patchState(state, {userLoading: true})),
+        switchMap((userId) => userService.activateUser(userId).pipe(
+          handleApiResponse<IUser>(
+            () => {
+              patchState(state, {userLoading: false});
+              state.loadUsers(EUserRole.Student);
+              store.dispatch(RouterActions.goTo({
+                path: [EAppPages.Users, EUserPages.ListUsers],
+                extras: {queryParams: {tab: EHeaderMenu.Student}}
+              }));
+            },
+            () => patchState(state, {userLoading: false}),
+          ),
+        )),
+      )
+    ),
+    deactivateUser: rxMethod<string>(
+      pipe(
+        tap(() => patchState(state, {userLoading: true})),
+        switchMap((userId) => userService.deactivateUser(userId).pipe(
+          handleApiResponse<IUser>(
+            () => {
+              patchState(state, {userLoading: false});
+              state.loadUsers(EUserRole.Student);
+              store.dispatch(RouterActions.goTo({
+                path: [EAppPages.Users, EUserPages.ListUsers],
+                extras: {queryParams: {tab: EHeaderMenu.Student}}
+              }));
+            },
+            () => patchState(state, {userLoading: false}),
+          ),
+        )),
+      )
+    ),
     deleteUser: rxMethod<string>(
       pipe(
         tap(() => patchState(state, {userLoading: true})),
@@ -173,7 +208,10 @@ export const UsersStore = signalStore(
             () => {
               patchState(state, {userLoading: false});
               state.loadUsers(EUserRole.Student);
-              store.dispatch(RouterActions.goTo({path: [EAppPages.Users, EUserPages.ListUsers]}));
+              store.dispatch(RouterActions.goTo({
+                path: [EAppPages.Users, EUserPages.ListUsers],
+                extras: {queryParams: {tab: EHeaderMenu.Student}}
+              }));
             },
             () => patchState(state, {userLoading: false}),
           ),

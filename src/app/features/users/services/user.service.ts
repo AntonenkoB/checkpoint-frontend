@@ -30,6 +30,14 @@ export class UserService extends ApiService {
     return this.put<IApiData<IUser>>([EApiEndpoints.UpdateUser, {userId: data.id!.toString()}], data);
   }
 
+  public activateUser(id: string): Observable<IApiData<IUser>> {
+    return this.patch<IApiData<IUser>>([EApiEndpoints.ActivateUser, {id}], {});
+  }
+
+  public deactivateUser(id: string): Observable<IApiData<IUser>> {
+    return this.patch<IApiData<IUser>>([EApiEndpoints.DeactivateUser, {id}], {});
+  }
+
   public deleteUser(id: string): Observable<IApiData<IUser>> {
     return this.delete<IApiData<IUser>>([EApiEndpoints.DeleteUser, {id}]);
   }

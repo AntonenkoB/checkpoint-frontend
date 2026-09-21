@@ -39,6 +39,7 @@ import {ScheduleFacade} from "@schedule/facade/schedule.facade";
     IonItem,
     IonInfiniteScroll,
     IonInfiniteScrollContent,
+    LoaderComponent,
   ]
 })
 export class UserListComponent implements OnInit {

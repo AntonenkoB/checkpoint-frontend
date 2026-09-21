@@ -127,7 +127,12 @@
             <!--          }</>-->
 
           @if (userFacade.isAdmin() || userFacade.isOwner()) {
-            <div class="delete-user" id="open-delete-user-modal">видалити користувача</div>
+            @if (user()?.is_active) {
+              <div class="delete-user" id="open-deactivate-user-modal">{{"users.deactivate-bnt" | translate}}</div>
+            } @else {
+              <div class="delete-user" id="open-activate-user-modal">{{"users.activate-bnt" | translate}}</div>
+              <div class="delete-user" id="open-delete-user-modal">{{"users.delete-bnt" | translate}}</div>
+            }
           }
         </div>
       }
@@ -136,22 +141,62 @@
 
   <cp-loader [isLoad]="!userFacade.userLoading()"></cp-loader>
 
-  <ion-modal
-      #deleteUserModal
-      id="delete-modal"
-      trigger="open-delete-user-modal"
-      [initialBreakpoint]="initialBreakpoint"
-      [breakpoints]="modalBreakpoints"
-  >
-    <ng-template>
-      <cp-confirm-modal
-          [title]="'profile.delete-title' | translate"
-          [btnConfirm]="'profile.delete' | translate"
-          [btnCansel]="'profile.no-delete' | translate"
-          [isDelete]="true"
-          (cansel)="deleteModalCansel()"
-          (confirm)="userFacade.deleteUser()"
-      ></cp-confirm-modal>
-    </ng-template>
-  </ion-modal>
+  @if (userFacade.isAdmin() || userFacade.isOwner()) {
+    @if (user()?.is_active) {
+      <ion-modal
+          #deactivateUserModal
+          id="deactivate-modal"
+          trigger="open-deactivate-user-modal"
+          [initialBreakpoint]="initialBreakpoint"
+          [breakpoints]="modalBreakpoints"
+      >
+        <ng-template>
+          <cp-confirm-modal
+              [title]="'users.deactivate-title' | translate"
+              [btnConfirm]="'users.deactivate-bnt' | translate"
+              [btnCansel]="'common.censal' | translate"
+              (cansel)="deactivateModalCansel()"
+              (confirm)="userFacade.deactivateUser()"
+          ></cp-confirm-modal>
+        </ng-template>
+      </ion-modal>
+    } @else {
+      <ion-modal
+          #activateUserModal
+          id="activate-modal"
+          trigger="open-activate-user-modal"
+          [initialBreakpoint]="initialBreakpoint"
+          [breakpoints]="modalBreakpoints"
+      >
+        <ng-template>
+          <cp-confirm-modal
+              [title]="'users.activate-title' | translate"
+              [btnConfirm]="'users.activate-bnt' | translate"
+              [btnCansel]="'common.censal' | translate"
+              (cansel)="activateModalCansel()"
+              (confirm)="userFacade.activateUser()"
+          ></cp-confirm-modal>
+        </ng-template>
+      </ion-modal>
+
+      <ion-modal
+          #deleteUserModal
+          id="delete-modal"
+          trigger="open-delete-user-modal"
+          [initialBreakpoint]="initialBreakpoint"
+          [breakpoints]="modalBreakpoints"
+      >
+        <ng-template>
+          <cp-confirm-modal
+              [title]="'profile.delete-title' | translate"
+              [btnConfirm]="'profile.delete' | translate"
+              [btnCansel]="'profile.no-delete' | translate"
+              [isDelete]="true"
+              (cansel)="deleteModalCansel()"
+              (confirm)="userFacade.deleteUser()"
+          ></cp-confirm-modal>
+        </ng-template>
+      </ion-modal>
+    }
+  }
 </div>

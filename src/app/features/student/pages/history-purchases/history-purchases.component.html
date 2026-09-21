@@ -11,22 +11,32 @@
     @for (purchase of studentFacade.historyPurchases(); track purchase.id) {
       <div class="purchases-item">
         <div class="info-top">
-          <div class="date">{{purchase.purchased_at | date:'d MMMM':'':'uk-UA'}}</div>
-          @if (purchase.teacher) {
-            <div class="teacher">{{purchase.teacher.first_name}} {{purchase.teacher.last_name}}</div>
-          } @else {
-            <div class="teacher">{{"schedule.independent" | translate}}</div>
-          }
+          <div class="date">{{purchase.purchased_at | date:'d MMMM, HH:mm':'':'uk-UA'}}</div>
+          <div class="lessons">
+            <div class="type">
+              @if (purchase.plan.type === eRatesType.Subscription) {
+                {{purchase.quantity}} {{purchase.quantity |  translatePlural: 'market.abonnement'}}
+              } @else {
+                {{purchase.plan.lessons_per_unit}} {{purchase.plan.lessons_per_unit |  translatePlural: 'lessons.type.lesson'}}
+              }
+            </div>
+            @if (purchase.payment_method !== eMarketPaymentType.Free) {
+              <div class="payment">, {{("market.payment-type." + purchase.payment_method) | translate}}</div>
+            }
 
+            @if (purchase.payment_method === eMarketPaymentType.Free) {
+              <div class="price">{{0 | priceFormat: '₴'}}</div>
+            } @else {
+              <div class="price">{{purchase.plan.price | priceFormat: '₴'}}</div>
+            }
+          </div>
         </div>
         <div class="info-bottom">
-          <div class="type">
-            @if (purchase.plan.type === eRatesType.Subscription) {
-              {{'rates.price.abonnement-type' | translate}},
-            }
-            {{purchase.plan.lessons_per_unit}} 
-            заняття</div>
-          <div class="price">{{purchase.plan.price | priceFormat: '₴'}}</div>
+          @if (purchase.teacher) {
+            <cp-user-item-read class="lessons-item" [user]="purchase.teacher"></cp-user-item-read>
+          } @else {
+            <cp-individual-lesson class="lessons-item"></cp-individual-lesson>
+          }
         </div>
       </div>
     } @empty {

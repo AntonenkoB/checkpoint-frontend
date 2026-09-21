@@ -54,11 +54,15 @@
       } @else {
         <cp-empty-state class="empty-state"></cp-empty-state>
       }
+
+      @if (userListFacade.activeRole() === eUserRole.Teacher) {
+        <cp-loader [isLoad]="userListFacade.isReadyStudent()"></cp-loader>
+      } @else {
+        <cp-loader [isLoad]="!isReady()"></cp-loader>
+      }
     } @else {
       <cp-schedule-list></cp-schedule-list>
     }
-<!--    <cp-loader [isLoad]="!isReady()"></cp-loader>-->
-<!--    <cp-loader [isLoad]="userListFacade.isReadyStudent()"></cp-loader>-->
   </div>
 
   @if (!(userListFacade.activeRole() === eUserRole.Admin && activeMenu() === eHeaderMenu.Admin)) {

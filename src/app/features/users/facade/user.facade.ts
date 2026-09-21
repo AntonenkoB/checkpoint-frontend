@@ -119,13 +119,15 @@ export class UserFacade {
     this.navController.back();
   }
 
-  // public activateUser(): void {
-  //
-  // }
-  //
-  // public deactivateUser(): void {
-  //
-  // }
+  public activateUser(): void {
+    const userId = this.user()?.id.toString() as string;
+    this.usersStore.activateUser(userId);
+  }
+
+  public deactivateUser(): void {
+    const userId = this.user()?.id.toString() as string;
+    this.usersStore.deactivateUser(userId);
+  }
 
   public deleteUser(): void {
     const userId = this.user()?.id.toString() as string;

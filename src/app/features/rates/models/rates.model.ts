@@ -1,4 +1,5 @@
 import {IUser} from "@models/user.model";
+import {EMarketPaymentType} from "@market/models/market.model";
 
 export enum ERatePages {
   RateList = 'rate-list',
@@ -64,7 +65,7 @@ export interface ITransaction {
   teacher_earned: number;
   school_earned: number;
   price_paid: number;
-  payment_method: string;
+  payment_method: EMarketPaymentType;
 }
 
 export interface IPurchase {
@@ -78,8 +79,14 @@ export interface IPurchase {
   status: string;
   purchased_at: string;
   activated_at: string;
+  activation_deadline: string;
   expires_at: string;
   teacher: IUser;
   plan: IRate;
-  payment_method: string;
+  payment_method: EMarketPaymentType;
+}
+
+export interface IPurchaseGroup {
+  teacher: IUser | null;
+  purchases: IPurchase[];
 }

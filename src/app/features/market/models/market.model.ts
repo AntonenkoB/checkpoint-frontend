@@ -69,6 +69,7 @@ export interface IPaymentSuccess {
   activated_at: string;
   expires_at: string;
   teacher: IUser;
+  purchase?: IPaymentSuccess;
   plan: IMarketPlan;
 }
 

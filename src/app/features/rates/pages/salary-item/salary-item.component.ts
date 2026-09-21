@@ -40,6 +40,6 @@ export class SalaryItemComponent implements OnInit {
 
   public formatDate(isoString: string): string {
     if (!isoString) return '';
-    return this.datePipe?.transform(isoString, 'd MMMM, HH:mm', '', 'uk-UA') || '';
+    return this.datePipe?.transform(isoString, 'd MMMM, HH:mm', 'Europe/Kyiv', 'uk-UA') || '';
   }
 }

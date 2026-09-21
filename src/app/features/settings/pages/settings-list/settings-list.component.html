@@ -10,11 +10,35 @@
   <div class="container">
     @if (settingsFacade.isStudent()) {
       <div class="settings-list-item lessons">
-        <div class="lessons-info">
-          {{ settingsFacade.amountTeacherLessons() }}
-          {{settingsFacade.amountTeacherLessons() | translatePlural: 'lessons.type.lesson'}} {{ "lessons.type.with-teacher" | translate }},
-          {{settingsFacade.amountIndividualLessons()}} {{settingsFacade.amountIndividualLessons() | translatePlural: 'lessons.type.independent'}}
+        <div class="student-purchases">
+          <div class="student-purchases-title">{{"settings.student-purchases-title" | translate}}</div>
+          @for (group of settingsFacade.purchaseGroupsForStudent(); track $index) {
+            <div class="student-purchases-group">
+              @for (purchase of group.purchases; track purchase.id) {
+                <div class="student-purchases-lessons">{{purchase.lessons_remaining}}
+                  @if (purchase.teacher) {
+                    {{purchase.lessons_remaining | translatePlural: 'lessons.type.lesson'}}
+                  } @else {
+                    {{purchase.lessons_remaining | translatePlural: 'lessons.type.independent'}}
+                  }
+
+                  @if (purchase.expires_at) {
+                    {{ "common.to" | translate}} {{ purchase.expires_at | date:'dd.MM'}}
+                  } @else if(purchase.activation_deadline) {
+                    {{ "lessons.activation-deadline" | translate}} {{ purchase.activation_deadline | date:'dd.MM'}}
+                  }
+                </div>
+              }
+
+              @if (group.teacher) {
+                <cp-user-item-read class="lessons-item" [user]="group.teacher"></cp-user-item-read>
+              } @else {
+                <cp-individual-lesson class="lessons-item"></cp-individual-lesson>
+              }
+            </div>
+          }
         </div>
+
         <ion-button (click)="settingsFacade.goToSelectPaymentType()">{{"market.btn-purchase" | translate}}</ion-button>
       </div>
     }

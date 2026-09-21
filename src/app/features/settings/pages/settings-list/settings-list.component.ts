@@ -6,6 +6,9 @@ import {SettingsFacade} from "../../facade/settings.facade";
 import {ConfirmModalComponent} from "@shared/components/confirm-modal/confirm-modal.component";
 import {Platform} from "@ionic/angular";
 import {TranslatePluralPipe} from "@shared/pipes/translate-plural.pipe";
+import {UserItemReadComponent} from "@shared/components/user-item-read/user-item-read.component";
+import {IndividualLessonComponent} from "@shared/components/individual-lesson/individual-lesson.component";
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: "cp-settings-list",
@@ -17,6 +20,9 @@ import {TranslatePluralPipe} from "@shared/pipes/translate-plural.pipe";
     ConfirmModalComponent,
     IonModal,
     TranslatePluralPipe,
+    UserItemReadComponent,
+    IndividualLessonComponent,
+    DatePipe,
   ],
   templateUrl: "./settings-list.component.html",
   styleUrl: "./settings-list.component.scss",

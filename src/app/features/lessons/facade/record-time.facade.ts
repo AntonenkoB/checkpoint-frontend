@@ -7,7 +7,8 @@ import {ELessonsRecordType, ELessonsType, ISetLesson, ITransferringLesson} from 
 import {formatToDateTime} from "@shared/utils/date.utils";
 import {LessonsStore} from "@lessons/store/lessons.store";
 import {ScheduleStore} from "@schedule/store/schedule.store";
-;
+import {toSignal} from "@angular/core/rxjs-interop";
+import {ActivatedRoute} from "@angular/router";
 
 
 @Injectable()
@@ -17,6 +18,10 @@ export class RecordTimeFacade {
   private lessonsStore = inject(LessonsStore);
   private scheduleStore = inject(ScheduleStore);
   private profileFacade = inject(ProfileFacade);
+  private route = inject(ActivatedRoute);
+
+  private queryParams = toSignal(this.route.queryParams);
+  public currentLessonsType = computed(() => this.queryParams()?.['lessonsType']);
 
   // public disabledSlotsPrepare = computed(() => {
   //   let data = [] as IScheduleItem[];
@@ -45,6 +50,12 @@ export class RecordTimeFacade {
 
     if (this.profileFacade.isStudent()) {
       schedule = this.lessonsFacade.slots() ?? [];
+
+      // disable current day for booked lesson with teacher
+      if (this.currentLessonsType() === ELessonsType.TeacherGuided) {
+        const deteNow = this.datePipe.transform(new Date(), 'yyyy-MM-dd')
+        schedule = schedule.filter((slot) => slot.date !== deteNow);
+      }
     }
 
     if (this.profileFacade.isTeacher() || this.profileFacade.isAdmin()) {
@@ -77,6 +88,12 @@ export class RecordTimeFacade {
 
     if (this.profileFacade.isStudent()) {
       data = this.lessonsFacade.slots() ?? [];
+
+      // disable current day for booked lesson with teacher
+      if (this.currentLessonsType() === ELessonsType.TeacherGuided) {
+        const deteNow = this.datePipe.transform(new Date(), 'yyyy-MM-dd')
+        data = data.filter((slot) => slot.date !== deteNow);
+      }
     }
 
     if (this.profileFacade.isTeacher() || this.profileFacade.isAdmin()) {

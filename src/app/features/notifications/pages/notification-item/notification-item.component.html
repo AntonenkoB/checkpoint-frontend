@@ -9,7 +9,7 @@
         [user]="notification()?.sender"
     ></cp-user-item-read>
   } @else {
-    <cp-individual-lesson></cp-individual-lesson>
+    <cp-individual-lesson class="notification-user"></cp-individual-lesson>
   }
   <div class="notification-description">
     @if (notification()?.payload?.previous_date) {

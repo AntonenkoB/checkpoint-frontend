@@ -3,10 +3,21 @@
 
   .purchases-wrap {
     height: 100%;
+
+    .container {
+      padding-top: var(--spacing-24);
+      padding-bottom: var(--spacing-24);
+    }
   }
 
   .purchases-item {
     font: var(--font-open-16-regular);
+    padding: var(--spacing-24) 0 var(--spacing-16);
+    border-bottom: 1px solid var(--color-border-primary);
+
+    &:first-child {
+      border-top: 1px solid var(--color-border-primary);
+    }
   }
 
   .info-top,
@@ -16,11 +27,21 @@
     justify-content: space-between;
   }
 
-  .info-bottom {
-    padding-top: var(--spacing-8);
+  .info-top {
+    font: var(--font-open-13-regular);
   }
 
-  .purchases-item {
-    padding-bottom: var(--spacing-24);
+  .lessons {
+    display: flex;
+    align-items: center;
+    text-transform: lowercase;
+  }
+
+  .price {
+    padding-left: var(--spacing-8);
+  }
+
+  .info-bottom {
+    padding-top: var(--spacing-8);
   }
 }

@@ -55,6 +55,8 @@ import {RoleListComponent} from "@shared/components/role-list/role-list.componen
 })
 export class UserComponent implements OnInit {
   @ViewChild('modal') modal!: IonModal;
+  @ViewChild('activateUserModal') activateUserModal!: IonModal;
+  @ViewChild('deactivateUserModal') deactivateUserModal!: IonModal;
   @ViewChild('deleteUserModal') deleteUserModal!: IonModal;
 
   private touchedMap = new Map<string, WritableSignal<boolean>>();
@@ -194,6 +196,8 @@ export class UserComponent implements OnInit {
 
   public deleteTeacher(id: number): void {
     this.attachUser.set(this.attachUser().filter(teacher => id !== teacher.id));
+    const attachIds = this.attachUser().map((teacher) => teacher.id);
+    this.userForm.teacher_ids().value.set(attachIds);
   }
 
   private getTouched(key: string): WritableSignal<boolean> {
@@ -201,6 +205,14 @@ export class UserComponent implements OnInit {
       this.touchedMap.set(key, signal(false));
     }
     return this.touchedMap.get(key)!;
+  }
+
+  public activateModalCansel(): void {
+    void this.activateUserModal.dismiss();
+  }
+
+  public deactivateModalCansel(): void {
+    void this.deactivateUserModal.dismiss();
   }
 
   public deleteModalCansel(): void {

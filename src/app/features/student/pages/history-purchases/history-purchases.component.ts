@@ -8,6 +8,10 @@ import {PriceFormatPipe} from "@shared/pipes/price-format-pipe";
 import {DatePipe} from "@angular/common";
 import { ERatesType } from "@rates/models/rates.model";
 import {EmptyStateComponent} from "@shared/components/empty-state/empty-state.component";
+import {UserItemReadComponent} from "@shared/components/user-item-read/user-item-read.component";
+import {IndividualLessonComponent} from "@shared/components/individual-lesson/individual-lesson.component";
+import {TranslatePluralPipe} from "@shared/pipes/translate-plural.pipe";
+import {EMarketPaymentType} from "@market/models/market.model";
 
 @Component({
   selector: "cp-history-purchases",
@@ -21,7 +25,10 @@ import {EmptyStateComponent} from "@shared/components/empty-state/empty-state.co
     IonInfiniteScrollContent,
     PriceFormatPipe,
     DatePipe,
-    EmptyStateComponent
+    EmptyStateComponent,
+    UserItemReadComponent,
+    IndividualLessonComponent,
+    TranslatePluralPipe
   ],
   providers: [StudentFacade]
 })
@@ -29,6 +36,7 @@ export class HistoryPurchasesComponent implements OnInit {
   public studentFacade = inject(StudentFacade);
 
   public eRatesType = ERatesType;
+  public eMarketPaymentType = EMarketPaymentType;
 
   constructor() {}
 

@@ -3,14 +3,24 @@
 
   .lessons-wrap {
     height: 100%;
+
+    .container {
+      padding-top: var(--spacing-24);
+      padding-bottom: var(--spacing-24);
+    }
   }
 
   .lessons-item {
-    padding-top: var(--spacing-24);
+    border-bottom: 1px solid var(--color-border-primary);
+    padding: var(--spacing-24) 0;
+
+    &:first-child {
+      border-top: 1px solid var(--color-border-primary);
+    }
   }
 
-
   .date {
-    font: var(--font-open-16-regular);
+    font: var(--font-open-13-regular);
+    padding-bottom: var(--spacing-8);
   }
 }

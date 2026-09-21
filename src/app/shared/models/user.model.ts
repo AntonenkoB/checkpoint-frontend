@@ -1,5 +1,5 @@
 import {ETheme, IOptions} from "@models/common.model";
-import {EMarketPlanType, EPurchaseStatus} from "@market/models/market.model";
+import {IPurchase} from "@rates/models/rates.model";
 
 export enum EUserRole {
   Owner = 'owner',
@@ -35,15 +35,5 @@ export interface IUser {
   reminder_hours_before: number;
   language: string;
   teachers?: Partial<IUser[]>;
-  purchases?: IProfilePurchases[];
-}
-
-export interface IProfilePurchases {
-  id: number;
-  status: EPurchaseStatus;
-  type: EMarketPlanType;
-  lessons_remaining: number;
-  expires_at: string;
-  activation_deadline: string;
-  teacher: Partial<IUser>;
+  purchases?: IPurchase[];
 }

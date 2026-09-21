@@ -2,7 +2,7 @@
   <cp-header-secondary
       [isBack]="true"
       [title]="'settings.title' | translate"
-      (back)="settingsFacade.goToSettingsList()"
+      (back)="settingsFacade.goToBack()"
   ></cp-header-secondary>
 
   <div class="settings-general-content">
@@ -31,15 +31,16 @@
           (segmentChange)="changeTheme($event)"
       ></cp-tabs>
     </div>
-    <div class="settings-general-item">
-      <div class="title">{{ 'settings.langs.title' | translate }}</div>
-      <cp-tabs
-          [tabList]="LANGS_TAB"
-          [bntStyle]="'btn-fill'"
-          [activeTab]="settingsFacade.profile()?.language"
-          (segmentChange)="changeLang($event)"
-      ></cp-tabs>
-    </div>
+<!--    <div class="settings-general-item">-->
+<!--      <div class="title">{{ 'settings.langs.title' | translate }}</div>-->
+<!--      <cp-tabs-->
+<!--          [tabList]="LANGS_TAB"-->
+<!--          [bntStyle]="'btn-fill'"-->
+<!--          [activeTab]="settingsFacade.profile()?.language"-->
+<!--          (segmentChange)="changeLang($event)"-->
+<!--      ></cp-tabs>-->
+<!--    </div>-->
+
 <!--    <div class="settings-general-item">-->
 <!--      <div class="title">{{ 'notification.title' | translate }}</div>-->
 <!--      <cp-tabs-->

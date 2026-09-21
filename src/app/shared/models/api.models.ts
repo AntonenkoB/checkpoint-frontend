@@ -23,6 +23,8 @@ export enum EApiEndpoints {
   GetChangeUser = `users/:${ERoutParams.UserId}`,
   GetUser = `users/:${ERoutParams.UserId}`,
   UpdateUser = `users/:${ERoutParams.UserId}`,
+  ActivateUser = `users/:${ERoutParams.UserId}/activate`,
+  DeactivateUser = `users/:${ERoutParams.UserId}/deactivate`,
   DeleteUser = `users/:${ERoutParams.UserId}`,
 
   // students

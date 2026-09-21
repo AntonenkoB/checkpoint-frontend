@@ -2,6 +2,7 @@
   "common": {
     "add": "Додати",
     "save": "Зберегти",
+    "censal": "Відмінити",
     "search": "Пошук",
     "not-save": "Не зберігати",
     "confirm-change-title": "Зберегти зміни?",
@@ -83,8 +84,12 @@
     "teacher": "Вчителі",
     "admin": "Адміни",
     "owner": "Власник",
-    "activate-title": "Активувати користувача",
-    "activate-bnt-confirm": "Активувати користувача"
+    "activate-title": "Активувати користувача?",
+    "activate-bnt": "Активувати",
+    "deactivate-title": "Деактивувати користувача?",
+    "deactivate-bnt": "Деактивувати",
+    "delete-title": "Видалити користувача?",
+    "delete-bnt": "Видалити користувача"
   },
   "profile": {
     "title": "Профіль",
@@ -151,7 +156,17 @@
     "payment-success-description-abonnement": "Ви придбали {{quantity}} абонемент за {{price}} ₴",
     "payment-success-btn": "До зустрічі на уроках",
     "select-teacher-to-buy": "Виберіть вашого вчителя, <br /> щоб купити уроки",
-    "select-user-to-buy": "Виберіть користувача"
+    "select-user-to-buy": "Виберіть користувача",
+    "abonnement": {
+      "one": "Абонемент",
+      "few": "Абонементи",
+      "many": "Абонементів"
+    },
+    "payment-type": {
+      "card": "Картка",
+      "cash": "Готівка",
+      "free": "Безкоштовно"
+    }
   },
   "rates": {
     "price-title": "Вартість навчання",
@@ -194,6 +209,7 @@
     "terms": "Умови використання",
     "privacy": "Політика конфіденційності",
     "role-title": "Роль",
+    "student-purchases-title": "Придбані уроки",
     "langs": {
       "title": "Мова",
       "ua": "Українська",
@@ -270,7 +286,6 @@
       "lessons_usage_expired": "Ви не використали {{lessons}} до {{date}}. Відповідно до умов навчання, уроки анульовано.",
       "subscription_credited": "На ваш баланс зараховано {{lessons}} з абонементу. Час бронювати заняття.",
       "lessons_credited": "На ваш баланс зараховано {{lessons}}. Час бронювати заняття."
-
     },
     "reminder": {
       "title": "Нагадування про урок за",

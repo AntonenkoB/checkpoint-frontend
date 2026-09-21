@@ -8,10 +8,22 @@
     }
   }
 
-  .lessons-info {
+  .student-purchases {
+    padding-bottom: var(--spacing-16);
+  }
+
+  .student-purchases-title {
+    font: var(--font-open-16-bold);
+    padding: var(--spacing-16) 0 var(--spacing-8);
+  }
+
+  .student-purchases-group {
+    padding-top: var(--spacing-8);
+  }
+
+    .student-purchases-lessons {
     font: var(--font-open-13-regular);
-    text-align: center;
-    padding-bottom: 24px;
+    text-transform: lowercase;
   }
 
   .title {

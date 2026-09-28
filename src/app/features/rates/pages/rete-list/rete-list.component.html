@@ -49,7 +49,7 @@
         </div>
       } @else {
         <div class="reate-item" (click)="ratesFacade.goToSettingRate(0)">
-          <div class="rates-item-title">{{ "rates.price.one-time-type" | translate }}</div>
+          <div class="rates-item-title">{{ "rates.price.individual" | translate }}</div>
           <div class="rates-info">
             @for (plan of rate.plans; track plan.type) {
               <div class="rates-info-item">

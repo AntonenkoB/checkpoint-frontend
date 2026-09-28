@@ -1,4 +1,4 @@
-import {Component, computed, inject, OnInit, signal} from '@angular/core';
+import {Component, computed, inject, OnInit, signal, viewChild} from '@angular/core';
 import {UserListFacade} from "../../facade/user-list.facade";
 import {
   IonButton,
@@ -43,6 +43,8 @@ import {ScheduleFacade} from "@schedule/facade/schedule.facade";
   ]
 })
 export class UserListComponent implements OnInit {
+  private readonly searchStudentInput = viewChild.required<IonInput>('searchStudentInput');
+
   public readonly userListFacade = inject(UserListFacade);
   public readonly scheduleFacade = inject(ScheduleFacade);
   public USER_ACTIONS_BTN = USER_CREATE_BTN();
@@ -78,5 +80,16 @@ export class UserListComponent implements OnInit {
   public async onIonInfinite(event: InfiniteScrollCustomEvent): Promise<void> {
     this.userListFacade.loadMoreUsers();
     await event.target.complete();
+  }
+
+  public onScrollStart(): void {
+    if (this.activeMenu() === EHeaderMenu.Student) {
+      void this.blurSearchInput();
+    }
+  }
+
+  private async blurSearchInput(): Promise<void> {
+    const inputElement = await this.searchStudentInput().getInputElement();
+    inputElement.blur();
   }
 }

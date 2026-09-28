@@ -1,4 +1,9 @@
 <div class="user" [class.disabled]="disabled()" [class.is-deactivated]="user() && user()?.hasOwnProperty('is_active') && !user()?.is_active">
+  @if (user() && user()?.hasOwnProperty('is_active') && !user()?.is_active) {
+    <div class="deactivated">
+      {{"users.deactivated" | translate}}
+    </div>
+  }
   <div class="user-wrap">
     <div class="user-description" (click)="openUser.emit(user()?.id!)">
       @if (timeLesson()) {

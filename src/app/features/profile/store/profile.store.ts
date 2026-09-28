@@ -15,6 +15,7 @@ import {ToastService} from "@shared/services/toast.service";
 import {Preferences} from "@capacitor/preferences";
 import {getHighestRole} from "@shared/permissions/role-priority";
 import {AuthStore} from "@auth/store/auth.store";
+import {TranslateService} from "@shared/services/translate.service";
 
 export interface ProfileState {
   isLoading: boolean;
@@ -102,6 +103,7 @@ export const ProfileStore = signalStore(
     settingsService = inject(SettingsService),
     toastService = inject(ToastService),
     hapticService = inject(HapticService),
+    translateService = inject(TranslateService),
   ) => ({
     getProfile: rxMethod<void>(
       pipe(
@@ -134,7 +136,7 @@ export const ProfileStore = signalStore(
                 profile: response.data,
                 isLoading: false
               });
-              toastService.success('Профіль оновлено');
+              toastService.success(translateService.instant('profile.updated'));
               void hapticService.impact(ImpactStyle.Medium);
               settingsService.updateSettings({
                 ...settingsService.getCurrentSettings(),

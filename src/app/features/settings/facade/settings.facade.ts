@@ -39,7 +39,7 @@ export class SettingsFacade {
   public readonly isOwner = this.profileFacade.isOwner;
 
   public readonly purchaseGroupsForStudent = computed<IPurchaseGroup[]>(() =>
-    groupPurchasesByTeacher(this.profile()?.purchases!),
+    groupPurchasesByTeacher(this.profileFacade.profile()?.purchases!),
   );
 
   public readonly settingsList = computed(() => {

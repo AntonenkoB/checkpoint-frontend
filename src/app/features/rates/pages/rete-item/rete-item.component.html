@@ -2,9 +2,8 @@
 
   <div class="container">
     <cp-header-secondary
-        [isBack]="true"
         [title]="'rates.price-title' | translate"
-        (back)="ratesFacade.goToRateList()"
+        (close)="ratesFacade.goToRateList()"
     ></cp-header-secondary>
     @if (teacher()) {
       <cp-user-item-read class="teacher" [user]="teacher()"></cp-user-item-read>
@@ -86,7 +85,7 @@
   } @else {
     <ion-content class="prises individual">
       <div class="container">
-        <div class="individual-title">{{ "rates.price.one-time-type" | translate }}</div>
+        <div class="individual-title">{{ "rates.price.individual" | translate }}</div>
 
         <div class="one-time">
           <div class="price-wrap">

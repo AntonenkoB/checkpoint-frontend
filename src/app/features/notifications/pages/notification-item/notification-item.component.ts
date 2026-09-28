@@ -7,6 +7,7 @@ import {TranslatePipe} from "@shared/pipes/translate-pipe";
 import {IonButton} from "@ionic/angular/standalone";
 import {LessonPreviousDateTimePipe} from "@shared/pipes/lesson-previous-date-time-pipe";
 import {IndividualLessonComponent} from "@shared/components/individual-lesson/individual-lesson.component";
+import {DateTimeLabelPipe} from "@shared/pipes/date-time-label-pipe";
 
 @Component({
   selector: "cp-notification-item",
@@ -16,7 +17,8 @@ import {IndividualLessonComponent} from "@shared/components/individual-lesson/in
     TranslatePipe,
     IonButton,
     LessonPreviousDateTimePipe,
-    IndividualLessonComponent
+    IndividualLessonComponent,
+    DateTimeLabelPipe
   ],
   templateUrl: "./notification-item.component.html",
   styleUrl: "./notification-item.component.scss",

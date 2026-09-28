@@ -7,7 +7,11 @@
 
   .reate-list {
     position: relative;
-    --padding-bottom: 60px !important;
+    --padding-bottom: calc(60px + var(--cp-safe-area-bottom)) !important;
+
+    >.container {
+      padding-bottom: var(--cp-safe-area-bottom);
+    }
   }
 
   .reate-item {

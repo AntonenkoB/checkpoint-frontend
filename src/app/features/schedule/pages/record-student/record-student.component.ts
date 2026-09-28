@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, signal} from "@angular/core";
+import {Component, inject, OnInit, signal, viewChild} from "@angular/core";
 import {HeaderSecondaryComponent} from "@shared/components/header-secondary/header-secondary.component";
 import {TranslatePipe} from "@shared/pipes/translate-pipe";
 import {RecordStudentFacade} from "../../facade/record-student.facade";
@@ -24,6 +24,8 @@ import {EmptyStateComponent} from "@shared/components/empty-state/empty-state.co
   providers: [RecordStudentFacade, ScheduleFacade]
 })
 export class RecordStudentComponent implements OnInit {
+  private readonly searchInput = viewChild.required<IonInput>('searchInput');
+
   public readonly recordStudentFacade = inject(RecordStudentFacade);
   public activeStudent = signal(0);
   public searchUser = signal('');
@@ -43,5 +45,14 @@ export class RecordStudentComponent implements OnInit {
   public selectStudent(id: number, student: IUser): void {
     this.activeStudent.set(id);
     this.recordStudentFacade.selectedStudent(student);
+  }
+
+  public onScrollStart(): void {
+    void this.blurSearchInput();
+  }
+
+  private async blurSearchInput(): Promise<void> {
+    const inputElement = await this.searchInput().getInputElement();
+    inputElement.blur();
   }
 }

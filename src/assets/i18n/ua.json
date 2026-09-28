@@ -19,6 +19,11 @@
       "admin": "Адмін",
       "teacher": "Вчитель",
       "student": "Учень"
+    },
+    "date": {
+      "yesterday": "Учора",
+      "today": "Сьогодні",
+      "tomorrow": "Завтра"
     }
   },
   "errors": {
@@ -89,7 +94,8 @@
     "deactivate-title": "Деактивувати користувача?",
     "deactivate-bnt": "Деактивувати",
     "delete-title": "Видалити користувача?",
-    "delete-bnt": "Видалити користувача"
+    "delete-bnt": "Видалити користувача",
+    "deactivated": "Деактивовано"
   },
   "profile": {
     "title": "Профіль",
@@ -106,6 +112,7 @@
     "delete": "Видалити акаунт",
     "no-delete": "Не видаляти",
     "password": "Пароль",
+    "updated": "Профіль оновлено",
     "photo": {
       "validation-info": "Оберіть фото формату JPG, PNG, WEBP <br/> з максимальним розміром 10MB",
       "title": "Обрати фото",
@@ -177,6 +184,7 @@
     "price": {
       "one-time-type": "Разово",
       "abonnement-type": "Абонемент",
+      "individual": "Самостійні",
       "school": "Школа",
       "teacher": "Вчитель"
     },

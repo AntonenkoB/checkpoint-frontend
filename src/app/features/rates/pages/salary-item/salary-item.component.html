@@ -1,9 +1,8 @@
 <div class="salary-item">
   <div class="container">
     <cp-header-secondary
-        [isBack]="true"
         [title]="'salary.title' | translate"
-        (back)="ratesFacade.goToSalaryList()"
+        (close)="ratesFacade.goToSalaryList()"
     ></cp-header-secondary>
 
     @if (ratesFacade.currentTeacher()) {
@@ -64,7 +63,11 @@
             <div class="salary-payout-bottom">
               <div class="info">{{transaction.student.first_name}} {{transaction.student.last_name}}</div>
               @if (ratesFacade.isOwner()) {
-                <div class="total">{{"rates.payment" | translate}} {{transaction.price_paid | priceFormat: '₴'}}</div>
+                <div class="total">{{("market.payment-type." + transaction.payment_method) | translate}} {{transaction.price_paid | priceFormat: '₴'}}</div>
+              }
+
+              @if (ratesFacade.isTeacher()) {
+                <div class="total">{{("market.payment-type." + transaction.payment_method)  | translate}}</div>
               }
             </div>
           </div>

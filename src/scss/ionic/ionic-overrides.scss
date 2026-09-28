@@ -313,4 +313,65 @@
     --background-focused: transparent;
     --background-hover: var(--background);
   }
+
+  @at-root html.plt-android {
+    ion-app::before,
+    ion-app::after {
+      content: '';
+      position: fixed;
+      left: 0;
+      right: 0;
+      pointer-events: none;
+      z-index: 30000;
+    }
+
+    //ion-app::before {
+    //  top: 0;
+    //  height: var(--cp-safe-area-top);
+    //  background: linear-gradient(
+    //    to bottom,
+    //    rgb(255 255 255 / 0.8) 0%,
+    //    rgb(255 255 255 / 0.4) 75%,
+    //    rgb(255 255 255 / 0) 100%
+    //  );
+    //}
+
+    ion-app::after {
+      bottom: 0;
+      height: var(--cp-safe-area-bottom);
+      background: linear-gradient(
+        to top,
+        rgb(255 255 255 / 0.8) 0%,
+        rgb(255 255 255 / 0.4) 75%,
+        rgb(255 255 255 / 0) 100%
+      );
+    }
+  }
+
+  @at-root html.plt-android.ion-palette-dark {
+    //ion-app::before {
+    //  background: linear-gradient(
+    //    to bottom,
+    //    rgb(12 12 24 / 0.8) 0%,
+    //    rgb(12 12 24 / 0.4) 75%,
+    //    rgb(12 12 24 / 0) 100%
+    //  );
+    //}
+    ion-app::after  {
+      background: linear-gradient(
+        to top,
+        rgb(12 12 24 / 0.8) 0%,
+        rgb(12 12 24 / 0.4) 75%,
+        rgb(12 12 24 / 0) 100%
+      );
+    }
+  }
+
+  // cp-no-bar-scrim for page with img background
+  @at-root html.plt-android.cp-no-bar-scrim {
+    ion-app::before,
+    ion-app::after {
+      content: none;
+    }
+  }
 }

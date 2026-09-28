@@ -1,5 +1,6 @@
 import {Injectable, signal} from "@angular/core";
 import {ETheme} from "@models/common.model";
+import {Capacitor, SystemBars, SystemBarsStyle} from "@capacitor/core";
 
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
@@ -31,6 +32,12 @@ export class ThemeService {
 
   private setDark(isDark: boolean): void {
     document.documentElement.classList.toggle('ion-palette-dark', isDark);
+
+    if (Capacitor.isNativePlatform() && Capacitor.getPlatform() === 'android') {
+      void SystemBars.setStyle({
+        style: isDark ? SystemBarsStyle.Dark : SystemBarsStyle.Light,
+      });
+    }
   }
 
   private systemListener = () => this.applySystem();

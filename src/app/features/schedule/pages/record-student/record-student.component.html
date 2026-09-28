@@ -8,6 +8,7 @@
     <div class="time">{{recordStudentFacade.scheduleListStore.currentTime()}}</div>
     <div class="search-wrap">
       <ion-input
+          #searchInput
           class="search-item"
           fill="solid"
           type="text"
@@ -18,7 +19,7 @@
     </div>
   </div>
 
-  <ion-content class="student-list">
+  <ion-content class="student-list" [scrollEvents]="true" (ionScrollStart)="onScrollStart()">
     <div class="container">
       @for (student of recordStudentFacade.studentsList(); track student.id) {
         <cp-user-item

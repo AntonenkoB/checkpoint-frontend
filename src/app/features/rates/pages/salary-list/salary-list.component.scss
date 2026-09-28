@@ -14,7 +14,11 @@
 
   .salary-list-content {
     position: relative;
-    --padding-bottom: 128px !important;
+    --padding-bottom: calc(128px + var(--cp-safe-area-bottom)) !important;
+
+    >.container {
+      padding-bottom: var(--cp-safe-area-bottom);
+    }
   }
 
   .salary-list-item {

@@ -45,6 +45,7 @@
   .teachers-info {
     flex: 1 1 auto;
     overflow-y: auto;
+    padding-bottom: var(--cp-safe-area-bottom);
   }
 
   .title {

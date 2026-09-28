@@ -6,6 +6,7 @@
 
   .pdf-viewer-wrap {
     flex: 1 1 auto;
+    padding-bottom: var(--cp-safe-area-bottom);
   }
   .pdf-viewer {
     --page-placeholder-background-color: var(--color-background-primary);

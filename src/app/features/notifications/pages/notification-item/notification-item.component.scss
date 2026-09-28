@@ -4,9 +4,15 @@
     padding: var(--spacing-24) 0;
   }
 
-  .notification-title {
+  .notification-top {
+    display: flex;
+    justify-content: space-between;
     font: var(--font-open-13-regular);
     margin-top: 5px;
+    gap: var(--spacing-40);
+  }
+
+  .notification-title {
     display: flex;
     gap: var(--spacing-8);
 
@@ -38,6 +44,10 @@
         background-color: var(--color-orange);
       }
     }
+  }
+
+  .notification-time {
+    flex: 0 0 auto;
   }
 
   .notification-user {

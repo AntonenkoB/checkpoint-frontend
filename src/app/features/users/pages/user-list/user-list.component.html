@@ -12,6 +12,7 @@
       <div class="search-wrap">
         <ion-item class="search">
           <ion-input
+              #searchStudentInput
               fill="solid"
               type="text"
               autocomplete="one-time-code"
@@ -29,7 +30,7 @@
     @if (activeMenu() !== eHeaderMenu.Schedule) {
       @if (userListFacade.userList().length > 0 && activeMenu() !== eHeaderMenu.Schedule) {
 
-        <ion-content class="user-list">
+        <ion-content class="user-list" [scrollEvents]="true" (ionScrollStart)="onScrollStart()">
           <div class="user-list-content container">
             @for (user of userListFacade.userList(); track user.id) {
               <cp-user-item

@@ -23,6 +23,7 @@ export class RecordTimeFacade {
   private queryParams = toSignal(this.route.queryParams);
   public currentLessonsType = computed(() => this.queryParams()?.['lessonsType']);
 
+  public isLoading = this.lessonsStore.isLoading;
   // public disabledSlotsPrepare = computed(() => {
   //   let data = [] as IScheduleItem[];
   //

@@ -89,5 +89,13 @@
       min-height: 56px;
       width: 100%;
     }
+
+    ::ng-deep {
+      .spinner {
+        &.spinner-dots {
+          height: 24px;
+        }
+      }
+    }
   }
 }

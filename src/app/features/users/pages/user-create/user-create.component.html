@@ -137,9 +137,12 @@
           }
         }
       </ion-list>
-      <div class="btn-wrap-update">
-        <ion-button class="submit" (click)="onSubmit()">{{ "common.add" | translate }}</ion-button>
-      </div>
+
+      <cp-buttons
+          [title]="'common.add' | translate"
+          [isLoader]="userFacade.userLoading()"
+          (submit)="onSubmit()"
+      ></cp-buttons>
     </form>
   </ion-content>
 </div>

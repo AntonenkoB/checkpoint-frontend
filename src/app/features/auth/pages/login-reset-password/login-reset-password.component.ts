@@ -1,6 +1,6 @@
 import {Component, inject, signal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {IonButton, IonContent, IonInput, IonInputPasswordToggle, IonItem} from '@ionic/angular/standalone';
+import {IonContent, IonInput, IonInputPasswordToggle, IonItem} from '@ionic/angular/standalone';
 import {DomSanitizer} from '@angular/platform-browser';
 import {addIcons} from 'ionicons';
 
@@ -10,6 +10,7 @@ import {TranslatePipe} from '@shared/pipes/translate-pipe';
 import {NoRipplePasswordToggle} from '@shared/directives/no-ripple-password-toggle';
 import {FORM_PASSWORD_ICONS} from '@models/form.models';
 import {BACK_SVG, LOGO_SVG} from '@models/svg.models';
+import {ButtonsComponent} from "@shared/components/buttons/buttons.component";
 
 @Component({
   selector: 'cp-login-reset-password',
@@ -21,14 +22,14 @@ import {BACK_SVG, LOGO_SVG} from '@models/svg.models';
     IonContent,
     IonItem,
     IonInput,
-    IonButton,
     IonInputPasswordToggle,
     TranslatePipe,
     NoRipplePasswordToggle,
+    ButtonsComponent,
   ],
 })
 export class LoginResetPasswordComponent {
-  private readonly authFacade = inject(AuthFacade);
+  public readonly authFacade = inject(AuthFacade);
   private readonly sanitizer = inject(DomSanitizer);
 
   public readonly createPassword = signal<ISavePassword>({password: '', password_confirmation: ''});

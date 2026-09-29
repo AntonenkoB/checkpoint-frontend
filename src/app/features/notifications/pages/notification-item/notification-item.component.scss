@@ -61,5 +61,13 @@
 
   .notification-buttons {
     padding-top: var(--spacing-16);
+
+    ::ng-deep {
+      .spinner {
+        &.spinner-dots {
+          height: 42px;
+        }
+      }
+    }
   }
 }

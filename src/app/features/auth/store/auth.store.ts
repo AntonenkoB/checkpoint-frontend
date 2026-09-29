@@ -27,6 +27,7 @@ import {getHighestRole} from '@shared/permissions/role-priority';
 import {ProfileStore} from '@profile/store/profile.store';
 import {PushNotificationService} from "@notifacations/services/push-notification.service";
 import {EStudentPages} from "@student/models/student.model";
+import {ToastService} from "@shared/services/toast.service";
 
 export type TRefreshState = 'idle' | 'pending' | 'success' | 'logout';
 
@@ -73,7 +74,8 @@ export const AuthStore = signalStore(
     settingsService = inject(SettingsService),
     profileStore = inject(ProfileStore),
     store = inject(Store),
-    pushService = inject(PushNotificationService)
+    pushService = inject(PushNotificationService),
+    toastService = inject(ToastService),
   ) => ({
     clearCheckUserFailure(): void {
       patchState(state, {checkUserFailure: null});
@@ -239,6 +241,7 @@ export const AuthStore = signalStore(
             }),
             catchError((err) => {
               console.error(err);
+              toastService.error(err.message);
               patchState(state, {isLoading: false, codeConfirmFailure: 'errors.code-confirm'});
               return of(null);
             }),

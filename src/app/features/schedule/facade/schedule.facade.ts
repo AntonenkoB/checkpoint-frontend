@@ -31,6 +31,7 @@ export class ScheduleFacade {
   public readonly activeRole = this.profileFacade.activeRole;
   public readonly isAdmin = this.profileFacade.isAdmin;
   public readonly isTeacher = this.profileFacade.isTeacher;
+  public readonly isLoading = this.scheduleStore.isLoading;
   public selectRouteParams = this.store.selectSignal(selectRouteParams);
   public selectQueryParamFrom = computed(() => this.scheduleStore.form());
   public studentsList = this.studentsStore.students;

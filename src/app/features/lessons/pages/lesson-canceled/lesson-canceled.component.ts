@@ -6,6 +6,7 @@ import {TranslatePipe} from "@shared/pipes/translate-pipe";
 import {LessonsFacade} from "@lessons/facade/lessons.facade";
 import {TRANSFERRED_LESSON_SVG} from "@models/svg.models";
 import {DomSanitizer} from "@angular/platform-browser";
+import {IndividualLessonComponent} from "@shared/components/individual-lesson/individual-lesson.component";
 
 @Component({
   selector: "cp-lesson-canceled",
@@ -15,7 +16,8 @@ import {DomSanitizer} from "@angular/platform-browser";
     HeaderSecondaryComponent,
     RecordStudentItemComponent,
     IonButton,
-    TranslatePipe
+    TranslatePipe,
+    IndividualLessonComponent
   ],
   providers: [LessonsFacade]
 })

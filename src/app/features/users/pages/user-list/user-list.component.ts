@@ -21,6 +21,7 @@ import {HeaderMobileComponent} from "@shared/components/header-mobile/header-mob
 import {ScheduleListComponent} from "@schedule/pages/schedule-list/schedule-list.component";
 import {EmptyStateComponent} from "@shared/components/empty-state/empty-state.component";
 import {ScheduleFacade} from "@schedule/facade/schedule.facade";
+import {ButtonsComponent} from "@shared/components/buttons/buttons.component";
 
 @Component({
   selector: 'cp-user-list',
@@ -40,6 +41,7 @@ import {ScheduleFacade} from "@schedule/facade/schedule.facade";
     IonInfiniteScroll,
     IonInfiniteScrollContent,
     LoaderComponent,
+    ButtonsComponent,
   ]
 })
 export class UserListComponent implements OnInit {

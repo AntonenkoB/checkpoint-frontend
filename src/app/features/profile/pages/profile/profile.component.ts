@@ -29,6 +29,7 @@ import {DomSanitizer} from "@angular/platform-browser";
 import {DELETE_SVG, PLUS_SVG} from "@models/svg.models";
 import {PhoneMaskDirective} from "@shared/directives/phone-mask";
 import {IUser, USER_ROLE_OPTIONS} from "@models/user.model";
+import {ButtonsComponent} from "@shared/components/buttons/buttons.component";
 
 
 @Component({
@@ -48,6 +49,7 @@ import {IUser, USER_ROLE_OPTIONS} from "@models/user.model";
     IonContent,
     HeaderSecondaryComponent,
     PhoneMaskDirective,
+    ButtonsComponent,
   ],
 })
 export class ProfileComponent implements OnInit {

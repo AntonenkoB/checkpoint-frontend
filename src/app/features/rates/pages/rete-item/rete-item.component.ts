@@ -1,15 +1,15 @@
 import {Component, computed, effect, inject, OnInit, signal} from "@angular/core";
 import {HeaderSecondaryComponent} from "@shared/components/header-secondary/header-secondary.component";
-import {UserItemComponent} from "@shared/components/user-item/user-item.component";
-import {IonButton, IonContent, IonInput, IonItem} from "@ionic/angular/standalone";
+import {IonContent, IonInput} from "@ionic/angular/standalone";
 import {TranslatePipe} from "@shared/pipes/translate-pipe";
 import {RatesFacade} from "@rates/facade/rates.facade";
 import {addIcons} from "ionicons";
 import {FORM_PASSWORD_ICONS, FORM_SELECT_ICONS} from "@models/form.models";
-import {ERatesType, IRate, IUpdateRate} from "@rates/models/rates.model";
+import {ERatesType, IUpdateRate} from "@rates/models/rates.model";
 import {RatesStore} from "@rates/store/rates.store";
 import {UserItemReadComponent} from "@shared/components/user-item-read/user-item-read.component";
 import {LoaderComponent} from "@shared/components/loader/loader.component";
+import {ButtonsComponent} from "@shared/components/buttons/buttons.component";
 
 @Component({
   selector: "cp-rete-item",
@@ -18,11 +18,11 @@ import {LoaderComponent} from "@shared/components/loader/loader.component";
   imports: [
     HeaderSecondaryComponent,
     IonInput,
-    IonButton,
     TranslatePipe,
     UserItemReadComponent,
     LoaderComponent,
-    IonContent
+    IonContent,
+    ButtonsComponent
   ],
   providers: [RatesFacade]
 })

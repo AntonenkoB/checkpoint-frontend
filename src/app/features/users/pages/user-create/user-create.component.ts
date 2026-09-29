@@ -3,7 +3,6 @@ import {email, form, FormRoot, hidden, maxLength, minLength, pattern, required} 
 import {FormsModule} from "@angular/forms";
 import {HeaderSecondaryComponent} from "@shared/components/header-secondary/header-secondary.component";
 import {
-  IonButton,
   IonContent,
   IonInput,
   IonInputPasswordToggle,
@@ -22,7 +21,7 @@ import {EUserRole, IUser} from "@models/user.model";
 import {addIcons} from "ionicons";
 import {FORM_PASSWORD_ICONS, FORM_SELECT_ICONS} from "@models/form.models";
 import {IUserUpdate, USER_CREATE_TITLE} from "@users/models/user.model";
-import {RoleListComponent} from "@shared/components/role-list/role-list.component";
+import {ButtonsComponent} from "@shared/components/buttons/buttons.component";
 
 @Component({
   selector: "cp-user-create",
@@ -32,7 +31,6 @@ import {RoleListComponent} from "@shared/components/role-list/role-list.componen
     FormRoot,
     FormsModule,
     HeaderSecondaryComponent,
-    IonButton,
     IonContent,
     IonInput,
     IonInputPasswordToggle,
@@ -44,6 +42,7 @@ import {RoleListComponent} from "@shared/components/role-list/role-list.componen
     SelectUserComponent,
     TranslatePipe,
     UserItemComponent,
+    ButtonsComponent,
   ],
   providers: [UserFacade]
 })

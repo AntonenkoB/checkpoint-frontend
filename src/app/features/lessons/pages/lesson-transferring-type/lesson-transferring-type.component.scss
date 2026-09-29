@@ -45,4 +45,14 @@
   .cansel-btn {
     margin-bottom: var(--spacing-24);
   }
+
+  .btn-wrap {
+    ::ng-deep {
+      .spinner {
+        &.spinner-dots {
+          height: 42px;
+        }
+      }
+    }
+  }
 }

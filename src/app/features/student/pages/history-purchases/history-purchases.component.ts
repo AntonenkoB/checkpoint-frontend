@@ -12,6 +12,7 @@ import {UserItemReadComponent} from "@shared/components/user-item-read/user-item
 import {IndividualLessonComponent} from "@shared/components/individual-lesson/individual-lesson.component";
 import {TranslatePluralPipe} from "@shared/pipes/translate-plural.pipe";
 import {EMarketPaymentType} from "@market/models/market.model";
+import {LoaderComponent} from "@shared/components/loader/loader.component";
 
 @Component({
   selector: "cp-history-purchases",
@@ -28,7 +29,8 @@ import {EMarketPaymentType} from "@market/models/market.model";
     EmptyStateComponent,
     UserItemReadComponent,
     IndividualLessonComponent,
-    TranslatePluralPipe
+    TranslatePluralPipe,
+    LoaderComponent
   ],
   providers: [StudentFacade]
 })

@@ -5,7 +5,14 @@
     <div class="lesson-canceled-icon" [innerHTML]="TRANSFERRED_LESSON_SVG"></div>
     <div class="lesson-title">{{ "schedule.lesson-cancelled" | translate }}</div>
     <div class="student">
-      <cp-record-student-item [student]="lessonsFacade.lessonsStore.currentUser()!" [withAmountLesson]="false"></cp-record-student-item>
+      @if(lessonsFacade.lessonsStore.currentUser()) {
+        <cp-record-student-item
+            [student]="lessonsFacade.lessonsStore.currentUser()!"
+            [withAmountLesson]="false"
+        ></cp-record-student-item>
+      } @else {
+        <cp-individual-lesson></cp-individual-lesson>
+      }
     </div>
 
     <div class="lesson-date">{{lessonsFacade.lessonsStore.currentDateTime()!}}</div>

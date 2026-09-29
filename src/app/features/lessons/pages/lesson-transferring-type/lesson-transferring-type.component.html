@@ -14,7 +14,16 @@
       @if(lessonsFacade.isStudent()) {
         <ion-button class="cansel-btn" (click)="lessonsFacade.goToTransferringTime()">{{ "schedule.transfer" | translate}}</ion-button>
       }
-      <ion-button [color]="'danger'" (click)="lessonsFacade.cancelLesson(!stillDisableSlotForm.return_slot().value())">{{ "schedule.cancel" | translate}}</ion-button>
+      <ion-button
+          [color]="'danger'"
+          (click)="lessonsFacade.cancelLesson(!stillDisableSlotForm.return_slot().value())"
+      >
+        @if (lessonsFacade.isLoading()) {
+          <ion-spinner class="spinner" name="dots" />
+        } @else {
+          {{ "schedule.cancel" | translate }}
+        }
+      </ion-button>
     </div>
 
     @if(!lessonsFacade.isStudent()) {

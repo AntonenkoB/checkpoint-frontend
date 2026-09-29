@@ -19,6 +19,7 @@ import {StudentStore} from "@student/store/student.store";
 
 export interface NotificationsState {
   isLoading: boolean;
+  loadingProcessingId: number;
   notificationsUnread: INotification[];
   notifications: INotification[];
   notificationsCount: INotificationCount;
@@ -28,6 +29,7 @@ export interface NotificationsState {
 
 const initialState: NotificationsState = {
   isLoading: false,
+  loadingProcessingId: 0,
   notificationsUnread: [],
   notifications: [],
   notificationsCount: {} as INotificationCount,
@@ -136,7 +138,7 @@ export const NotificationsStore = signalStore(
 
     readNotification: rxMethod<number>(
       pipe(
-        tap(() => patchState(state, {isLoading: true})),
+        tap((id) => patchState(state, {isLoading: true, loadingProcessingId: id})),
         switchMap((id) => notificationsService.readNotification(id).pipe(
           tap(() => {
             const params = state.lastParams();
@@ -151,10 +153,11 @@ export const NotificationsStore = signalStore(
             }
 
             void hapticService.impact(ImpactStyle.Medium);
+            patchState(state, {isLoading: false, loadingProcessingId: 0});
           }),
           catchError((err) => {
             console.error(err);
-            patchState(state, {isLoading: false});
+            patchState(state, {isLoading: false, loadingProcessingId: 0});
             return of([]);
           })
         ))
@@ -162,7 +165,7 @@ export const NotificationsStore = signalStore(
     ),
     confirmNotification: rxMethod<number>(
       pipe(
-        tap(() => patchState(state, {isLoading: true})),
+        tap((id) => patchState(state, {isLoading: true, loadingProcessingId: id})),
         switchMap((id) => notificationsService.confirmNotification(id).pipe(
           tap(() => {
             const params = state.lastParams();
@@ -179,10 +182,11 @@ export const NotificationsStore = signalStore(
             void hapticService.impact(ImpactStyle.Medium);
             profileStore.getProfile();
             studentStore.getLessons();
+            patchState(state, {isLoading: false, loadingProcessingId: 0});
           }),
           catchError((err) => {
             console.error(err);
-            patchState(state, {isLoading: false});
+            patchState(state, {isLoading: false, loadingProcessingId: 0});
             return of([]);
           })
         ))

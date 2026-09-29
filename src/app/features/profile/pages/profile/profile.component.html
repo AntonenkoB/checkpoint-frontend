@@ -112,7 +112,14 @@
               </ion-item>
             </ion-list>
 
-            <ion-button class="submit" (click)="onSubmit()">{{ 'common.save' | translate }}</ion-button>
+            <div class="submit-wrap">
+              <cp-buttons
+                  [title]="'common.save' | translate"
+                  [isLoader]="profileFacade.isLoading()"
+                  (submit)="onSubmit()"
+              ></cp-buttons>
+            </div>
+
           </form>
         </div>
 

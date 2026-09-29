@@ -13,9 +13,11 @@ export class NotificationsFacade {
   private profileFacade = inject(ProfileFacade);
   private navController = inject(NavController);
   private notificationsStore = inject(NotificationsStore);
+
   private activeRole = this.profileFacade.activeRole();
   public notifications = this.notificationsStore.notifications
-  public notificationsLoader = this.notificationsStore.isLoading;
+  public isLoading = this.notificationsStore.isLoading;
+  public loadingProcessingId = this.notificationsStore.loadingProcessingId;
   public canLoadMoreNotifications = this.notificationsStore.canLoadMoreNotifications;
 
   public loadNotifications(): void {

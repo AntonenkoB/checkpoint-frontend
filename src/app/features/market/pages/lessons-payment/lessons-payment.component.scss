@@ -54,6 +54,15 @@
 
   .btn-wrap {
     margin-bottom: 120px;
+
+    cp-buttons {
+      ::ng-deep {
+        .buttons-wrap {
+          padding-top: 0;
+        }
+      }
+    }
+
   }
 
   .btn-payd {

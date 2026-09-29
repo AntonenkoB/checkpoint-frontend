@@ -39,6 +39,7 @@ export class LessonsFacade {
   public teacherListToFreeLessons = signal<IUser[]>([]);
   public choseTeacher = signal(false)
 
+  public readonly isLoading = this.lessonsStore.isLoading;
   public readonly profile = this.profileFacade.profile;
   public readonly isStudent = this.profileFacade.isStudent;
   public readonly slots = this.lessonsStore.slots;

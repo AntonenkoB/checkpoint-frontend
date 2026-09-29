@@ -29,6 +29,8 @@ export class StudentFacade {
   public historyPurchases = this.studentStore.purchases
   public canLoadMorePurchases = this.studentStore.canLoadMorePurchases;
   public notificationsUnread = this.notificationsStore.notificationsUnread;
+  public isLoading = this.notificationsStore.isLoading;
+  public loadingProcessingId = this.notificationsStore.loadingProcessingId;
 
   public isEmptyInfo = computed(() => {
     const isReady = this.studentStore.isReady();

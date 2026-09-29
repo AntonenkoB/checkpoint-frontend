@@ -24,7 +24,14 @@
         </span>
       </ion-input-otp>
 
-      <ion-button class="send" [disabled]="codeConfirm().length < 6" (click)="send()">{{ "login.continue" | translate }}</ion-button>
+      <div class="send-wrap">
+        <cp-buttons
+            [title]="'login.continue' | translate"
+            [disabled]="codeConfirm().length < 6"
+            [isLoader]="authFacade.isLoading()"
+            (submit)="send()"
+        ></cp-buttons>
+      </div>
     </div>
   </div>
 </ion-content>

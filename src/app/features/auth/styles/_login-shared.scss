@@ -105,9 +105,17 @@
     padding: 6px 6px 6px 0;
   }
 
-  .send {
+  .send-wrap {
     display: block;
     margin-top: 60px;
     width: 100%;
+
+    cp-buttons {
+      ::ng-deep {
+        .buttons-wrap {
+          padding-top: 0;
+        }
+      }
+    }
   }
 }

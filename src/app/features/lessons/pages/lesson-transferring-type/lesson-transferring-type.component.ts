@@ -4,7 +4,7 @@ import {HeaderSecondaryComponent} from "@shared/components/header-secondary/head
 import {RecordStudentItemComponent} from "@shared/components/record-student-item/record-student-item.component";
 import {TranslatePipe} from "@shared/pipes/translate-pipe";
 import {LessonsFacade} from "@lessons/facade/lessons.facade";
-import {IonButton, IonCheckbox} from "@ionic/angular/standalone";
+import {IonButton, IonCheckbox, IonSpinner} from "@ionic/angular/standalone";
 import {CustomCheckbox} from "@shared/directives/custom-checkbox";
 
 @Component({
@@ -17,7 +17,8 @@ import {CustomCheckbox} from "@shared/directives/custom-checkbox";
     TranslatePipe,
     IonButton,
     CustomCheckbox,
-    IonCheckbox
+    IonCheckbox,
+    IonSpinner
   ]
 })
 export class LessonTransferringTypeComponent implements OnInit {

@@ -67,8 +67,11 @@
   </div>
 
   @if (!(userListFacade.activeRole() === eUserRole.Admin && activeMenu() === eHeaderMenu.Admin)) {
-    <div class="buttons container">
-      <ion-button (click)="userListFacade.create(activeMenu())">{{ this.USER_ACTIONS_BTN[activeMenu()] | translate }}</ion-button>
+    <div class="container">
+      <cp-buttons
+          [title]="this.USER_ACTIONS_BTN[activeMenu()] | translate"
+          (submit)="userListFacade.create(activeMenu())"
+      ></cp-buttons>
     </div>
   }
 </div>

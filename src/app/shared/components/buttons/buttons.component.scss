@@ -1,0 +1,12 @@
+:host {
+  .buttons-wrap {
+    padding-top: var(--spacing-20);
+    padding-bottom: var(--spacing-20);
+  }
+
+  .submit {
+    .spinner-dots {
+      height: 42px;
+    }
+  }
+}

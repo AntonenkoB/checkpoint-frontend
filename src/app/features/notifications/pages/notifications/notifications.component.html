@@ -14,13 +14,15 @@
           @for (notification of notificationsFacade.notifications(); track notification.id) {
             <cp-notification-item
                 [notification]="notification"
+                [isLoading]="notificationsFacade.isLoading()"
+                [loadingProcessingId]="notificationsFacade.loadingProcessingId()"
                 (readNotification)="notificationsFacade.readNotification(notification.id)"
             ></cp-notification-item>
           }
       </div>
     </div>
   </div>
-
+  
   <ion-infinite-scroll
       [disabled]="!notificationsFacade.canLoadMoreNotifications()"
       (ionInfinite)="onInfiniteLoadNotifications($event)">

@@ -1,6 +1,6 @@
 import {Component, inject, signal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {IonButton, IonContent, IonInputOtp, ToastController} from '@ionic/angular/standalone';
+import {IonContent, IonInputOtp, ToastController} from '@ionic/angular/standalone';
 import {DomSanitizer} from '@angular/platform-browser';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {Subject, throttleTime} from 'rxjs';
@@ -9,16 +9,17 @@ import {AuthFacade} from '../../facade/auth.facade';
 import {TranslatePipe} from '@shared/pipes/translate-pipe';
 import {BACK_SVG, LOGO_SVG} from '@models/svg.models';
 import {TranslateService} from "@shared/services/translate.service";
+import {ButtonsComponent} from "@shared/components/buttons/buttons.component";
 
 @Component({
   selector: 'cp-login-code-confirm',
   templateUrl: './login-code-confirm.component.html',
   styleUrls: ['./login-code-confirm.component.scss'],
   standalone: true,
-  imports: [FormsModule, IonContent, IonInputOtp, IonButton, TranslatePipe],
+  imports: [FormsModule, IonContent, IonInputOtp, TranslatePipe, ButtonsComponent],
 })
 export class LoginCodeConfirmComponent {
-  private readonly authFacade = inject(AuthFacade);
+  public readonly authFacade = inject(AuthFacade);
   private readonly sanitizer = inject(DomSanitizer);
   private readonly toastController = inject(ToastController);
   private readonly translateService = inject(TranslateService);

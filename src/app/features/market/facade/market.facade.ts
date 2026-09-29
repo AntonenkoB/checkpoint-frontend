@@ -30,6 +30,7 @@ export class MarketFacade {
   private selectRouteParams = this.store.selectSignal(selectRouteParams);
   public routTeacherId = this.store.selectSignal(selectRouteParam(ERoutParams.TeacherId));
   public readonly profile = this.profileFacade.profile;
+  public readonly isLoading = this.marketStore.isLoading;
   public currentTypePlan = computed(() => (this.queryParams()?.['typePlan']) || null);
   public currentLessonsType = computed(() => this.queryParams()?.['lessonsType']);
   public currentLessonsFlow = computed(() => this.queryParams()?.['lessonsFlow']);

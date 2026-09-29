@@ -46,6 +46,8 @@
     }
   </div>
 
+  <cp-loader [isLoad]="!studentFacade.isLoading()"></cp-loader>
+
   <ion-infinite-scroll
       [disabled]="!studentFacade.canLoadMorePurchases()"
       (ionInfinite)="onInfiniteLoadPurchases($event)">

@@ -7,6 +7,7 @@ import {LessonDateTimePipe} from "@shared/pipes/lesson-date-time-pipe";
 import {EmptyStateComponent} from "@shared/components/empty-state/empty-state.component";
 import {IndividualLessonComponent} from "@shared/components/individual-lesson/individual-lesson.component";
 import {UserItemReadComponent} from "@shared/components/user-item-read/user-item-read.component";
+import {LoaderComponent} from "@shared/components/loader/loader.component";
 
 @Component({
   selector: "cp-history-lessons",
@@ -19,7 +20,8 @@ import {UserItemReadComponent} from "@shared/components/user-item-read/user-item
     LessonDateTimePipe,
     EmptyStateComponent,
     IndividualLessonComponent,
-    UserItemReadComponent
+    UserItemReadComponent,
+    LoaderComponent
   ],
   providers: [StudentFacade]
 })

@@ -117,14 +117,12 @@
       </ion-list>
       @if (!isReadonly()) {
         <div class="btn-wrap-update">
-          <ion-button class="submit" (click)="onSubmit()">{{ "common.save" | translate }}</ion-button>
-            <!--          @if (user()?.is_active && userFacade.isAdmin() || userFacade.isOwner()) {-->
-            <!--            <div class="delete-user" id="open-delete-user-modal" (click)="deactivateUser()">деактивувати</div>-->
-            <!--          }-->
 
-            <!--          @if (!user()?.is_active && userFacade.isAdmin() || userFacade.isOwner()) {-->
-            <!--            <div class="delete-user" (click)="activateUser()">активувати</div>-->
-            <!--          }</>-->
+          <cp-buttons
+              [title]="'common.save' | translate"
+              [isLoader]="userFacade.userLoading()"
+              (submit)="onSubmit()"
+          ></cp-buttons>
 
           @if (userFacade.isAdmin() || userFacade.isOwner()) {
             @if (user()?.is_active) {

@@ -1,0 +1,12 @@
+<div class="buttons-wrap">
+  <ion-button
+      class="submit"
+      [disabled]="disabled()"
+      (click)="submit.emit()">
+    @if (isLoader()) {
+      <ion-spinner class="spinner" name="dots" />
+    } @else {
+      {{ title() }}
+    }
+  </ion-button>
+</div>

@@ -130,8 +130,12 @@
 
 
 
-  <div class="bnt-wrap container">
-    <ion-button (click)="save()">{{"common.save" | translate}}</ion-button>
+  <div class="container">
+    <cp-buttons
+        [title]="'common.save' | translate"
+        [isLoader]="ratesStore.isLoading()"
+        (submit)="save()"
+    ></cp-buttons>
   </div>
 
   <cp-loader [isLoad]="!ratesStore.isLoading()"></cp-loader>

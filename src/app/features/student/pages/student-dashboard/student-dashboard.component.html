@@ -23,6 +23,8 @@
         <cp-notification-for-student
             class="schedule-notification"
             [notification]="notification"
+            [isLoading]="studentFacade.isLoading()"
+            [loadingProcessingId]="studentFacade.loadingProcessingId()"
             (read)="studentFacade.readNotification($event)"
             (confirm)="studentFacade.confirmNotification($event)"
             (reject)="studentFacade.rejectNotification($event)"

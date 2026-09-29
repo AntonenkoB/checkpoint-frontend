@@ -21,7 +21,11 @@
     </div>
 
     <div class="btn-wrap">
-      <ion-button (click)="purchase()">{{"market.buy-for-price" | translate: {price: totalPrice()} }}</ion-button>
+      <cp-buttons
+          [title]="'market.buy-for-price' | translate: {price: totalPrice()}"
+          [isLoader]="marketFacade.isLoading()"
+          (submit)="purchase()"
+      ></cp-buttons>
     </div>
   </div>
 

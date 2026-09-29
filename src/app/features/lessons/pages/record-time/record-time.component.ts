@@ -4,14 +4,13 @@ import {TranslatePipe} from "@shared/pipes/translate-pipe";
 import {RecordStudentItemComponent} from "@shared/components/record-student-item/record-student-item.component";
 import {CalendarComponent} from "@shared/components/calendar/calendar.component";
 import {TimeListComponent} from "@shared/components/time-list/time-list.component";
-import {IonButton} from "@ionic/angular/standalone";
 import {LessonsFacade} from "@lessons/facade/lessons.facade";
-import {ELessonsRecordType, ELessonsType, ISetLesson, ITransferringLesson} from "@lessons/models/lessons.model";
+import {ELessonsType} from "@lessons/models/lessons.model";
 import {DatePipe} from "@angular/common";
-import {IScheduleItem, ITimeRange, TIME_LIST} from "@schedule/models/schedule.model";
-import {formatToDateTime} from "@shared/utils/date.utils";
+import {ITimeRange} from "@schedule/models/schedule.model";
 import {CalendarShortComponent} from "@shared/components/calendar-short/calendar-short.component";
 import {RecordTimeFacade} from "@lessons/facade/record-time.facade";
+import {ButtonsComponent} from "@shared/components/buttons/buttons.component";
 
 @Component({
   selector: "cp-record-time",
@@ -23,14 +22,14 @@ import {RecordTimeFacade} from "@lessons/facade/record-time.facade";
     RecordStudentItemComponent,
     CalendarComponent,
     TimeListComponent,
-    IonButton,
-    CalendarShortComponent
+    CalendarShortComponent,
+    ButtonsComponent
   ],
   providers: [RecordTimeFacade]
 })
 export class RecordTimeComponent implements OnInit {
   public lessonsFacade = inject(LessonsFacade);
-  private recordTimeFacade = inject(RecordTimeFacade);
+  public recordTimeFacade = inject(RecordTimeFacade);
   private datePipe = inject(DatePipe);
   public eLessonsType = ELessonsType;
 

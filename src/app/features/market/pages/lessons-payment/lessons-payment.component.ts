@@ -4,15 +4,14 @@ import {MarketFacade} from "../../facade/market.facade";
 import {RecordStudentItemComponent} from "@shared/components/record-student-item/record-student-item.component";
 import {DomSanitizer} from "@angular/platform-browser";
 import {MINUS_SVG, PLUS_SVG} from "@models/svg.models";
-import {IonButton} from "@ionic/angular/standalone";
 import {TranslatePipe} from "@shared/pipes/translate-pipe";
-import {MarketStore} from "../../store/market.store";
 import {
   EMarketPlanType,
   IMarketPurchaseLessons,
   SELECTED_LESSONS_TYPE,
 } from "../../models/market.model";
 import {ELessonsType} from "@lessons/models/lessons.model";
+import {ButtonsComponent} from "@shared/components/buttons/buttons.component";
 
 @Component({
   selector: "cp-lessons-payment",
@@ -21,8 +20,8 @@ import {ELessonsType} from "@lessons/models/lessons.model";
   imports: [
     HeaderSecondaryComponent,
     RecordStudentItemComponent,
-    IonButton,
-    TranslatePipe
+    TranslatePipe,
+    ButtonsComponent
   ],
   providers: [MarketFacade]
 })

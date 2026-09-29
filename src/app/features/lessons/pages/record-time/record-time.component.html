@@ -39,7 +39,11 @@
         (selectTime)="selectedTime($event)"
     ></cp-time-list>
   </div>
-  <div class="btn-wrap container">
-    <ion-button (click)="save()">{{ "schedule.btn-planing" | translate }}</ion-button>
+  <div class="container">
+    <cp-buttons
+        [title]="'schedule.btn-planing' | translate"
+        [isLoader]="recordTimeFacade.isLoading()"
+        (submit)="save()"
+    ></cp-buttons>
   </div>
 </div>

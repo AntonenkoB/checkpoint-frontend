@@ -27,6 +27,7 @@ import {PhoneMaskDirective} from "@shared/directives/phone-mask";
 import {ConfirmModalComponent} from "@shared/components/confirm-modal/confirm-modal.component";
 import {Platform} from "@ionic/angular";
 import {RoleListComponent} from "@shared/components/role-list/role-list.component";
+import {ButtonsComponent} from "@shared/components/buttons/buttons.component";
 
 @Component({
   selector: 'cp-user',
@@ -50,6 +51,7 @@ import {RoleListComponent} from "@shared/components/role-list/role-list.componen
     PhoneMaskDirective,
     ConfirmModalComponent,
     RoleListComponent,
+    ButtonsComponent,
   ],
   providers: [UserFacade]
 })

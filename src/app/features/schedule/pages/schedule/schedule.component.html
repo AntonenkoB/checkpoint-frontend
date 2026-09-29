@@ -58,7 +58,11 @@
   </div>
 
   <div class="buttons container">
-    <ion-button (click)="save()">{{ "common.save" | translate }}</ion-button>
+    <cp-buttons
+        [title]="'common.save' | translate"
+        [isLoader]="scheduleStore.isLoading()"
+        (submit)="save()"
+    ></cp-buttons>
   </div>
 
   <ion-modal

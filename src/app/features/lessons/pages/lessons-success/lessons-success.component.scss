@@ -6,6 +6,7 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    padding-bottom: var(--cp-safe-area-bottom);
   }
 
   .lesson-success-info {

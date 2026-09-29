@@ -1,9 +1,9 @@
-import {Component, computed, effect, inject, input, OnInit, Signal, signal, ViewChild} from "@angular/core";
+import {Component, computed, effect, inject, OnInit, signal, ViewChild} from "@angular/core";
 import {EHeaderMenu} from "src/app/features/users/models/user.model";
-import {IUser, EUserRole} from "@models/user.model";
+import {EUserRole} from "@models/user.model";
 
 import {TimeListComponent} from "@shared/components/time-list/time-list.component";
-import {IonButton, IonLabel, IonModal, IonSegment, IonSegmentButton} from "@ionic/angular/standalone";
+import {IonLabel, IonModal, IonSegment, IonSegmentButton} from "@ionic/angular/standalone";
 import {TranslatePipe} from "@shared/pipes/translate-pipe";
 import {
   EScheduleType, ITimeRange,
@@ -17,6 +17,7 @@ import {ScheduleStore} from "@schedule/store/schedule.store";
 import {DatePipe} from "@angular/common";
 import {ConfirmModalComponent} from "@shared/components/confirm-modal/confirm-modal.component";
 import {Platform} from "@ionic/angular";
+import {ButtonsComponent} from "@shared/components/buttons/buttons.component";
 
 @Component({
   selector: "cp-schedule",
@@ -31,9 +32,9 @@ import {Platform} from "@ionic/angular";
     IonSegmentButton,
     HeaderSecondaryComponent,
     CalendarComponent,
-    IonButton,
     ConfirmModalComponent,
     IonModal,
+    ButtonsComponent,
   ]
 })
 export class ScheduleComponent implements OnInit {

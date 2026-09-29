@@ -1,7 +1,6 @@
 import {Component, inject, signal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {
-  IonButton,
   IonCheckbox,
   IonContent,
   IonInput,
@@ -19,6 +18,7 @@ import {NoRipplePasswordToggle} from '@shared/directives/no-ripple-password-togg
 import {CustomCheckbox} from '@shared/directives/custom-checkbox';
 import {FORM_PASSWORD_ICONS} from '@models/form.models';
 import {BACK_SVG, LOGO_SVG} from '@models/svg.models';
+import {ButtonsComponent} from "@shared/components/buttons/buttons.component";
 
 @Component({
   selector: 'cp-login-create-password',
@@ -30,16 +30,16 @@ import {BACK_SVG, LOGO_SVG} from '@models/svg.models';
     IonContent,
     IonItem,
     IonInput,
-    IonButton,
     IonCheckbox,
     IonInputPasswordToggle,
     TranslatePipe,
     NoRipplePasswordToggle,
     CustomCheckbox,
+    ButtonsComponent,
   ],
 })
 export class LoginCreatePasswordComponent {
-  private readonly authFacade = inject(AuthFacade);
+  public readonly authFacade = inject(AuthFacade);
   public readonly platform = inject(Platform);
   private readonly sanitizer = inject(DomSanitizer);
 

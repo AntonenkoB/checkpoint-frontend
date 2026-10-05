@@ -6,7 +6,7 @@ import {catchError, of, pipe, switchMap, tap} from 'rxjs';
 import {selectQueryParam, selectRouteParam} from '../../../store/router/selectors';
 import {EAppPages, EQueryParams, ERoutParams} from '@shared/models/router.model';
 import {LessonsService} from "@lessons/services/lessons.service";
-import {ELessonPages, ICancelLesson, ISetLesson, ITransferringLesson} from "@lessons/models/lessons.model";
+import {ELessonFlow, ELessonPages, ICancelLesson, ISetLesson, ITransferringLesson} from "@lessons/models/lessons.model";
 import {AppState} from "@capacitor/app";
 import {RouterActions} from "../../../store/router/actions";
 import {IScheduleItem} from "@schedule/models/schedule.model";
@@ -136,7 +136,15 @@ export const LessonsStore = signalStore(
           catchError((err) => {
             patchState(state, {isLoading: false});
             void hapticService.impact(ImpactStyle.Heavy);
-            toastService.error(translateService.instant('common.error-default'));
+
+            if (err.status === 402) {
+              globalStore.dispatch(RouterActions.goTo({
+                path: [EAppPages.Lessons, ELessonPages.LessonType],
+                extras: {queryParams: {lessonsFlow: ELessonFlow.Purchase}},
+              }));
+            } else {
+              toastService.error(translateService.instant('common.error-default'));
+            }
             return of(null);
           })
         ))
@@ -159,8 +167,15 @@ export const LessonsStore = signalStore(
           }),
           catchError((err) => {
             void hapticService.impact(ImpactStyle.Heavy);
-            toastService.error(translateService.instant('common.error-default'));
             patchState(state, {isLoading: false});
+            if (err.status === 402) {
+              globalStore.dispatch(RouterActions.goTo({
+                path: [EAppPages.Lessons, ELessonPages.LessonType],
+                extras: {queryParams: {lessonsFlow: ELessonFlow.Purchase}},
+              }));
+            } else {
+              toastService.error(translateService.instant('common.error-default'));
+            }
             return of(null);
           })
         ))

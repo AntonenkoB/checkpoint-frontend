@@ -95,3 +95,7 @@ yarn.lock.bak
 
 # Custom
 CLAUDE.md
+
+# Generate scripts/firebase-env.js
+ios/App/App/Firebase/GoogleService-Info.plist
+android/app/google-services.json

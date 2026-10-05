@@ -2,7 +2,6 @@ import {Component, computed, effect, inject, OnInit, signal, ViewChild, Writable
 import {email, form, FormRoot, hidden, maxLength, minLength, pattern, required} from "@angular/forms/signals";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {
-  IonButton,
   IonContent,
   IonInput,
   IonItem,
@@ -36,7 +35,6 @@ import {ButtonsComponent} from "@shared/components/buttons/buttons.component";
   imports: [
     FormRoot,
     FormsModule,
-    IonButton,
     IonContent,
     IonInput,
     IonItem,

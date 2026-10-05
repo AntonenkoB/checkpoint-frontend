@@ -142,7 +142,10 @@ export const UsersStore = signalStore(
               void hapticService.impact(ImpactStyle.Medium);
               const highestRole = getHighestRole(user.roles)!;
               state.loadUsers(highestRole);
-              store.dispatch(RouterActions.goTo({path: [EAppPages.Users, EUserPages.ListUsers]}));
+              store.dispatch(RouterActions.goTo({
+                path: [EAppPages.Users, EUserPages.ListUsers],
+                extras: {queryParams: {tab: EHeaderMenu.Student}}
+              }));
             },
             () => patchState(state, {userLoading: false}),
           ),

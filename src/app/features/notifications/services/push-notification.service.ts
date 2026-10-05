@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { FirebaseMessaging, Importance, Visibility } from '@capacitor-firebase/messaging';
 import { Capacitor } from '@capacitor/core';
 import { NotificationsService } from '@notifacations/services/notifications.service';
+import { Observable, catchError, from, map, of, switchMap, tap, timeout } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class PushNotificationService {
@@ -21,11 +22,26 @@ export class PushNotificationService {
     await this.requestPermissionAndGetToken();
   }
 
-  public deleteToken(): void {
-    this.notificationsService.deleteDeviceTokens(this.currentToken()).subscribe({
-      next: () => this.currentToken.set(''),
-      error: () => {},
-    });
+  public deleteToken(): Observable<unknown> {
+    return this.resolveCurrentToken().pipe(
+      switchMap((token) => token
+        ? this.notificationsService.deleteDeviceTokens(token).pipe(
+            tap(() => this.currentToken.set('')),
+          )
+        : of(null)),
+      timeout(5000),
+      catchError(() => of(null)),
+    );
+  }
+
+  private resolveCurrentToken(): Observable<string> {
+    if (this.currentToken()) return of(this.currentToken());
+    if (Capacitor.getPlatform() === 'web') return of('');
+
+    return from(FirebaseMessaging.getToken()).pipe(
+      map(({ token }) => token),
+      catchError(() => of('')),
+    );
   }
 
   private async requestPermissionAndGetToken(): Promise<void> {

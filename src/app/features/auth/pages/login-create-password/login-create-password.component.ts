@@ -4,19 +4,15 @@ import {
   IonCheckbox,
   IonContent,
   IonInput,
-  IonInputPasswordToggle,
   IonItem,
 } from '@ionic/angular/standalone';
 import {Platform} from '@ionic/angular';
 import {DomSanitizer} from '@angular/platform-browser';
-import {addIcons} from 'ionicons';
 
 import {AuthFacade} from '../../facade/auth.facade';
 import {ISavePassword} from '../../models/auth.model';
 import {TranslatePipe} from '@shared/pipes/translate-pipe';
-import {NoRipplePasswordToggle} from '@shared/directives/no-ripple-password-toggle';
 import {CustomCheckbox} from '@shared/directives/custom-checkbox';
-import {FORM_PASSWORD_ICONS} from '@models/form.models';
 import {BACK_SVG, LOGO_SVG} from '@models/svg.models';
 import {ButtonsComponent} from "@shared/components/buttons/buttons.component";
 
@@ -31,9 +27,7 @@ import {ButtonsComponent} from "@shared/components/buttons/buttons.component";
     IonItem,
     IonInput,
     IonCheckbox,
-    IonInputPasswordToggle,
     TranslatePipe,
-    NoRipplePasswordToggle,
     CustomCheckbox,
     ButtonsComponent,
   ],
@@ -50,9 +44,7 @@ export class LoginCreatePasswordComponent {
   protected readonly LOGO_SVG = this.sanitizer.bypassSecurityTrustHtml(LOGO_SVG);
   protected readonly BACK_SVG = this.sanitizer.bypassSecurityTrustHtml(BACK_SVG);
 
-  constructor() {
-    addIcons(FORM_PASSWORD_ICONS);
-  }
+  constructor() {}
 
   public changePassword(password: string): void {
     if (this.validateCreatePassword()) {
@@ -73,6 +65,10 @@ export class LoginCreatePasswordComponent {
   }
 
   public send(): void {
+    if (this.validateCreatePassword()) {
+      return
+    }
+
     this.authFacade.createPassword(this.createPassword(), this.repeat());
   }
 }

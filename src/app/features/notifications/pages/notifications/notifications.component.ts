@@ -7,6 +7,7 @@ import {interval, Subscription} from "rxjs";
 import {IonContent, IonInfiniteScroll, IonInfiniteScrollContent, IonRefresher, IonRefresherContent} from "@ionic/angular/standalone";
 import {InfiniteScrollCustomEvent} from "@ionic/angular";
 import {LoaderComponent} from "@shared/components/loader/loader.component";
+import {EmptyStateComponent} from "@shared/components/empty-state/empty-state.component";
 
 @Component({
   selector: "cp-notifications",
@@ -22,7 +23,8 @@ import {LoaderComponent} from "@shared/components/loader/loader.component";
     IonContent,
     IonInfiniteScroll,
     IonInfiniteScrollContent,
-    LoaderComponent
+    LoaderComponent,
+    EmptyStateComponent
   ]
 })
 export class NotificationsComponent implements OnInit {

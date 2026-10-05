@@ -71,6 +71,12 @@
           </div>
         </div>
       }
+    } @empty {
+      @if (ratesFacade.rateLoader) {
+        <div class="empty">
+          <cp-empty-state></cp-empty-state>
+        </div>
+      }
     }
   </div>
   <cp-loader [isLoad]="ratesFacade.rateLoader"></cp-loader>

@@ -4,9 +4,10 @@
   .purchases-wrap {
     height: 100%;
 
-    .container {
+    >.container {
       padding-top: var(--spacing-24);
       padding-bottom: var(--cp-safe-area-bottom);
+      height: 100%;
     }
   }
 
@@ -43,5 +44,9 @@
 
   .info-bottom {
     padding-top: var(--spacing-8);
+  }
+
+  .empty-wrap {
+    height: 100%;
   }
 }

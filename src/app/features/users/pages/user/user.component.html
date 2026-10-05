@@ -91,7 +91,7 @@
           ></ion-input>
         </ion-item>
 
-        @if (userFacade.availableRoleOptions().length > 1 && !isReadonly()) {
+        @if (userFacade.availableRoleOptions().length > 1 && !isReadonly() && userFacade.isOwner()) {
           <cp-role-list [roles]="userFacade.availableRoleOptions()" [(selectedRoles)]="selectedRoles"></cp-role-list>
         }
 
@@ -129,7 +129,10 @@
               <div class="delete-user" id="open-deactivate-user-modal">{{"users.deactivate-bnt" | translate}}</div>
             } @else {
               <div class="delete-user" id="open-activate-user-modal">{{"users.activate-bnt" | translate}}</div>
-              <div class="delete-user" id="open-delete-user-modal">{{"users.delete-bnt" | translate}}</div>
+
+              @if (userFacade.isOwner()) {
+                <div class="delete-user" id="open-delete-user-modal">{{"users.delete-bnt" | translate}}</div>
+              }
             }
           }
         </div>

@@ -66,31 +66,39 @@ export class ApiService {
 
   private handleError = (error: HttpErrorResponse): Observable<never> => {
     let errorMessage = '';
-    //
-    // console.log('error', error.error.errors)
     // const errors = error.error.errors
     // const errorKeys = Object.keys(error.error.errors)
-    // console.log(error.error instanceof ErrorEvent)
-    //
-    // console.log(errors[errorKeys[0]][0])
     //
     // if (error.error instanceof ErrorEvent) {
     //   errorMessage = error.error.message;
     // } else {
     //   errorMessage = `${error.status}, message: ${error.message}`;
     // }
-    //
-    // console.log('error.error.message', error.error.message)
 
     if (error.status === 409) {
       this.toastService.error(error.error.message, 5000);
     }
 
-    return throwError(() => new Error(error.error.message));
+    return throwError(() => new ApiError(
+      error.error?.message ?? error.message,
+      error.status,
+      error.error?.errors,
+    ));
   }
 
   private parseApiUrl = (url: IApiUrl): string =>
     Array.isArray(url)
       ? Object.values(url[1]).reduce<string>((acc, val) => acc.replace(/:[^/]+/, String(val)), url[0] as string)
       : url as string;
+}
+
+export class ApiError extends Error {
+  constructor(
+    message: string,
+    public readonly status: number,
+    public readonly errors?: Record<string, string[]>,
+  ) {
+    super(message);
+    this.name = 'ApiError';
+  }
 }

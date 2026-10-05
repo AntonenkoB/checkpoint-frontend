@@ -81,12 +81,22 @@ input {
 image-cropper {
   --cropper-outline-color: #ffffff;
   --cropper-overlay-color: #ffffff;
+  --cropper-resize-square-bg: #0C0C18;
+  --cropper-resize-square-focus-bg: #0c0c18;
+  --cropper-resize-square-hover-bg: #0c0c18;
 
+  .ngx-ic-cropper .ngx-ic-resize {
+    z-index: 2 !important;
+  }
 }
 .ion-palette-dark {
   image-cropper {
     --cropper-outline-color: #0C0C18;
     --cropper-overlay-color: #0C0C18;
+    --cropper-resize-square-bg: #ffffff;
+    .ngx-ic-cropper .ngx-ic-resize {
+      z-index: 2 !important;
+    }
   }
 }
 

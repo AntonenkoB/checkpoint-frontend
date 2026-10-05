@@ -10,6 +10,7 @@
     --padding-bottom: calc(60px + var(--cp-safe-area-bottom)) !important;
 
     >.container {
+      height: 100%;
       padding-bottom: var(--cp-safe-area-bottom);
     }
   }
@@ -41,5 +42,9 @@
 
   .rates-info-price-wrap {
     font: var(--font-open-16-regular);
+  }
+
+  .empty {
+    height: 100%;
   }
 }

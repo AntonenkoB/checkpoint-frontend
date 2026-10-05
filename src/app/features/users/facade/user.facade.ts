@@ -69,6 +69,7 @@ export class UserFacade {
     if (id) {
       if (this.profileFacade.isAdmin() || this.profileFacade.isOwner()) {
         this.usersStore.loadUser(+id);
+        this.loadTeachers();
       } else {
         switch (this.menuActive()) {
           case EHeaderMenu.Student:
@@ -79,8 +80,6 @@ export class UserFacade {
         }
       }
     }
-
-    this.loadTeachers();
   }
 
   public loadTeachers(): void {

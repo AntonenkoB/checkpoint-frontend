@@ -1,7 +1,6 @@
 import {Component, computed, inject, OnInit, signal, viewChild} from '@angular/core';
 import {UserListFacade} from "../../facade/user-list.facade";
 import {
-  IonButton,
   IonContent,
   IonInfiniteScroll,
   IonInfiniteScrollContent,
@@ -29,7 +28,6 @@ import {ButtonsComponent} from "@shared/components/buttons/buttons.component";
   styleUrls: ['./user-list.component.scss'],
   providers: [UserListFacade],
   imports: [
-    IonButton,
     TranslatePipe,
     IonContent,
     UserItemComponent,

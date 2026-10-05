@@ -6,6 +6,7 @@ import {UserItemReadComponent} from "@shared/components/user-item-read/user-item
 import {ERatesType} from "@rates/models/rates.model";
 import {HeaderSecondaryComponent} from "@shared/components/header-secondary/header-secondary.component";
 import {IonContent, IonHeader} from "@ionic/angular/standalone";
+import {EmptyStateComponent} from "@shared/components/empty-state/empty-state.component";
 
 @Component({
   selector: "cp-rete-list",
@@ -17,6 +18,7 @@ import {IonContent, IonHeader} from "@ionic/angular/standalone";
     UserItemReadComponent,
     HeaderSecondaryComponent,
     IonContent,
+    EmptyStateComponent,
   ],
   providers: [RatesFacade]
 })

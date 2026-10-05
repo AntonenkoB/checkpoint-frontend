@@ -63,11 +63,11 @@
     align-items: center;
     justify-content: space-between;
     flex: 1 1 auto;
-    padding-bottom: var(--cp-safe-area-bottom);
   }
 
   .actions {
     padding: var(--spacing-20);
+    padding-bottom: calc(var(--spacing-20) + var(--cp-safe-area-bottom));
     width: 100%;
   }
 

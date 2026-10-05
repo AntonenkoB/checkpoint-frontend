@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "270540131673",
+    "project_id": "checkpoint-ab350",
+    "storage_bucket": "checkpoint-ab350.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:270540131673:android:57b7229482b6498eb01048",
+        "android_client_info": {
+          "package_name": "com.checkpoint.app.ua"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2EAEoVptb8DgLJZjBoXat1hdAFmXRtUU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

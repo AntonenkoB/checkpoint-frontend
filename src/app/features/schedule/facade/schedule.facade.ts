@@ -29,6 +29,7 @@ export class ScheduleFacade {
 
   public readonly profile = this.profileFacade.profile;
   public readonly activeRole = this.profileFacade.activeRole;
+  public readonly isOwner = this.profileFacade.isOwner;
   public readonly isAdmin = this.profileFacade.isAdmin;
   public readonly isTeacher = this.profileFacade.isTeacher;
   public readonly isLoading = this.scheduleStore.isLoading;

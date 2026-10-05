@@ -54,7 +54,7 @@
   },
   "lessons": {
     "planned-success": "Заплановано!",
-    "planned-success-btn": "До зустрічі на уроках",
+    "planned-success-btn": "До зустрічі",
     "edit-title": "Редагування уроку",
     "still-disable-slot": "Залишити цей час доступния для \u2028бронювання іншими студентами",
     "activation-deadline": "Почати використовувати до",
@@ -114,6 +114,7 @@
     "password": "Пароль",
     "updated": "Профіль оновлено",
     "photo": {
+      "avatar-description": "Фото профілю, до 10MB",
       "validation-info": "Оберіть фото формату JPG, PNG, WEBP <br/> з максимальним розміром 10MB",
       "title": "Обрати фото",
       "clear": "Очистити",
@@ -161,7 +162,7 @@
     "payment-success-title": "Оплачено!",
     "payment-success-description-single": "Ви придбали {{quantity}} урок за {{price}} ₴",
     "payment-success-description-abonnement": "Ви придбали {{quantity}} абонемент за {{price}} ₴",
-    "payment-success-btn": "До зустрічі на уроках",
+    "payment-success-btn": "До зустрічі",
     "select-teacher-to-buy": "Виберіть вашого вчителя, <br /> щоб купити уроки",
     "select-user-to-buy": "Виберіть користувача",
     "abonnement": {

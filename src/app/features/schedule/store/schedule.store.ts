@@ -148,6 +148,7 @@ export const ScheduleStore = signalStore(
             toastService.success('Графік оновлено');
             void hapticService.impact(ImpactStyle.Medium);
             store.getWeekly();
+            store.getSlots();
           }),
           catchError((err) => {
             console.error(err);

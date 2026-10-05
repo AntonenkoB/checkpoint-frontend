@@ -97,7 +97,8 @@
 
     ::ng-deep {
       .avatar {
-        border: 0;
+        border-color: var(--color-no-reverse-white);
+        background-color: transparent;
       }
 
       .user-read-creative-name {

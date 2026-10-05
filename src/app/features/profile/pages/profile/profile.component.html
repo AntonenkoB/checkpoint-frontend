@@ -13,22 +13,23 @@
     <div class="profile-wrap">
       <ion-content>
         <div class="container">
-          <div class="avatar-title">{{ "profile.add-avatar" | translate }}</div>
-
           <div class="avatar-wrap">
             @if (profile.avatar) {
               <div class="event-avatar add-avatar" (click)="onPickPhoto()">
                 <ion-img class="add-avatar-icon" [src]="profile.avatar" alt=" "></ion-img>
               </div>
-
-              <div class="event-avatar delete-avatar" (click)="profileFacade.deleteAvatar()">
-                <div class="delete-avatar-icon icon" [innerHTML]="DELETE_SVG"></div>
-              </div>
+<!--              <div class="event-avatar delete-avatar" (click)="profileFacade.deleteAvatar()">-->
+<!--                <div class="delete-avatar-icon icon" [innerHTML]="DELETE_SVG"></div>-->
+<!--              </div>-->
             } @else {
               <div class="event-avatar add-avatar" (click)="onPickPhoto()">
-                <div class="delete-avatar-icon icon" [innerHTML]="PLUS_SVG"></div>
+                <div class="delete-avatar-icon icon" [innerHTML]="EMPTY_AVATAR_SVG"></div>
               </div>
             }
+
+            <div class="avatar-description">
+              {{'profile.photo.avatar-description' | translate}}
+            </div>
           </div>
 
           <form class="form" [formRoot]="userForm">

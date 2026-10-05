@@ -125,6 +125,12 @@ export const AuthStore = signalStore(
             switchMap((response) => {
               const {token, user} = response.data;
 
+              // if (!user.onboarding_completed) {
+              //   store.dispatch(RouterActions.goTo({path: [EAppPages.Auth, EAuthPages.LoginCreatePassword]}));
+              //   patchState(state, {isLoading: false});
+              //   return of();
+              // }
+
               return forkJoin([
                 from(tokenService.setToken(token, login.repeat)),
                 from(settingsService.updateSettings({theme: user.theme, repeat: login.repeat})),
@@ -132,6 +138,8 @@ export const AuthStore = signalStore(
                 tap(() => {
                   patchState(state, {isLoading: false});
 
+                  // є проблема, коли користувач на етапі створення пароля закриє застосунок, то updateSettings уже відпрацював.
+                  // при відкритті наступного разу просто вісить бо updateSettings неактуальні
                   if (!user.onboarding_completed) {
                     store.dispatch(RouterActions.goTo({path: [EAppPages.Auth, EAuthPages.LoginCreatePassword]}));
                     return;
@@ -147,6 +155,8 @@ export const AuthStore = signalStore(
                       path: [EAppPages.Users, EUserPages.ListUsers],
                       extras: {queryParams: {tab: EHeaderMenu.Schedule}},
                     }));
+
+                  patchState(state, {isLoading: false});
                 }),
               );
             }),
@@ -177,6 +187,8 @@ export const AuthStore = signalStore(
 
                   if (response?.success && user.onboarding_completed) {
                     profileStore.getProfile();
+                    void pushService.init();
+
                     const highestRole = getHighestRole(user.roles);
 
                     highestRole === EUserRole.Student
@@ -274,14 +286,14 @@ export const AuthStore = signalStore(
     logout: rxMethod<void>(
       pipe(
         switchMap(() =>
-          forkJoin([
-            from(tokenService.clearToken()),
-            from(settingsService.clearSettings()),
-            from(profileStore.clearActiveRole()),
-          ]).pipe(
+          pushService.deleteToken().pipe(
+            switchMap(() => forkJoin([
+              from(tokenService.clearToken()),
+              from(settingsService.clearSettings()),
+              from(profileStore.clearActiveRole()),
+            ])),
             tap(() => {
               patchState(state, {...initialState, refreshState: 'logout'});
-              pushService.deleteToken();
               store.dispatch(RouterActions.goTo({path: [EAppPages.Auth, EAuthPages.LoginIdentifier]}));
             }),
           ),

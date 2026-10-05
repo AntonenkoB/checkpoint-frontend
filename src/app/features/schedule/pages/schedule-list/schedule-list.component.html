@@ -1,5 +1,5 @@
 <div class="schedule-list">
-  @if (isNotificationsCount()) {
+  @if (isNotificationsCount() && !scheduleFacade.isOwner()) {
     <div class="container">
       <div class="notifications" (click)="scheduleFacade.goToNotifications()">
         <div class="notification booked">

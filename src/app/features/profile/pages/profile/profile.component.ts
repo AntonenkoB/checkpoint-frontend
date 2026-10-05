@@ -10,7 +10,6 @@ import {
   WritableSignal
 } from '@angular/core';
 import {
-  IonButton,
   IonContent,
   IonImg,
   IonInput,
@@ -26,7 +25,7 @@ import {ETheme} from "@models/common.model";
 import {HeaderSecondaryComponent} from "@shared/components/header-secondary/header-secondary.component";
 import {AvatarUploadComponent} from "@shared/components/avatar-upload/avatar-upload.component";
 import {DomSanitizer} from "@angular/platform-browser";
-import {DELETE_SVG, PLUS_SVG} from "@models/svg.models";
+import {DELETE_SVG, EMPTY_AVATAR_SVG} from "@models/svg.models";
 import {PhoneMaskDirective} from "@shared/directives/phone-mask";
 import {IUser, USER_ROLE_OPTIONS} from "@models/user.model";
 import {ButtonsComponent} from "@shared/components/buttons/buttons.component";
@@ -39,7 +38,6 @@ import {ButtonsComponent} from "@shared/components/buttons/buttons.component";
   imports: [
     TranslatePipe,
     IonImg,
-    IonButton,
     FormRoot,
     FormsModule,
     IonInput,
@@ -74,7 +72,7 @@ export class ProfileComponent implements OnInit {
     theme: ETheme.Light
   });
   public DELETE_SVG = this.sanitizer.bypassSecurityTrustHtml(DELETE_SVG);
-  public PLUS_SVG = this.sanitizer.bypassSecurityTrustHtml(PLUS_SVG);
+  public EMPTY_AVATAR_SVG = this.sanitizer.bypassSecurityTrustHtml(EMPTY_AVATAR_SVG);
 
   constructor() {
     effect(() => {

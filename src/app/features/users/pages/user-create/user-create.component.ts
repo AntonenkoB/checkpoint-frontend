@@ -85,6 +85,7 @@ export class UserCreateComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    this.userFacade.loadTeachers();
     this.selectedRoles.set([this.userFacade.roleCreate()]);
   }
 

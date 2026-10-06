@@ -55,9 +55,7 @@ export class LoginCreatePasswordComponent {
   }
 
   public checkValidatePassword(password: string): void {
-    setTimeout(() => {
-      this.validateCreatePassword.set(password.length < 8);
-    }, 0);
+    this.validateCreatePassword.set(password.length < 8);
   }
 
   public goBack(): void {
@@ -65,8 +63,11 @@ export class LoginCreatePasswordComponent {
   }
 
   public send(): void {
-    if (this.validateCreatePassword()) {
-      return
+    const isInvalid = this.createPassword().password.length < 8;
+    this.validateCreatePassword.set(isInvalid);
+
+    if (isInvalid) {
+      return;
     }
 
     this.authFacade.createPassword(this.createPassword(), this.repeat());

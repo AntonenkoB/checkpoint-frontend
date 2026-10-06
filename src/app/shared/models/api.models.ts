@@ -15,7 +15,7 @@ export enum EApiEndpoints {
   UpdateProfile = 'profile',
   AddAvatar = 'profile/avatar',
   DeleteAvatar = 'profile/avatar',
-  DeleteAccount = 'profile/avatar',
+  DeleteAccount = 'profile',
 
   // users
   ListUsers = 'users',

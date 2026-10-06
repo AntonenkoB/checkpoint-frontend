@@ -9,6 +9,7 @@ import {TranslatePluralPipe} from "@shared/pipes/translate-plural.pipe";
 import {UserItemReadComponent} from "@shared/components/user-item-read/user-item-read.component";
 import {IndividualLessonComponent} from "@shared/components/individual-lesson/individual-lesson.component";
 import {DatePipe} from "@angular/common";
+import {ProfileFacade} from "@profile/facade/profile.facade";
 
 @Component({
   selector: "cp-settings-list",
@@ -33,6 +34,7 @@ export class SettingsListComponent {
   @ViewChild('deleteModal') deleteModal!: IonModal;
 
   public settingsFacade = inject(SettingsFacade);
+  public profileFacade = inject(ProfileFacade);
   private platform = inject(Platform);
 
   public modalBreakpoints = this.platform.is('desktop') ? undefined : [0, 0.5, 1];
@@ -52,6 +54,6 @@ export class SettingsListComponent {
   }
 
   public deleteModalConfirm(): void {
-    void this.deleteModal.dismiss();
+    this.profileFacade.deleteAccount();
   }
 }

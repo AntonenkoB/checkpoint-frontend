@@ -24,6 +24,10 @@ export class LoginIdentifierComponent {
 
   protected readonly LOGO_SVG = this.sanitizer.bypassSecurityTrustHtml(LOGO_SVG);
 
+  public ionViewWillLeave(): void {
+    this.name.set('');
+  }
+
   public changeName(name: string): void {
     if (this.checkUserFailure()) {
       this.authFacade.clearCheckUserFailure();

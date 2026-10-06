@@ -5,7 +5,13 @@
       class="confirm"
       [color]="isDelete() ? 'danger' : 'primary'"
       (click)="confirm.emit()"
-  >{{ btnConfirm() }}</ion-button>
+  >
+    @if (isLoading()) {
+      <ion-spinner class="spinner" name="dots" />
+    } @else {
+      {{btnConfirm() }}
+    }
+    </ion-button>
 
   <ion-button
       class="candsel"

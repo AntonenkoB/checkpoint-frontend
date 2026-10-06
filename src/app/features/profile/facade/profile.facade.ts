@@ -58,6 +58,10 @@ export class ProfileFacade {
     this.profileStore.deleteAvatar()
   }
 
+  public deleteAccount(): void {
+    this.profileStore.deleteAccount()
+  }
+
   public goToBack(): void {
     this.store.dispatch(RouterActions.goTo({path: [EAppPages.Settings, ESettingsPages.List], back: true}));
   }

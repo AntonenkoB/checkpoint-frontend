@@ -123,6 +123,7 @@
         [btnConfirm]="'profile.delete' | translate"
         [btnCansel]="'profile.no-delete' | translate"
         [isDelete]="true"
+        [isLoading]="profileFacade.isLoading()"
         (cansel)="deleteModalCansel()"
         (confirm)="deleteModalConfirm()"
     ></cp-confirm-modal>

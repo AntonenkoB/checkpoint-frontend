@@ -233,6 +233,10 @@ export class MarketFacade {
     if (id) {
       this.marketStore.loadPaymentLesson(id);
     }
+
+    if (this.profileFacade.isStudent()) {
+      this.profileFacade.profileStore.getProfile();
+    }
   }
 
   public closeMarketPage(): void {

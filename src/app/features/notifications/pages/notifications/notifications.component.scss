@@ -1,13 +1,15 @@
 :host {
   .notifications-wrap {
     padding-top: var(--spacing-24);
-    padding-bottom: var(--cp-safe-area-bottom);
-    flex: 1 1 auto;
-    overflow-y: auto;
-    height: 100%;
+    min-height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
 
     >.container {
-      height: 100%;
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
     }
   }
 
@@ -15,10 +17,18 @@
     border-top: 1px solid var(--color-border-primary);
     display: flex;
     flex-direction: column;
-    height: 100%;
+    padding-bottom: var(--cp-safe-area-bottom);
   }
 
   .empty-wrap {
-    height: 100%;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    cp-empty-state {
+      height: auto;
+    }
+
   }
 }

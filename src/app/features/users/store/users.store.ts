@@ -21,6 +21,7 @@ export interface UsersState {
   usersRole: EUserRole | null;
   usersSearch: string;
   usersLoading: boolean;
+  usersLoadingMore: boolean;
   teachersList: IUser[];
   teachersMeta: IPagination | null;
   teachersLoading: boolean;
@@ -35,6 +36,7 @@ const initialState: UsersState = {
   usersRole: null,
   usersSearch: '',
   usersLoading: false,
+  usersLoadingMore: false,
   teachersList: [],
   teachersMeta: null,
   teachersLoading: false,
@@ -61,7 +63,10 @@ export const UsersStore = signalStore(
   ) => {
     const fetchUsers = rxMethod<{ role: EUserRole; page: number; search: string; append: boolean }>(
       pipe(
-        tap(() => patchState(state, {usersLoading: true, error: null})),
+        tap(({append}) => patchState(state, append
+          ? {usersLoadingMore: true, error: null}
+          : {usersLoading: true, usersLoadingMore: false, error: null})
+        ),
         switchMap(({role, page, search, append}) => userService.getAllUsers(role, page, search).pipe(
           handleApiResponse<IUser[]>(
             (data, meta) => patchState(state, {
@@ -70,9 +75,10 @@ export const UsersStore = signalStore(
               usersRole: role,
               usersSearch: search,
               usersLoading: false,
+              usersLoadingMore: false,
             }),
             () => {
-              patchState(state, {usersLoading: false});
+              patchState(state, {usersLoading: false, usersLoadingMore: false});
               store.dispatch(RouterActions.goTo({path: [EAppPages.Auth, EAuthPages.LoginIdentifier]}));
             },
           ),
@@ -104,7 +110,7 @@ export const UsersStore = signalStore(
       loadMoreUsers(): void {
         const meta = state.usersMeta();
         const role = state.usersRole();
-        if (state.usersLoading() || !role || !hasNextPage(meta)) return;
+        if (state.usersLoading() || state.usersLoadingMore() || !role || !hasNextPage(meta)) return;
         fetchUsers({role, page: meta!.currentPage + 1, search: state.usersSearch(), append: true});
       },
 

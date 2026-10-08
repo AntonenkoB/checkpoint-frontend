@@ -1,5 +1,6 @@
 import {Component, computed, DestroyRef, effect, inject, OnInit, signal} from "@angular/core";
-import {IonButton} from "@ionic/angular/standalone";
+import {IonButton, IonContent, IonRefresher, IonRefresherContent} from "@ionic/angular/standalone";
+import {RefresherCustomEvent} from "@ionic/angular";
 import {TranslatePipe} from "@shared/pipes/translate-pipe";
 import {DomSanitizer} from "@angular/platform-browser";
 import {DOTS_SVG} from "@models/svg.models";
@@ -16,6 +17,8 @@ import {interval, Subscription} from "rxjs";
 import {IndividualLessonComponent} from "@shared/components/individual-lesson/individual-lesson.component";
 import {SystemBars, SystemBarsStyle} from "@capacitor/core";
 import {PlatformService} from "@shared/services/platform.service";
+import {HapticService} from "@shared/services/haptic.service";
+import {ImpactStyle} from "@capacitor/haptics";
 
 @Component({
   selector: "cp-student-dashboard",
@@ -23,6 +26,9 @@ import {PlatformService} from "@shared/services/platform.service";
   styleUrls: ["./student-dashboard.component.scss"],
   imports: [
     IonButton,
+    IonContent,
+    IonRefresher,
+    IonRefresherContent,
     TranslatePipe,
     AvatarComponent,
     LessonDateTimePipe,
@@ -38,16 +44,25 @@ export class StudentDashboardComponent implements OnInit {
   public studentFacade = inject(StudentFacade);
   private readonly destroyRef = inject(DestroyRef);
   private platformService = inject(PlatformService);
+  private hapticService = inject(HapticService);
 
   public name  = computed(() => this.studentFacade.profile()?.creative_name ?? this.studentFacade.profile()?.first_name ?? '');
   public DOTS_SVG = this.sanitizer.bypassSecurityTrustHtml(DOTS_SVG);
   private static readonly REFRESH_INTERVAL_MS = 60_000;
   private static readonly NO_BAR_SCRIM_CLASS = 'cp-no-bar-scrim';
   private refreshSubscription?: Subscription;
+  private pendingRefresh: RefresherCustomEvent | null = null;
 
 
   constructor() {
     this.destroyRef.onDestroy(() => this.toggleBarScrim(false));
+
+    effect(() => {
+      if (!this.studentFacade.isRefreshing() && this.pendingRefresh) {
+        void this.pendingRefresh.target.complete();
+        this.pendingRefresh = null;
+      }
+    });
   }
 
   public ngOnInit(): void {
@@ -70,6 +85,20 @@ export class StudentDashboardComponent implements OnInit {
     const isDarkClass = document.documentElement.classList.contains('ion-palette-dark');
     this.toggleBarScrim(false);
     this.customChangeSystemBars(isDarkClass);
+  }
+
+  public onRefresh(event: RefresherCustomEvent): void {
+    if (this.platformService.isAndroid) {
+      void this.hapticService.impact(ImpactStyle.Light);
+    }
+
+    this.refreshData();
+
+    if (this.studentFacade.isRefreshing()) {
+      this.pendingRefresh = event;
+    } else {
+      void event.target.complete();
+    }
   }
 
   private refreshData(): void {

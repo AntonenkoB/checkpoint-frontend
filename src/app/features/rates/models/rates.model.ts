@@ -14,6 +14,13 @@ export enum ERatesType {
   Subscription = 'subscription'
 }
 
+export enum EPurchaseStatus {
+  Active = 'active',
+  Pending = 'pending',
+  Expired = 'expired',
+  Depleted = 'depleted'
+}
+
 export interface IRate {
   id: number;
   type: ERatesType;
@@ -76,7 +83,7 @@ export interface IPurchase {
   lessons_remaining: number;
   price_paid: number;
   reschedules_used: number;
-  status: string;
+  status: EPurchaseStatus;
   purchased_at: string;
   activated_at: string;
   activation_deadline: string;

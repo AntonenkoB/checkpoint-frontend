@@ -4,7 +4,6 @@ import {EAppPages} from "@models/router.model";
 import {AppState} from "@capacitor/app";
 import {EHeaderMenu, EUserPages} from "@users/models/user.model";
 import {EUserRole, IUser} from "@models/user.model";
-import { selectRouteParams } from "../../../store/router/selectors";
 import {RouterActions} from "../../../store/router/actions";
 import {EDayOfWeek, ESchedulePages, IScheduleItem, IScheduleItemToDate, ITimeRange} from "../models/schedule.model";
 import {ScheduleStore} from "@schedule/store/schedule.store";
@@ -33,8 +32,6 @@ export class ScheduleFacade {
   public readonly isAdmin = this.profileFacade.isAdmin;
   public readonly isTeacher = this.profileFacade.isTeacher;
   public readonly isLoading = this.scheduleStore.isLoading;
-  public selectRouteParams = this.store.selectSignal(selectRouteParams);
-  public selectQueryParamFrom = computed(() => this.scheduleStore.form());
   public studentsList = this.studentsStore.students;
   public notificationsCount = this.notificationsStore.notificationsCount;
   public studentTeachers = computed(() => this.profile()?.teachers ?? []);
@@ -163,9 +160,7 @@ export class ScheduleFacade {
 
   // schedule list
   public selectTime(id: number, date: string, time: ITimeRange, slotId: number): void {
-    if (id) {
-      this.goToUser(id, EUserRole.Student)
-    } else {
+    if (!id) {
       const prepareDate = formatToDateTime(date, time.from, time.to);
       this.lessonsStore.updateCurrentDateTime(prepareDate);
 
@@ -174,10 +169,6 @@ export class ScheduleFacade {
 
       this.goToRecordStudent()
     }
-  }
-
-  private goToUser(id: number, role: EUserRole | string): void {
-    this.store.dispatch(RouterActions.goTo({path: [EAppPages.Users, EUserPages.User, id], extras: {queryParams: {role}}}))
   }
 
   private uniqueByFrom(slots: IScheduleItem[]): IScheduleItem[] {

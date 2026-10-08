@@ -152,7 +152,12 @@ export class MarketFacade {
   public loadTeacherRate(): void {
     if (+this.routTeacherId()! > 0) {
       if (this.currentLessonsFlow() === ELessonFlow.Purchase) {
+        const teacher = this.profile()?.teachers?.find(t => t?.id === +this.routTeacherId()!);
         this.marketStore.loadTeacherRate();
+
+        if (teacher) {
+          this.lessonsStore.updateCurrentUser(teacher);
+        }
       }
 
       if (

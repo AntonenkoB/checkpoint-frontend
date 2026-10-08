@@ -19,6 +19,9 @@ import {HapticService} from "@shared/services/haptic.service";
 import {ImpactStyle} from "@capacitor/haptics";
 import {ToastService} from "@shared/services/toast.service";
 import {TranslateService} from "@shared/services/translate.service";
+import {EMarketPages} from "@market/models/market.model";
+import {getApiErrorMessage} from "@shared/utils/error-handling.utils";
+import {FOUR_SECONDS} from "@models/common.model";
 
 export interface LessonsState {
   isLoading: boolean;
@@ -60,7 +63,7 @@ export const LessonsStore = signalStore(
     lessonsService = inject(LessonsService),
   ) => ({
 
-    updateCurrentUser(user: IUser): void {
+    updateCurrentUser(user: IUser | null): void {
       patchState(state, {currentUser: user});
     },
     updateCurrentDateTime(time: string): void {
@@ -139,11 +142,14 @@ export const LessonsStore = signalStore(
 
             if (err.status === 402) {
               globalStore.dispatch(RouterActions.goTo({
-                path: [EAppPages.Lessons, ELessonPages.LessonType],
+                path: [EAppPages.Market, EMarketPages.PaymentType, data.teacher_id!],
                 extras: {queryParams: {lessonsFlow: ELessonFlow.Purchase}},
               }));
             } else {
-              toastService.error(translateService.instant('common.error-default'));
+              toastService.error(
+                getApiErrorMessage(err.errors, translateService.instant('common.error-default')),
+                FOUR_SECONDS
+              );
             }
             return of(null);
           })
@@ -170,11 +176,14 @@ export const LessonsStore = signalStore(
             patchState(state, {isLoading: false});
             if (err.status === 402) {
               globalStore.dispatch(RouterActions.goTo({
-                path: [EAppPages.Lessons, ELessonPages.LessonType],
+                path: [EAppPages.Market, EMarketPages.PaymentType, 0],
                 extras: {queryParams: {lessonsFlow: ELessonFlow.Purchase}},
               }));
             } else {
-              toastService.error(translateService.instant('common.error-default'));
+              toastService.error(
+                getApiErrorMessage(err.errors, translateService.instant('common.error-default')),
+                FOUR_SECONDS
+              );
             }
             return of(null);
           })
@@ -198,7 +207,10 @@ export const LessonsStore = signalStore(
           catchError((err) => {
             patchState(state, {isLoading: false});
             void hapticService.impact(ImpactStyle.Heavy);
-            toastService.error(translateService.instant('common.error-default'));
+            toastService.error(
+              getApiErrorMessage(err.errors, translateService.instant('common.error-default')),
+              FOUR_SECONDS
+            );
             return of(null);
           })
         ))
@@ -222,7 +234,10 @@ export const LessonsStore = signalStore(
           catchError((err) => {
             patchState(state, {isLoading: false});
             void hapticService.impact(ImpactStyle.Heavy);
-            toastService.error(translateService.instant('common.error-default'));
+            toastService.error(
+              getApiErrorMessage(err.errors, translateService.instant('common.error-default')),
+              FOUR_SECONDS
+            );
             return of(null);
           })
         ))
@@ -337,7 +352,10 @@ export const LessonsStore = signalStore(
           catchError((err) => {
             patchState(state, {isLoading: false});
             void hapticService.impact(ImpactStyle.Heavy);
-            toastService.error(translateService.instant('common.error-default'));
+            toastService.error(
+              getApiErrorMessage(err.errors, translateService.instant('common.error-default')),
+              FOUR_SECONDS
+            );
             return of(null);
           })
         ))
@@ -360,7 +378,10 @@ export const LessonsStore = signalStore(
           catchError((err) => {
             patchState(state, {isLoading: false});
             void hapticService.impact(ImpactStyle.Heavy);
-            toastService.error(translateService.instant('common.error-default'));
+            toastService.error(
+              getApiErrorMessage(err.errors, translateService.instant('common.error-default')),
+              FOUR_SECONDS
+            );
             return of(null);
           })
         ))
@@ -384,7 +405,10 @@ export const LessonsStore = signalStore(
           catchError((err) => {
             patchState(state, {isLoading: false});
             void hapticService.impact(ImpactStyle.Heavy);
-            toastService.error(translateService.instant('common.error-default'));
+            toastService.error(
+              getApiErrorMessage(err.errors, translateService.instant('common.error-default')),
+              FOUR_SECONDS
+            );
             return of(null);
           })
         ))
@@ -408,7 +432,10 @@ export const LessonsStore = signalStore(
           catchError((err) => {
             patchState(state, {isLoading: false});
             void hapticService.impact(ImpactStyle.Heavy);
-            toastService.error(translateService.instant('common.error-default'));
+            toastService.error(
+              getApiErrorMessage(err.errors, translateService.instant('common.error-default')),
+              FOUR_SECONDS
+            );
             return of(null);
           })
         ))

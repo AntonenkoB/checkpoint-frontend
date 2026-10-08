@@ -213,13 +213,8 @@ export const ProfileStore = signalStore(
         tap(() => patchState(state, {isLoading: true})),
         switchMap(() => profileService.deleteAccount().pipe(
           tap((response) => {
-            if (response?.data) {
-              patchState(state, {isLoading: false});
-
-              injector.get(AuthStore).logout();
-            } else {
-              patchState(state, {isLoading: false});
-            }
+            patchState(state, {isLoading: false});
+            injector.get(AuthStore).logout();
           }),
           catchError((err) => {
             patchState(state, {isLoading: false});

@@ -4,7 +4,12 @@
   <div class="lesson-success-info">
     <div class="lesson-canceled-icon" [innerHTML]="TRANSFERRED_LESSON_SVG"></div>
 
-    <div class="lesson-title">{{ "lessons.planned-success" | translate }}</div>
+    @if (lessonsFacade.isStudent()) {
+      <div class="lesson-title">{{ "lessons.planned-success" | translate }}</div>
+    } @else {
+      <div class="lesson-title">{{ "lessons.planned-request-success" | translate }}</div>
+    }
+
     <div class="student">
       @if (lessonsFacade.lessonsStore.currentUser()!) {
         <cp-record-student-item

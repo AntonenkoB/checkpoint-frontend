@@ -1,4 +1,4 @@
-import {Component, computed, inject, OnInit, signal, viewChild} from '@angular/core';
+import {Component, computed, effect, inject, OnInit, signal, viewChild} from '@angular/core';
 import {UserListFacade} from "../../facade/user-list.facade";
 import {
   IonContent,
@@ -55,8 +55,15 @@ export class UserListComponent implements OnInit {
   public eHeaderMenu = EHeaderMenu;
   public eUserRole = EUserRole;
   public searchUser = signal('');
+  private pendingInfinite: InfiniteScrollCustomEvent | null = null;
 
   constructor() {
+    effect(() => {
+      if (!this.userListFacade.isLoadingMore() && this.pendingInfinite) {
+        void this.pendingInfinite.target.complete();
+        this.pendingInfinite = null;
+      }
+    });
   }
 
   public ionViewWillEnter(): void {
@@ -79,7 +86,12 @@ export class UserListComponent implements OnInit {
 
   public async onIonInfinite(event: InfiniteScrollCustomEvent): Promise<void> {
     this.userListFacade.loadMoreUsers();
-    await event.target.complete();
+
+    if (this.userListFacade.isLoadingMore()) {
+      this.pendingInfinite = event;
+    } else {
+      void event.target.complete();
+    }
   }
 
   public onScrollStart(): void {

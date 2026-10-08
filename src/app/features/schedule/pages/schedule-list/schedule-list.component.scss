@@ -86,11 +86,28 @@
 
   .days-list {
     flex: 1 1 auto;
-    overflow: auto;
+    min-height: 0;
     position: relative;
 
     .container {
       height: 100%;
+    }
+  }
+
+  ::ng-deep ion-refresher.refresher-native {
+    .refresher-refreshing ion-spinner {
+      animation: none;
+    }
+
+    &.refresher-completing .refresher-refreshing-icon {
+      transform: scale(0);
+    }
+
+    .refresher-pulling-icon,
+    .refresher-refreshing-icon {
+      background: transparent;
+      border: none;
+      box-shadow: none;
     }
   }
 

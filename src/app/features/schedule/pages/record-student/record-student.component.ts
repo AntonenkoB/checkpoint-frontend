@@ -4,9 +4,10 @@ import {TranslatePipe} from "@shared/pipes/translate-pipe";
 import {RecordStudentFacade} from "../../facade/record-student.facade";
 import {ScheduleFacade} from "@schedule/facade/schedule.facade";
 import {UserItemComponent} from "@shared/components/user-item/user-item.component";
-import {IonButton, IonContent, IonInput} from "@ionic/angular/standalone";
+import {IonContent, IonInput} from "@ionic/angular/standalone";
 import {IUser} from "@models/user.model";
 import {EmptyStateComponent} from "@shared/components/empty-state/empty-state.component";
+import {ButtonsComponent} from "@shared/components/buttons/buttons.component";
 
 @Component({
   selector: "cp-record-student",
@@ -16,10 +17,10 @@ import {EmptyStateComponent} from "@shared/components/empty-state/empty-state.co
     HeaderSecondaryComponent,
     TranslatePipe,
     UserItemComponent,
-    IonButton,
     IonContent,
     IonInput,
-    EmptyStateComponent
+    EmptyStateComponent,
+    ButtonsComponent
   ],
   providers: [RecordStudentFacade, ScheduleFacade]
 })

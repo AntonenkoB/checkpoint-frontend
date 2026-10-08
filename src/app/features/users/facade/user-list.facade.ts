@@ -56,7 +56,16 @@ export class UserListFacade {
     }
 
     return users;
-  })
+  });
+
+  public isLoadingMore = computed(() => {
+    const currentTab = this.currentTab();
+
+    return currentTab === EHeaderMenu.Student && this.profileFacade.isTeacher()
+        ? this.studentsStore.studentsLoadingMore()
+        : this.usersStore.usersLoadingMore()
+    }
+  );
 
   public profile = this.profileFacade.profile;
   public activeRole = this.profileFacade.activeRole;
@@ -108,6 +117,7 @@ export class UserListFacade {
   public loadMoreUsers(): void {
     if (this.currentTab() === EHeaderMenu.Student && this.profileFacade.isTeacher()) {
       this.studentsStore.loadMoreStudents();
+      return;
     }
 
     this.usersStore.loadMoreUsers();

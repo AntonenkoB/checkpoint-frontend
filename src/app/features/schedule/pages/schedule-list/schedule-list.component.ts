@@ -24,6 +24,11 @@ import {formatToDateTime} from "@shared/utils/date.utils";
 import {DayTitlePipe} from "@shared/pipes/day-title-pipe";
 import {ITimeRange} from "@schedule/models/schedule.model";
 import {TranslatePluralPipe} from "@shared/pipes/translate-plural.pipe";
+import {IonContent, IonRefresher, IonRefresherContent} from "@ionic/angular/standalone";
+import {RefresherCustomEvent} from "@ionic/angular";
+import {PlatformService} from "@shared/services/platform.service";
+import {HapticService} from "@shared/services/haptic.service";
+import {ImpactStyle} from "@capacitor/haptics";
 
 @Component({
   selector: "cp-schedule-list",
@@ -35,7 +40,10 @@ import {TranslatePluralPipe} from "@shared/pipes/translate-plural.pipe";
     LoaderComponent,
     EmptyStateComponent,
     DayTitlePipe,
-    TranslatePluralPipe
+    TranslatePluralPipe,
+    IonContent,
+    IonRefresher,
+    IonRefresherContent,
   ]
 })
 export class ScheduleListComponent implements OnInit {
@@ -43,7 +51,9 @@ export class ScheduleListComponent implements OnInit {
   public readonly scheduleListStore = inject(ScheduleListStore);
   public readonly scheduleStore = inject(ScheduleStore);
   private readonly destroyRef = inject(DestroyRef);
-  private readonly daysList = viewChild<ElementRef<HTMLElement>>('daysList');
+  private readonly platformService = inject(PlatformService);
+  private readonly hapticService = inject(HapticService);
+  private readonly daysContent = viewChild(IonContent);
   private readonly dayItems = viewChildren<ElementRef<HTMLElement>>('dayItem');
 
   private static readonly REFRESH_INTERVAL_MS = 60_000;
@@ -56,6 +66,7 @@ export class ScheduleListComponent implements OnInit {
   public activeDate = signal<string>('');
   private isManualScrolling = false;
   private observerIntersectionToDays?: IntersectionObserver;
+  private pendingRefresh: RefresherCustomEvent | null = null;
 
   public recordedDays = computed(() => {
     return this.scheduleStore.slotsEntities().flatMap((item) => item.date)
@@ -74,9 +85,16 @@ export class ScheduleListComponent implements OnInit {
 
     effect(() => {
       const items = this.dayItems();
-      const daysBlock = this.daysList()?.nativeElement;
-      if (daysBlock && items.length) {
-        this.observeDays(daysBlock, items);
+      const daysContent = this.daysContent();
+      if (daysContent && items.length) {
+        void daysContent.getScrollElement().then((root) => this.observeDays(root, items));
+      }
+    });
+
+    effect(() => {
+      if (!this.scheduleFacade.isLoading() && this.pendingRefresh) {
+        void this.pendingRefresh.target.complete();
+        this.pendingRefresh = null;
       }
     });
   }
@@ -111,6 +129,20 @@ export class ScheduleListComponent implements OnInit {
 
     if (topVisible) {
       this.activeDate.set(topVisible.target.id);
+    }
+  }
+
+  public onRefresh(event: RefresherCustomEvent): void {
+    if (this.platformService.isAndroid) {
+      void this.hapticService.impact(ImpactStyle.Light);
+    }
+
+    this.refreshData();
+
+    if (this.scheduleFacade.isLoading()) {
+      this.pendingRefresh = event;
+    } else {
+      void event.target.complete();
     }
   }
 

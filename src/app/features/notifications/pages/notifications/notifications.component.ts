@@ -1,4 +1,4 @@
-import {Component, DestroyRef, inject, OnInit} from "@angular/core";
+import {Component, DestroyRef, effect, inject, OnInit, untracked} from "@angular/core";
 import {NotificationsFacade} from "@notifacations/facade/notifications.facade";
 import {HeaderSecondaryComponent} from "@shared/components/header-secondary/header-secondary.component";
 import {TranslatePipe} from "@shared/pipes/translate-pipe";
@@ -32,9 +32,16 @@ export class NotificationsComponent implements OnInit {
   private static readonly REFRESH_INTERVAL_MS = 60_000;
   private refreshNotificationsSubscription?: Subscription;
 
+  constructor() {
+    effect(() => {
+      if (!this.notificationsFacade.activeRole()) return;
+      untracked(() => this.notificationsFacade.loadNotifications());
+    });
+  }
+
 
   public ngOnInit(): void {
-    this.notificationsFacade.loadNotifications();
+    // this.notificationsFacade.loadNotifications();
   }
 
   public ionViewWillEnter(): void {

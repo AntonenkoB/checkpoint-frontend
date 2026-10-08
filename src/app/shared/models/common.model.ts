@@ -25,3 +25,10 @@ export interface IOptions<T = string | number> {
   value: T;
   title: string;
 }
+
+export const DEADLINE_HOURS_BOOKING_LESSON_FOR_STUDENT = 15;
+export const DEADLINE_HOURS_BOOKING_INDIVIDUAL_FOR_STUDENT = 3;
+
+export const FOUR_SECONDS = 4000;
+export const FIVE_SECONDS = 5000;
+export const SEVEN_SECONDS = 7000;

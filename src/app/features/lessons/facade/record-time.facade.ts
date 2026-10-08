@@ -4,11 +4,17 @@ import {ProfileFacade} from "@profile/facade/profile.facade";
 import {LessonsFacade} from "@lessons/facade/lessons.facade";
 import {IScheduleItem, ITimeRange, TIME_LIST} from "@schedule/models/schedule.model";
 import {ELessonsRecordType, ELessonsType, ISetLesson, ITransferringLesson} from "@lessons/models/lessons.model";
-import {formatToDateTime} from "@shared/utils/date.utils";
+import {formatToDateTime, getSlotStart} from "@shared/utils/date.utils";
 import {LessonsStore} from "@lessons/store/lessons.store";
 import {ScheduleStore} from "@schedule/store/schedule.store";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {ActivatedRoute} from "@angular/router";
+import {logoFirebase, logoHackernews} from "ionicons/icons";
+import {EPurchaseStatus} from "@rates/models/rates.model";
+import {
+  DEADLINE_HOURS_BOOKING_INDIVIDUAL_FOR_STUDENT,
+  DEADLINE_HOURS_BOOKING_LESSON_FOR_STUDENT
+} from "@models/common.model";
 
 
 @Injectable()
@@ -52,10 +58,22 @@ export class RecordTimeFacade {
     if (this.profileFacade.isStudent()) {
       schedule = this.lessonsFacade.slots() ?? [];
 
-      // disable current day for booked lesson with teacher
       if (this.currentLessonsType() === ELessonsType.TeacherGuided) {
-        const deteNow = this.datePipe.transform(new Date(), 'yyyy-MM-dd')
-        schedule = schedule.filter((slot) => slot.date !== deteNow);
+        schedule = schedule.filter((slot) => slot.rooms_free > 0);
+
+        const minStartTime = Date.now() + DEADLINE_HOURS_BOOKING_LESSON_FOR_STUDENT * 60 * 60 * 1000;
+
+        schedule = schedule.filter(
+          (slot) => getSlotStart(slot.date, slot.time.from).getTime() >= minStartTime,
+        );
+
+        // current payment only to last day
+        // const currentPurchase = this.profileFacade.profile()?.purchases?.filter(
+        //   (purchase) => purchase.teacher?.id === this.lessonsStore.currentUser()?.id && purchase.status === EPurchaseStatus.Active
+        // ).sort((a, b) => a.purchased_at.localeCompare(b.purchased_at))[0];
+        // if (currentPurchase) {
+        //   schedule = schedule.filter((day) => day.date <= currentPurchase.expires_at);
+        // }
       }
     }
 
@@ -90,10 +108,38 @@ export class RecordTimeFacade {
     if (this.profileFacade.isStudent()) {
       data = this.lessonsFacade.slots() ?? [];
 
-      // disable current day for booked lesson with teacher
       if (this.currentLessonsType() === ELessonsType.TeacherGuided) {
-        const deteNow = this.datePipe.transform(new Date(), 'yyyy-MM-dd')
-        data = data.filter((slot) => slot.date !== deteNow);
+        data = data.filter((slot) => slot.rooms_free > 0);
+
+        const minStartTime = Date.now() + DEADLINE_HOURS_BOOKING_LESSON_FOR_STUDENT * 60 * 60 * 1000;
+
+        data = data.filter(
+          (slot) => getSlotStart(slot.date, slot.time.from).getTime() >= minStartTime,
+        );
+
+        // current payment only to last day
+        // const currentPurchase = this.profileFacade.profile()?.purchases?.filter(
+        //   (purchase) => purchase.teacher?.id === this.lessonsStore.currentUser()?.id && purchase.status === EPurchaseStatus.Active
+        // ).sort((a, b) => a.purchased_at.localeCompare(b.purchased_at))[0];
+        //
+        // if (currentPurchase) {
+        //   data = data.filter((slot) => slot.date <= currentPurchase.expires_at);
+        // }
+      } else {
+        // current payment only to last day
+        // const currentPurchase = this.profileFacade.profile()?.purchases?.filter(
+        //   (purchase) => !purchase.teacher && purchase.status === EPurchaseStatus.Active
+        // ).sort((a, b) => a.purchased_at.localeCompare(b.purchased_at))[0];
+        //
+        // if (currentPurchase) {
+        //   data = data.filter((slot) => slot.date <= currentPurchase.expires_at);
+        // }
+
+        const deteNow = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+        const hourNow = Number(this.datePipe.transform(new Date(), 'HH'));
+        const minHourToBooking = hourNow + DEADLINE_HOURS_BOOKING_INDIVIDUAL_FOR_STUDENT;
+
+        data = data.filter((slot) => slot.time.from > minHourToBooking && slot.date === deteNow);
       }
     }
 

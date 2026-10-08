@@ -4,11 +4,14 @@ import { FirebaseMessaging, Importance, Visibility } from '@capacitor-firebase/m
 import { Capacitor } from '@capacitor/core';
 import { NotificationsService } from '@notifacations/services/notifications.service';
 import { Observable, catchError, from, map, of, switchMap, tap, timeout } from 'rxjs';
+import {Store} from "@ngrx/store";
+import {AppState} from "../../../store/app-store";
 
 @Injectable({ providedIn: 'root' })
 export class PushNotificationService {
   private router = inject(Router);
   private notificationsService = inject(NotificationsService);
+  private store = inject<Store<AppState>>(Store);
   private currentToken = signal('');
 
   async init(): Promise<void> {

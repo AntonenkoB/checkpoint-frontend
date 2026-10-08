@@ -91,3 +91,8 @@ export function getCurrentMonth(): string {
 
   return `${year}-${month}`;
 }
+
+export function getSlotStart(date: string, hourFrom: number): Date {
+  const [year, month, day] = date.split('-').map(Number);
+  return new Date(year, month - 1, day, hourFrom);
+}

@@ -31,6 +31,7 @@ export class StudentFacade {
   public notificationsUnread = this.notificationsStore.notificationsUnread;
   public isLoading = this.notificationsStore.isLoading;
   public loadingProcessingId = this.notificationsStore.loadingProcessingId;
+  public isRefreshing = computed(() => this.studentStore.isLoading());
 
   public isEmptyInfo = computed(() => {
     const isReady = this.studentStore.isReady();

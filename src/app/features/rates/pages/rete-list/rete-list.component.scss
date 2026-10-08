@@ -1,17 +1,14 @@
 :host {
   background-color: var(--color-background-primary);
-  display: block;
 
   .reate-header {
   }
 
   .reate-list {
     position: relative;
-    --padding-bottom: calc(60px + var(--cp-safe-area-bottom)) !important;
 
     >.container {
       height: 100%;
-      padding-bottom: var(--cp-safe-area-bottom);
     }
   }
 

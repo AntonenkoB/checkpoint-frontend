@@ -36,7 +36,12 @@
   </ion-content>
 
   <div class="btn-wrap container">
-    <ion-button [disabled]="!activeStudent()" (click)="recordStudentFacade.recordStudent()">{{ "schedule.btn-planing-lesson" | translate }}</ion-button>
+    <cp-buttons
+        [title]="'schedule.btn-planing-lesson' | translate"
+        [isLoader]="recordStudentFacade.isLoading()"
+        [disabled]="!activeStudent()"
+        (submit)="recordStudentFacade.recordStudent()"
+    ></cp-buttons>
   </div>
 </div>
 

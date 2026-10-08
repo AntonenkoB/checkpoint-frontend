@@ -54,6 +54,7 @@
   },
   "lessons": {
     "planned-success": "Заплановано!",
+    "planned-request-success": "Запит відправлено!",
     "planned-success-btn": "До зустрічі",
     "edit-title": "Редагування уроку",
     "still-disable-slot": "Залишити цей час доступния для \u2028бронювання іншими студентами",

@@ -48,6 +48,23 @@
     }
   }
 
+  ::ng-deep ion-refresher.refresher-native {
+    .refresher-refreshing ion-spinner {
+      animation: none;
+    }
+
+    &.refresher-completing .refresher-refreshing-icon {
+      transform: scale(0);
+    }
+
+    .refresher-pulling-icon,
+    .refresher-refreshing-icon {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+    }
+  }
+
   .teacher {
     cursor: pointer;
     display: flex;
@@ -78,8 +95,20 @@
   }
 
   .lessons-wrap {
-    overflow: auto;
     flex: 1 1 auto;
+    min-height: 0;
+    --background: transparent !important;
+    background-color: transparent !important;
+  }
+
+  ion-refresher {
+    --ion-color-primary: var(--color-no-reverse-white);
+    --ion-text-color: var(--color-no-reverse-white);
+    --ion-color-step-450: var(--color-no-reverse-white);
+  }
+
+  .notifications {
+    color: var(--color-no-reverse-white);
   }
 
   .lessons {
@@ -89,11 +118,13 @@
   .week-title {
     font: var(--font-alumi-20-black);
     padding-bottom: var(--spacing-8);
+    color: var(--color-no-reverse-white);
   }
 
 
   .teacher-lessons {
     margin-bottom: var(--spacing-8);
+    color: var(--color-no-reverse-white);
 
     ::ng-deep {
       .avatar {
@@ -114,6 +145,7 @@
   .individual-lessons-wrap {
     display: block;
     margin-bottom: var(--spacing-8);
+    color: var(--color-no-reverse-white);
   }
 
   .teacher-info {

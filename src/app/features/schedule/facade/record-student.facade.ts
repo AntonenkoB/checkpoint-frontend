@@ -27,6 +27,7 @@ export class RecordStudentFacade {
   private searchSubject$ = new Subject<string>();
   private destroyRef = inject(DestroyRef);
 
+  public readonly isLoading = this.lessonsStore.isLoading;
   public readonly profile = this.profileFacade.profile;
 
   public studentsList = computed(() => {
@@ -87,6 +88,8 @@ export class RecordStudentFacade {
       student_id: this.scheduleListStore.currentStudent()?.id,
       slot_id: this.scheduleListStore.currentSlotId()
     }
+
+    this.lessonsStore.updateCurrentUser(this.scheduleListStore.currentStudent());
 
     setTimeout(() => {
       if (this.profileFacade.isTeacher()) {

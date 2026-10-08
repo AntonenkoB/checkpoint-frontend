@@ -45,7 +45,6 @@ export class ScheduleComponent implements OnInit {
   private datePipe = inject(DatePipe);
   private platform = inject(Platform);
 
-
   public modalBreakpoints = this.platform.is('desktop') ? undefined : [0, 0.5];
   public initialBreakpoint = this.platform.is('desktop') ? undefined : 0.5;
 
@@ -60,14 +59,18 @@ export class ScheduleComponent implements OnInit {
       .filter(slot => slot.day_of_week === this.activeDay())
       .flatMap(item => item.time);
   });
+
   public recordedDays = computed(() => {
     return this.scheduleStore.slotsEntities().flatMap((item) => item.date)
-  })
+  });
 
   public hasLessonsTime = computed(() => {
-    const lessons = this.scheduleStore.slotsEntities().filter((item) => item.date === this.activeDate() && !!item.lesson)
+    const lessons = this.scheduleStore.slotsEntities().filter(
+      (item) => item.date === this.activeDate() && !!item.lesson
+    );
+
     return lessons.flatMap((item) => item.time)
-  })
+  });
 
   public daySlotsPrepare = computed(() => {
     const entities = this.scheduleStore.slotsEntities();
@@ -95,8 +98,6 @@ export class ScheduleComponent implements OnInit {
   public WEEK_SHORT_LIST = WEEK_SHORT_LIST;
   public SCHEDULE_TYPE_TABS = SCHEDULE_TYPE_TABS();
   public eScheduleType = EScheduleType;
-  public eUserRole = EUserRole;
-  protected readonly eHeaderMenu = EHeaderMenu;
 
   constructor() {
     effect(() => {

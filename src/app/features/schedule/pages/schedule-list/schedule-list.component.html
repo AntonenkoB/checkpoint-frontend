@@ -23,31 +23,37 @@
     ></cp-calendar>
   </div>
 
-  <div class="days-list schedule-list-wrap" #daysList>
-    <div class="container">
-      @for (day of scheduleFacade.scheduleByDate(); track day.date) {
-        <div class="day-item" [id]="day.date" #dayItem>
-          <div class="title day-section" >{{day.date | dayTitle}}</div>
+  <div class="days-list schedule-list-wrap">
+    <ion-content class="days-content">
+<!--      <ion-refresher slot="fixed" (ionRefresh)="onRefresh($event)">-->
+<!--        <ion-refresher-content refreshingSpinner="dots"></ion-refresher-content>-->
+<!--      </ion-refresher>-->
 
-          @for (slot of day.slots; track slot.id) {
-            <div class="schedule-time-list">
-              <cp-user-item
-                  class="time"
-                  [timeLesson]="slot.time"
-                  [user]="slot.lesson?.student"
-                  [showTeacher]="!scheduleFacade.isTeacher()"
-                  [withTeacher]="slot.teacher"
-                  (openUser)="scheduleFacade.selectTime($event, day.date, slot.time, slot.id)"
-                  (dotsEvent)="scheduleFacade.goToTransferringLesson(slot.lesson?.student!, getDayTitle(day.date, slot.time), slot.lesson.id)"
-              ></cp-user-item>
-            </div>
-          }
-        </div>
+      <div class="container">
+        @for (day of scheduleFacade.scheduleByDate(); track day.date) {
+          <div class="day-item" [id]="day.date" #dayItem>
+            <div class="title day-section" >{{day.date | dayTitle}}</div>
 
-      } @empty {
-        <cp-empty-state></cp-empty-state>
-      }
-    </div>
+            @for (slot of day.slots; track slot.id) {
+              <div class="schedule-time-list">
+                <cp-user-item
+                    class="time"
+                    [timeLesson]="slot.time"
+                    [user]="slot.lesson?.student"
+                    [showTeacher]="!scheduleFacade.isTeacher()"
+                    [withTeacher]="slot.teacher"
+                    (openUser)="scheduleFacade.selectTime($event, day.date, slot.time, slot.id)"
+                    (dotsEvent)="scheduleFacade.goToTransferringLesson(slot.lesson?.student!, getDayTitle(day.date, slot.time), slot.lesson.id)"
+                ></cp-user-item>
+              </div>
+            }
+          </div>
+
+        } @empty {
+          <cp-empty-state></cp-empty-state>
+        }
+      </div>
+    </ion-content>
 
     <cp-loader [isLoad]="!scheduleListStore.isLoading()"></cp-loader>
   </div>

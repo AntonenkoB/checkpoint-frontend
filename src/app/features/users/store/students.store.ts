@@ -18,6 +18,7 @@ export interface StudentsState {
   studentsMeta: IPagination | null;
   studentsSearch: string;
   studentsLoading: boolean;
+  studentsLoadingMore: boolean;
   student: IUser | null;
   studentLoading: boolean;
 }
@@ -27,6 +28,7 @@ const initialState: StudentsState = {
   studentsMeta: null,
   studentsSearch: '',
   studentsLoading: false,
+  studentsLoadingMore: false,
   student: null,
   studentLoading: false,
 };
@@ -48,7 +50,10 @@ export const StudentsStore = signalStore(
   ) => {
     const fetchStudents = rxMethod<{ page: number; search: string; append: boolean }>(
       pipe(
-        tap(() => patchState(state, {studentsLoading: true})),
+        tap(({append}) => patchState(state, append
+          ? {studentsLoadingMore: true}
+          : {studentsLoading: true, studentsLoadingMore: false}
+        )),
         switchMap(({page, search, append}) => userService.getStudents(search, page).pipe(
           handleApiResponse<IUser[]>(
             (data, meta) => patchState(state, {
@@ -56,8 +61,9 @@ export const StudentsStore = signalStore(
               studentsMeta: meta,
               studentsSearch: search,
               studentsLoading: false,
+              studentsLoadingMore: false,
             }),
-            () => patchState(state, {studentsLoading: false}),
+            () => patchState(state, {studentsLoading: false, studentsLoadingMore: false}),
           ),
         )),
       )
@@ -70,7 +76,7 @@ export const StudentsStore = signalStore(
 
       loadMoreStudents(): void {
         const meta = state.studentsMeta();
-        if (state.studentsLoading() || !hasNextPage(meta)) return;
+        if (state.studentsLoading() || state.studentsLoadingMore() || !hasNextPage(meta)) return;
         fetchStudents({page: meta!.currentPage + 1, search: state.studentsSearch(), append: true});
       },
 

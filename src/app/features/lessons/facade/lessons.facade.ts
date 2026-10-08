@@ -74,6 +74,7 @@ export class LessonsFacade {
           this.goToSelectTime(type);
         }
       } else {
+        this.lessonsStore.updateCurrentUser(null);
         this.goToSelectTime(type);
       }
     }

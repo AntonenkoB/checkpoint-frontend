@@ -145,12 +145,12 @@ export const LessonsStore = signalStore(
                 path: [EAppPages.Market, EMarketPages.PaymentType, data.teacher_id!],
                 extras: {queryParams: {lessonsFlow: ELessonFlow.Purchase}},
               }));
-            } else {
-              toastService.error(
-                getApiErrorMessage(err.errors, translateService.instant('common.error-default')),
-                FOUR_SECONDS
-              );
             }
+
+            toastService.error(
+              getApiErrorMessage(err.errors, translateService.instant('common.error-default')),
+              FOUR_SECONDS
+            );
             return of(null);
           })
         ))
@@ -179,12 +179,13 @@ export const LessonsStore = signalStore(
                 path: [EAppPages.Market, EMarketPages.PaymentType, 0],
                 extras: {queryParams: {lessonsFlow: ELessonFlow.Purchase}},
               }));
-            } else {
-              toastService.error(
-                getApiErrorMessage(err.errors, translateService.instant('common.error-default')),
-                FOUR_SECONDS
-              );
             }
+
+            toastService.error(
+              getApiErrorMessage(err.errors, translateService.instant('common.error-default')),
+              FOUR_SECONDS
+            );
+
             return of(null);
           })
         ))
@@ -208,7 +209,7 @@ export const LessonsStore = signalStore(
             patchState(state, {isLoading: false});
             void hapticService.impact(ImpactStyle.Heavy);
             toastService.error(
-              getApiErrorMessage(err.errors, translateService.instant('common.error-default')),
+              getApiErrorMessage(err.errors, translateService.instant('common.error-default'), err.message),
               FOUR_SECONDS
             );
             return of(null);
@@ -235,7 +236,7 @@ export const LessonsStore = signalStore(
             patchState(state, {isLoading: false});
             void hapticService.impact(ImpactStyle.Heavy);
             toastService.error(
-              getApiErrorMessage(err.errors, translateService.instant('common.error-default')),
+              getApiErrorMessage(err.errors, translateService.instant('common.error-default'), err.message),
               FOUR_SECONDS
             );
             return of(null);

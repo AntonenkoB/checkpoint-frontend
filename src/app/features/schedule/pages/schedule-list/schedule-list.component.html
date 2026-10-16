@@ -38,6 +38,8 @@
               <div class="schedule-time-list">
                 <cp-user-item
                     class="time"
+                    [disabled]="scheduleFacade.isTeacher() && !slot.lesson && slot.rooms_free === 0"
+                    [fullRooms]="slot.rooms_free === 0"
                     [timeLesson]="slot.time"
                     [user]="slot.lesson?.student"
                     [showTeacher]="!scheduleFacade.isTeacher()"

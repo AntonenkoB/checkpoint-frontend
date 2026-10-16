@@ -3,7 +3,9 @@ import {EUserRole} from "@models/user.model";
 export type Permission =
   | 'users:read'
   | 'users:write'
-  | 'users:delete';
+  | 'users:delete'
+  | 'rate:read'
+  | 'rate:update';
 
 export type PermissionMode = 'any' | 'all';
 
@@ -20,5 +22,6 @@ export const ROLE_PERMISSIONS: Record<EUserRole, Permission[]> = {
 
   [EUserRole.Owner]: [
     'users:read', 'users:write', 'users:delete',
+    'rate:read', 'rate:update'
   ],
 };

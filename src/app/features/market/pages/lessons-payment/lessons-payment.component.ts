@@ -28,7 +28,7 @@ import {ButtonsComponent} from "@shared/components/buttons/buttons.component";
 export class LessonsPaymentComponent implements OnInit {
   public readonly sanitizer = inject(DomSanitizer);
   public marketFacade = inject(MarketFacade);
-  public eLessonsType = ELessonsType
+  public eLessonsType = ELessonsType;
   public currentDescription = computed(() => SELECTED_LESSONS_TYPE()[this.marketFacade.currentTypePlan() as EMarketPlanType])
 
   public amount = signal(1)

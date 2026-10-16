@@ -2,7 +2,7 @@ import {Component, computed, inject, input, output, signal} from "@angular/core"
 import {AvatarComponent} from "@shared/components/avatar/avatar.component";
 import {TranslatePipe} from "@shared/pipes/translate-pipe";
 import {DomSanitizer} from "@angular/platform-browser";
-import {ARROW_SVG, CHECK_THIN_SVG, CLOSE_SVG, DOTS_SVG} from "@models/svg.models";
+import {CHECK_THIN_SVG, CLOSE_SVG, DOTS_SVG} from "@models/svg.models";
 import {ITimeRange} from "@schedule/models/schedule.model";
 import {IUser, EUserRole} from "@models/user.model";
 import {DatePipe} from "@angular/common";
@@ -30,16 +30,15 @@ export class UserItemComponent {
   public hideAllActions = input(false);
   public withAdditionalInfo = input(true);
   public disabled = input(false);
+  public fullRooms = input(false);
   public withSalaryInfo = input(false);
   public openUser = output<number>();
   public delete = output<number | undefined>();
   public dotsEvent = output<number | undefined>();
   public additionalInfoOpen = output<boolean>();
-  public additionalInfoToggle = signal(true);
 
   public CHECK_THIN_SVG = this.sanitizer.bypassSecurityTrustHtml(CHECK_THIN_SVG);
   public CLOSE_SVG = this.sanitizer.bypassSecurityTrustHtml(CLOSE_SVG);
-  public ARROW_SVG = this.sanitizer.bypassSecurityTrustHtml(ARROW_SVG);
   public DOTS_SVG = this.sanitizer.bypassSecurityTrustHtml(DOTS_SVG);
   protected EUserRole = EUserRole;
 

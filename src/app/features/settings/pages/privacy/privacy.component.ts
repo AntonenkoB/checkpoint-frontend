@@ -17,6 +17,6 @@ import {SettingsFacade} from "@settings/facade/settings.facade";
 })
 export class PrivacyComponent {
   protected settingsFacade = inject(SettingsFacade);
-  protected pdfUrl = 'assets/files/privacy.pdf';
+  protected pdfUrl = 'https://checkpoint.kiev.ua/app/privacy.pdf';
 
 }

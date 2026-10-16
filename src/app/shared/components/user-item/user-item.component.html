@@ -30,7 +30,11 @@
           <div class="creative-name">{{creativeName()}}</div>
           <div class="name">{{fullName()}}</div>
         } @else {
-          <div class="add-user">+ {{(timeLesson() ? "users.add-student-btn" : "users.add-teacher-btn") | translate}}</div>
+          @if (fullRooms()) {
+            <div class="add-user">{{"schedule.full-rooms" | translate}}</div>
+          } @else {
+            <div class="add-user">+ {{(timeLesson() ? "users.add-student-btn" : "users.add-teacher-btn") | translate}}</div>
+          }
         }
       </div>
     </div>
@@ -59,7 +63,7 @@
     }
   </div>
 
-  @if (additionalInfoToggle() && user()?.purchases?.length! > 0) {
+  @if (user()?.purchases?.length! > 0) {
     <div class="student-info"  (click)="openUser.emit(user()?.id!)">
       @for (purchase of user()?.purchases; track purchase.id) {
         <div class="student-info-item">

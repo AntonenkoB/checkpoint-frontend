@@ -125,11 +125,12 @@ export const AuthStore = signalStore(
             switchMap((response) => {
               const {token, user} = response.data;
 
-              // if (!user.onboarding_completed) {
-              //   store.dispatch(RouterActions.goTo({path: [EAppPages.Auth, EAuthPages.LoginCreatePassword]}));
-              //   patchState(state, {isLoading: false});
-              //   return of();
-              // }
+              if (!user.onboarding_completed) {
+                tokenService.setSessionToken(token);
+                patchState(state, {isLoading: false});
+                store.dispatch(RouterActions.goTo({path: [EAppPages.Auth, EAuthPages.LoginCreatePassword]}));
+                return of(null);
+              }
 
               return forkJoin([
                 from(tokenService.setToken(token, login.repeat)),
@@ -137,13 +138,6 @@ export const AuthStore = signalStore(
               ]).pipe(
                 tap(() => {
                   patchState(state, {isLoading: false});
-
-                  // є проблема, коли користувач на етапі створення пароля закриє застосунок, то updateSettings уже відпрацював.
-                  // при відкритті наступного разу просто вісить бо updateSettings неактуальні
-                  if (!user.onboarding_completed) {
-                    store.dispatch(RouterActions.goTo({path: [EAppPages.Auth, EAuthPages.LoginCreatePassword]}));
-                    return;
-                  }
 
                   profileStore.getProfile();
                   void pushService.init();

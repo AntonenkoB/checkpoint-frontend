@@ -139,7 +139,8 @@
     "lesson-transferring": "Урок перенесено",
     "btn-to-schedule": "Назад до розкладу",
     "btn-planing-lesson": "Запланувати урок",
-    "btn-planing": "Запланувати"
+    "btn-planing": "Запланувати",
+    "full-rooms": "Немає вільних кімнат"
   },
   "record": {
     "student-title": "Виберіть учня на урок",
@@ -153,6 +154,8 @@
     "btn-purchase": "Купити уроки",
     "select-session-type": "Виберіть тип уроків",
     "select-payment-type": "Виберіть тип оплати",
+    "select-amount": "Виберіть кількість",
+    "select-format": "Виберіть формат оплати",
     "with-teacher": "З учителем",
     "self-study": "Самостійні",
     "one-time-lessons": "Разові уроки",

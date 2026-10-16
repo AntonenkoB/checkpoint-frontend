@@ -10,19 +10,41 @@ import {catchError, filter, take} from 'rxjs/operators';
 import {TokenService} from "@shared/services/token-service";
 import {EApiEndpoints} from "@models/api.models";
 import {AuthStore} from "@auth/store/auth.store";
+import {ProfileStore} from "@profile/store/profile.store";
+import {SettingsService} from "@shared/services/settings.service";
+import {ELang} from "@models/common.model";
 
 export const IS_AUTH_REQUEST = new HttpContextToken<boolean>(() => false);
 
+const ACCEPT_LANGUAGE: Record<ELang, string> = {
+  [ELang.UA]: 'uk,en-US;q=0.9,en;q=0.8',
+  [ELang.EN]: 'en-US,en;q=0.9,uk;q=0.8',
+};
+
 export const apiInterceptor: HttpInterceptorFn = (req, next) => {
+  if (req.url.startsWith('assets/')) {
+    return next(req);
+  }
+
   const tokenService = inject(TokenService);
   const authStore = inject(AuthStore);
+  const profileStore = inject(ProfileStore);
+  const settingsService = inject(SettingsService);
 
   const refreshState$ = toObservable(authStore.refreshState);
 
-  const token = tokenService.token();
-  const authReq = token
-    ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } })
-    : req;
+  const lang = (profileStore.profile()?.language ?? settingsService.lang()) as ELang;
+  const acceptLanguage = ACCEPT_LANGUAGE[lang] ?? ACCEPT_LANGUAGE[ELang.UA];
+
+  const withHeaders = (token: string | null) =>
+    req.clone({
+      setHeaders: {
+        'Accept-Language': acceptLanguage,
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+    });
+
+  const authReq = withHeaders(tokenService.token());
 
   if (req.url.includes(EApiEndpoints.RefreshToken)) {
     return next(authReq);
@@ -43,8 +65,7 @@ export const apiInterceptor: HttpInterceptorFn = (req, next) => {
           switchMap(state => {
             if (state === 'logout') return throwError(() => error);
 
-            const newToken = tokenService.token();
-            return next(req.clone({ setHeaders: { Authorization: `Bearer ${newToken}` } }));
+            return next(withHeaders(tokenService.token()));
           })
         );
       }

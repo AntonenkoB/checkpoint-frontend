@@ -43,6 +43,10 @@ export class TokenService {
     // return value;
   }
 
+  setSessionToken(token: string): void {
+    this._token.set(token);
+  }
+
   async setToken(token: string, rememberMe: boolean): Promise<void> {
     await Preferences.set({ key: 'auth_token', value: token });
     sessionStorage.setItem('auth_token', token);

@@ -17,5 +17,5 @@ import {TranslatePipe} from "@shared/pipes/translate-pipe";
 })
 export class TermsComponent {
   protected settingsFacade = inject(SettingsFacade);
-  protected pdfUrl = 'assets/files/privacy.pdf';
+  protected pdfUrl = 'https://checkpoint.kiev.ua/app/terms.pdf';
 }

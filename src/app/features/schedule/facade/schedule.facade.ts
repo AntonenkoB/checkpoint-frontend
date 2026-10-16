@@ -176,6 +176,10 @@ export class ScheduleFacade {
 
     return slots.filter(slot => {
       if (slot.lesson !== null) return true;
+
+      // remove for admin/owner and need disabled for teacher
+      if ((this.isAdmin() || this.isOwner()) && slot.rooms_free < 1) return false;
+
       if (seen.has(slot.time.from)) return false;
       seen.add(slot.time.from);
       return true;

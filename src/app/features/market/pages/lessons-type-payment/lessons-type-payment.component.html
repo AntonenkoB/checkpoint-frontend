@@ -1,5 +1,8 @@
 <div class="lessons-type-payment container">
-  <cp-header-secondary [title]="' '" (close)="marketFacade.goToBack()"></cp-header-secondary>
+  <cp-header-secondary
+      [title]="'market.select-format' | translate"
+      (close)="marketFacade.goToBack()"
+  ></cp-header-secondary>
 
   <div class="lessons-type-payment-info">
     @if (+marketFacade.routTeacherId()! > 0) {

@@ -35,6 +35,6 @@
   }
 
   .btn-wrap {
-    padding: var(--spacing-20) 0;
+    padding: var(--spacing-20) 0 calc(var(--spacing-20) + var(--cp-safe-area-bottom));
   }
 }

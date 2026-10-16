@@ -74,6 +74,12 @@ export class RecordTimeFacade {
         // if (currentPurchase) {
         //   schedule = schedule.filter((day) => day.date <= currentPurchase.expires_at);
         // }
+      } else {
+        const minStartTime = Date.now() + DEADLINE_HOURS_BOOKING_INDIVIDUAL_FOR_STUDENT * 60 * 60 * 1000;
+
+        schedule = schedule.filter(
+          (slot) => getSlotStart(slot.date, slot.time.from).getTime() >= minStartTime,
+        );
       }
     }
 
@@ -135,11 +141,11 @@ export class RecordTimeFacade {
         //   data = data.filter((slot) => slot.date <= currentPurchase.expires_at);
         // }
 
-        const deteNow = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-        const hourNow = Number(this.datePipe.transform(new Date(), 'HH'));
-        const minHourToBooking = hourNow + DEADLINE_HOURS_BOOKING_INDIVIDUAL_FOR_STUDENT;
+        const minStartTime = Date.now() + DEADLINE_HOURS_BOOKING_INDIVIDUAL_FOR_STUDENT * 60 * 60 * 1000;
 
-        data = data.filter((slot) => slot.time.from > minHourToBooking && slot.date === deteNow);
+        data = data.filter(
+          (slot) => getSlotStart(slot.date, slot.time.from).getTime() >= minStartTime,
+        );
       }
     }
 

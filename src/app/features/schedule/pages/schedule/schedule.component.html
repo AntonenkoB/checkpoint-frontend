@@ -60,7 +60,7 @@
   <div class="buttons container">
     <cp-buttons
         [title]="'common.save' | translate"
-        [isLoader]="scheduleStore.isLoading()"
+        [isLoader]="scheduleStore.isLoadingUpdate()"
         (submit)="save()"
     ></cp-buttons>
   </div>

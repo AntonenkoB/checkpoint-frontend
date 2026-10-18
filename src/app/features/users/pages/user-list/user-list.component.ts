@@ -44,6 +44,7 @@ import {ButtonsComponent} from "@shared/components/buttons/buttons.component";
 })
 export class UserListComponent implements OnInit {
   private readonly searchStudentInput = viewChild.required<IonInput>('searchStudentInput');
+  private readonly scheduleList = viewChild(ScheduleListComponent);
 
   public readonly userListFacade = inject(UserListFacade);
   public readonly scheduleFacade = inject(ScheduleFacade);
@@ -72,9 +73,15 @@ export class UserListComponent implements OnInit {
 
     if (tab === EHeaderMenu.Schedule) {
       this.scheduleFacade.getScheduleSlots();
+      this.scheduleFacade.loadNotificationsCount();
     }
 
     this.menuChange(tab);
+    this.scheduleList()?.startRefresh();
+  }
+
+  public ionViewWillLeave(): void {
+    this.scheduleList()?.stopRefresh();
   }
 
   public ngOnInit(): void {

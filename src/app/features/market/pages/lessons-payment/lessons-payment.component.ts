@@ -58,6 +58,8 @@ export class LessonsPaymentComponent implements OnInit {
   }
 
   public purchase(): void {
+    if (this.marketFacade.isLoading()) return;
+
     const paymentLessons = this.paymentLessons() as IMarketPurchaseLessons
     this.marketFacade.purchaseLessons(paymentLessons);
   }

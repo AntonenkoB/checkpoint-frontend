@@ -1,4 +1,7 @@
-<div class="user" [class.disabled]="disabled()" [class.is-deactivated]="user() && user()?.hasOwnProperty('is_active') && !user()?.is_active">
+<div class="user"
+     [class.disabled]="disabled()"
+     [class.is-deactivated]="user() && user()?.hasOwnProperty('is_active') && !user()?.is_active"
+>
   @if (user() && user()?.hasOwnProperty('is_active') && !user()?.is_active) {
     <div class="deactivated">
       {{"users.deactivated" | translate}}
@@ -52,13 +55,15 @@
           ></div>
         }
 
-        @if (timeLesson() && user()?.roles?.includes(EUserRole.Student) && (!withTeacher() || !showTeacher())) {
-          <div
-              class="dots"
-              [innerHTML]="DOTS_SVG"
-              (click)="dotsEvent.emit(user()?.id)"
-          ></div>
-        }
+        <!--  reworked for click to openUser maybe use letter    -->
+
+<!--        @if (timeLesson() && user()?.roles?.includes(EUserRole.Student) && (!withTeacher() || !showTeacher())) {-->
+<!--          <div-->
+<!--              class="dots"-->
+<!--              [innerHTML]="DOTS_SVG"-->
+<!--              (click)="dotsEvent.emit(user()?.id)"-->
+<!--          ></div>-->
+<!--        }-->
       </div>
     }
   </div>

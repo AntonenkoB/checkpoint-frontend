@@ -4,7 +4,13 @@ import {patchState, signalStore, withComputed, withMethods, withState} from '@ng
 import {rxMethod} from "@ngrx/signals/rxjs-interop";
 import {catchError, from, map, of, pipe, switchMap, tap} from "rxjs";
 import {withEntities} from "@ngrx/signals/entities";
-import {EMarketPages, IMarketPurchaseLessons, IPaymentInvoice, IPaymentSuccess} from "../models/market.model";
+import {
+  EMarketPages,
+  EPaymentStatus,
+  IMarketPurchaseLessons,
+  IPaymentInvoice,
+  IPaymentSuccess,
+} from "../models/market.model";
 import {MarketService} from "../services/market.service";
 import {IRate} from "@rates/models/rates.model";
 import {selectQueryParam, selectRouteParam} from "../../../store/router/selectors";
@@ -124,7 +130,13 @@ export const MarketStore = signalStore(
         switchMap((data) => marketService.paymentLessons(data).pipe(
           map(response => response.data),
           switchMap((invoice) => from(paymentBrowser.open(invoice.page_url)).pipe(
-            tap(() => patchState(state, {isLoading: false, paymentInvoice: invoice})),
+            tap(() => {
+              patchState(state, {isLoading: false, paymentInvoice: invoice})
+              void hapticService.impact(ImpactStyle.Medium);
+              store.dispatch(RouterActions.goTo({
+                path: [EAppPages.Market, EMarketPages.PaymentSuccess, invoice.id],
+              }));
+            }),
             catchError((err) => {
               console.error(err);
               patchState(state, {isLoading: false});
@@ -147,14 +159,12 @@ export const MarketStore = signalStore(
           tap((responseData) => {
             patchState(state, {
               isLoading: false,
-              paymentSuccessData: responseData
+              paymentInvoice: responseData
             });
 
-            void hapticService.impact(ImpactStyle.Medium);
-            profileStore.getProfile();
-            store.dispatch(RouterActions.goTo({
-              path: [EAppPages.Market, EMarketPages.PaymentSuccess, responseData.id],
-            }));
+            if (responseData.status === EPaymentStatus.Paid) {
+              profileStore.getProfile();
+            }
           }),
           catchError((err) => {
             console.error(err);

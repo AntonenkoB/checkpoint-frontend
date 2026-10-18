@@ -22,7 +22,16 @@
     padding-bottom: var(--spacing-80);
   }
 
+  .btn-wrap {
+    width: 100%;
+    max-width: 420px;
+  }
+
   .confirm {
     margin-bottom: var(--spacing-20);
+  }
+
+  .spinner {
+    height: 42px;
   }
 }

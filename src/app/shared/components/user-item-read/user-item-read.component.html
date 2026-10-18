@@ -1,5 +1,14 @@
 <div class="user-read">
-  <cp-avatar class="avatar" [src]="user()?.avatar ?? ''"></cp-avatar>
+  @if (timeLesson()) {
+    <div class="time-lesson">{{timeLesson()?.from}} - {{timeLesson()?.to}}</div>
+  }
+
+  <div class="avatar-stack">
+    <cp-avatar class="avatar" [src]="user()?.avatar ?? ''"></cp-avatar>
+    @if (withTeacher()) {
+      <cp-avatar class="avatar" [src]="withTeacher()?.avatar ?? ''"></cp-avatar>
+    }
+  </div>
 
   <div class="user-read-info">
     <div class="user-read-creative-name">{{getCreativeName()}}</div>

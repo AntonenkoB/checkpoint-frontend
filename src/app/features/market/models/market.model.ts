@@ -27,6 +27,14 @@ export enum EPurchaseStatus {
 
 export type TPaymentStatus = 'pending' | 'success' | 'failed';
 
+export enum EPaymentStatus {
+  Pending = 'pending',
+  Failed = 'failed',
+  Paid = 'paid',
+  Expired = 'expired',
+  Reversed = 'reversed',
+}
+
 export interface IMarketPurchaseLessons {
   "plan_id": number,
   "quantity": number
@@ -40,7 +48,7 @@ export const SELECTED_LESSONS_TYPE = (): Record<EMarketPlanType, string> => ({
 
 export interface IPaymentInvoice {
   id: number;
-  status: TPaymentStatus;
+  status: EPaymentStatus;
   amount: number;
   currency: number;
   quantity: number;

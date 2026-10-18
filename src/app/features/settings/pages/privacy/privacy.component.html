@@ -1,9 +1,8 @@
 <div class="privacy container-large">
   <div class="container">
     <cp-header-secondary
-        [isBack]="true"
         [title]="'settings.privacy' | translate"
-        (back)="settingsFacade.goToBack()"
+        (close)="settingsFacade.goToBack()"
     ></cp-header-secondary>
   </div>
 

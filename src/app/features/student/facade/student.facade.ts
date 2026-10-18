@@ -29,7 +29,9 @@ export class StudentFacade {
   public historyPurchases = this.studentStore.purchases
   public canLoadMorePurchases = this.studentStore.canLoadMorePurchases;
   public notificationsUnread = this.notificationsStore.notificationsUnread;
-  public isLoading = this.notificationsStore.isLoading;
+  public isLoadingNotifications = this.notificationsStore.isLoading;
+  public isLoadingPurchases = this.studentStore.purchasesLoading;
+  public isLoading = this.studentStore.isLoading;
   public loadingProcessingId = this.notificationsStore.loadingProcessingId;
   public isRefreshing = computed(() => this.studentStore.isLoading());
 

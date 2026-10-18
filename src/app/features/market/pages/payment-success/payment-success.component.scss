@@ -8,11 +8,8 @@
     height: 100%;
   }
 
-  .payment-success-header {
-    padding-top: var(--spacing-16);
-  }
-
-  .payment-success-info {
+  .payment-success-info,
+  .payment-pending-info {
     display: flex;
     flex-direction: column;
     justify-content: center;

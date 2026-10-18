@@ -10,8 +10,7 @@ import {
   viewChild,
   viewChildren,
 } from "@angular/core";
-import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
-import {interval} from "rxjs";
+import {interval, Subscription} from "rxjs";
 import {EUserRole} from "@models/user.model";
 import {CalendarComponent} from "@shared/components/calendar/calendar.component";
 import {UserItemComponent} from "@shared/components/user-item/user-item.component";
@@ -22,13 +21,14 @@ import {LoaderComponent} from "@shared/components/loader/loader.component";
 import {EmptyStateComponent} from "@shared/components/empty-state/empty-state.component";
 import {formatToDateTime} from "@shared/utils/date.utils";
 import {DayTitlePipe} from "@shared/pipes/day-title-pipe";
-import {ITimeRange} from "@schedule/models/schedule.model";
+import {IScheduleItem, ITimeRange} from "@schedule/models/schedule.model";
 import {TranslatePluralPipe} from "@shared/pipes/translate-plural.pipe";
 import {IonContent, IonRefresher, IonRefresherContent} from "@ionic/angular/standalone";
 import {RefresherCustomEvent} from "@ionic/angular";
 import {PlatformService} from "@shared/services/platform.service";
 import {HapticService} from "@shared/services/haptic.service";
 import {ImpactStyle} from "@capacitor/haptics";
+import {UserItemReadComponent} from "@shared/components/user-item-read/user-item-read.component";
 
 @Component({
   selector: "cp-schedule-list",
@@ -44,6 +44,7 @@ import {ImpactStyle} from "@capacitor/haptics";
     IonContent,
     IonRefresher,
     IonRefresherContent,
+    UserItemReadComponent,
   ]
 })
 export class ScheduleListComponent implements OnInit {
@@ -67,9 +68,16 @@ export class ScheduleListComponent implements OnInit {
   private isManualScrolling = false;
   private observerIntersectionToDays?: IntersectionObserver;
   private pendingRefresh: RefresherCustomEvent | null = null;
+  private refreshScheduleSubscription?: Subscription;
 
   public recordedDays = computed(() => {
-    return this.scheduleStore.slotsEntities().flatMap((item) => item.date)
+    // for owner only lessons
+    if (this.scheduleFacade.isOwner()) {
+      const lessons = this.scheduleStore.slotsEntities().filter((slot) => slot.lesson);
+      return lessons.flatMap((item) => item.date)
+    } else {
+      return this.scheduleStore.slotsEntities().flatMap((item) => item.date)
+    }
   })
 
   public isNotificationsCount = computed(() =>
@@ -106,9 +114,19 @@ export class ScheduleListComponent implements OnInit {
 
     this.scheduleFacade.loadNotificationsCount();
 
-    interval(ScheduleListComponent.REFRESH_INTERVAL_MS)
-      .pipe(takeUntilDestroyed(this.destroyRef))
+    this.startRefresh();
+    this.destroyRef.onDestroy(() => this.stopRefresh());
+  }
+
+  public startRefresh(): void {
+    this.stopRefresh();
+    this.refreshScheduleSubscription = interval(ScheduleListComponent.REFRESH_INTERVAL_MS)
       .subscribe(() => this.refreshData());
+  }
+
+  public stopRefresh(): void {
+    this.refreshScheduleSubscription?.unsubscribe();
+    this.refreshScheduleSubscription = undefined;
   }
 
   private observeDays(root: HTMLElement, items: readonly ElementRef<HTMLElement>[]): void {
@@ -170,5 +188,13 @@ export class ScheduleListComponent implements OnInit {
 
   public getDayTitle(date: string, slot: ITimeRange): string {
     return formatToDateTime(date, slot.from, slot.to);
+  }
+
+  public handleSlot(userId: number, date: string, slot: IScheduleItem): void {
+    if (!userId) {
+      this.scheduleFacade.selectTime(userId, date, slot.time, slot.id)
+    } else {
+      this.scheduleFacade.goToTransferringLesson(slot.lesson?.student!, this.getDayTitle(date, slot.time), slot.lesson.id)
+    }
   }
 }

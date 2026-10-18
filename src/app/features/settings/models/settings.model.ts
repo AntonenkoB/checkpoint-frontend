@@ -48,11 +48,11 @@ export const SETTINGS_LIST_MAP: Record<EUserRole, ISettingsItem[]> = {
       link: [EAppPages.Lessons, ELessonPages.LessonType],
       queryParams: {lessonsFlow: ELessonFlow.AddCash}
     },
-    // {
-    //   label: 'settings.add-free-lessons',
-    //   link: [EAppPages.Lessons, ELessonPages.LessonType],
-    //   queryParams: {lessonsFlow: ELessonFlow.AddFree}
-    // }
+    {
+      label: 'settings.add-free-lessons',
+      link: [EAppPages.Lessons, ELessonPages.LessonType],
+      queryParams: {lessonsFlow: ELessonFlow.AddFree}
+    },
   ],
   [EUserRole.Teacher]: [],
   [EUserRole.Student]: [

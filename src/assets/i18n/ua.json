@@ -3,6 +3,7 @@
     "add": "Додати",
     "save": "Зберегти",
     "censal": "Відмінити",
+    "no-censal": "Не відміняти",
     "search": "Пошук",
     "not-save": "Не зберігати",
     "confirm-change-title": "Зберегти зміни?",
@@ -57,8 +58,9 @@
     "planned-request-success": "Запит відправлено!",
     "planned-success-btn": "До зустрічі",
     "edit-title": "Редагування уроку",
-    "still-disable-slot": "Залишити цей час доступния для \u2028бронювання іншими студентами",
+    "still-disable-slot": "Залишити цей час доступним для \u2028бронювання іншими студентами",
     "activation-deadline": "Почати використовувати до",
+    "cansel-title": "Відмінти урок?",
     "type": {
       "with-teacher": "з вчителем",
       "lesson": {
@@ -164,8 +166,20 @@
     "abonnement-details1": "еуіе",
     "abonnement-usage-note": "Маєш почати використовувати уроки <br/> протягом трьох місяців",
     "payment-success-title": "Оплачено!",
-    "payment-success-description-single": "Ви придбали {{quantity}} урок за {{price}} ₴",
-    "payment-success-description-abonnement": "Ви придбали {{quantity}} абонемент за {{price}} ₴",
+    "payment-pending-title": "Оплата обробляється",
+    "payment-failed-title": "Виникла помилка",
+    "payment-pending-description": "Ще не отримали підтвердження. Повідомимо, щойно оплата пройде.",
+    "payment-failed-description": "Спробуйте зробити оплату пізніше.",
+    "payment-success-description-single": {
+      "one": "Ви придбали {{quantity}} урок за {{price}} ₴",
+      "few": "Ви придбали {{quantity}} уроки за {{price}} ₴",
+      "many": "Ви придбали {{quantity}} уроків за {{price}} ₴"
+    },
+    "payment-success-description-abonnement": {
+      "one": "Ви придбали {{quantity}} абонемент за {{price}} ₴",
+      "few": "Ви придбали {{quantity}} абонементи за {{price}} ₴",
+      "many": "Ви придбали {{quantity}} абонементів за {{price}} ₴"
+    },
     "payment-success-btn": "До зустрічі",
     "select-teacher-to-buy": "Виберіть вашого вчителя, <br /> щоб купити уроки",
     "select-user-to-buy": "Виберіть користувача",

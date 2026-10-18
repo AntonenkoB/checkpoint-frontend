@@ -1,8 +1,7 @@
 <div class="container">
   <cp-header-secondary
-      [isBack]="true"
       [title]="'student.pages.history-purchases' | translate"
-      (back)="studentFacade.goToSettings(true)"
+      (close)="studentFacade.goToSettings(true)"
   ></cp-header-secondary>
 </div>
 
@@ -46,7 +45,7 @@
     }
   </div>
 
-  <cp-loader [isLoad]="!studentFacade.isLoading()"></cp-loader>
+  <cp-loader [isLoad]="!(studentFacade.isLoadingPurchases() && !studentFacade.historyPurchases().length)"></cp-loader>
 
   <ion-infinite-scroll
       [disabled]="!studentFacade.canLoadMorePurchases()"

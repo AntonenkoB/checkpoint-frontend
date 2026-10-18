@@ -85,7 +85,10 @@ export class UserCreateComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.userFacade.loadTeachers();
+    if (this.userFacade.isAdmin() || this.userFacade.isOwner()) {
+      this.userFacade.loadTeachers();
+    }
+
     this.selectedRoles.set([this.userFacade.roleCreate()]);
   }
 

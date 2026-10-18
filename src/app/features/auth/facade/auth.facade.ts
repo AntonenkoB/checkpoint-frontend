@@ -21,7 +21,6 @@ export class AuthFacade {
   readonly forgotPasswordFailure: Signal<string | null> = this.authStore.forgotPasswordFailure;
   readonly codeConfirmFailure: Signal<string | null> = this.authStore.codeConfirmFailure;
 
-  // --- Наміри: async-флоу делегуються authStore (навігація на успіх — усередині authStore) ---
   checkUser(identifier: string): void {
     this.authStore.checkUser({identifier});
   }

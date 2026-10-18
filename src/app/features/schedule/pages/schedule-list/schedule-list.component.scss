@@ -19,8 +19,7 @@
     align-items: center;
     display: flex;
     cursor: pointer;
-    justify-content: space-between;
-    padding: var(--spacing-16);
+    padding: var(--spacing-16) var(--spacing-32);
     width: 100%;
     position: relative;
     border-radius: 8px;
@@ -32,13 +31,68 @@
       inset: 0;
       border-radius: 8px;
       padding: 2px;
-      background: linear-gradient(89.4deg, #00D660 1.33%, #FF0000 47.58%, #FF8C00 99.49%);
       -webkit-mask:
           linear-gradient(#fff 0 0) content-box,
           linear-gradient(#fff 0 0);
       -webkit-mask-composite: xor;
       mask-composite: exclude;
       pointer-events: none;
+    }
+
+    &.bg-book {
+      justify-content: center;
+
+      &::before {
+        background: #00D660;
+      }
+    }
+
+    &.bg-cancel {
+      justify-content: center;
+
+      &::before {
+        background: #FF0000;
+      }
+    }
+
+    &.bg-reschedule {
+      justify-content: center;
+
+      &::before {
+        background: #FF8C00;
+      }
+    }
+
+    &.bg-book.bg-cancel {
+      justify-content: space-between;
+
+      &::before {
+        background: linear-gradient(89.4deg, #00D660 1.33%, #FF0000 99.49%);
+      }
+    }
+
+    &.bg-book.bg-reschedule {
+      justify-content: space-between;
+
+      &::before {
+        background: linear-gradient(89.4deg, #00D660 1.33%, #FF8C00 99.49%);
+      }
+    }
+
+    &.bg-cancel.bg-reschedule {
+      justify-content: space-between;
+
+      &::before {
+        background: linear-gradient(89.4deg, #FF0000 1.33%, #FF8C00 99.49%);
+      }
+    }
+
+    &.bg-book.bg-cancel.bg-reschedule {
+      justify-content: space-between;
+
+      &::before {
+        background: linear-gradient(89.4deg, #00D660 1.33%, #FF0000 47.58%, #FF8C00 99.49%);
+      }
     }
   }
 
@@ -54,7 +108,6 @@
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      margin-bottom: 1px;
     }
 
     &.booked {
@@ -111,17 +164,44 @@
     }
   }
 
-  .title {
+  .day-section-title {
     font: var(--font-alumi-20-black);
-    padding: var(--spacing-8) 0;
+    padding: var(--spacing-16) 0 var(--spacing-8);
     text-transform: uppercase;
+
+    &.first-section {
+      padding-top: 0;
+    }
   }
 
   .schedule-time-list {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-16);
-    padding-bottom: var(--spacing-16);
+    padding: var(--spacing-8) 0;
+
+    &.border-top {
+      border: 0;
+      border-top: 1px solid var(--color-border-primary);
+    }
+
+    &.border-bottom {
+      border: 0;
+      border-bottom: 1px solid var(--color-border-primary);
+    }
+
+    &.border-top.border-bottom {
+      border: 0;
+      border-top: 1px solid var(--color-border-primary);
+      border-bottom: 1px solid var(--color-border-primary);
+    }
+
+    &.additional-margin-top {
+      margin-top: var(--spacing-8);
+    }
+
+    &.additional-margin-bottom {
+      margin-bottom: var(--spacing-8);
+    }
   }
 
   .time {

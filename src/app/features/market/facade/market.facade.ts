@@ -29,8 +29,10 @@ export class MarketFacade {
   private queryParams = toSignal(this.route.queryParams);
   private selectRouteParams = this.store.selectSignal(selectRouteParams);
   public routTeacherId = this.store.selectSignal(selectRouteParam(ERoutParams.TeacherId));
+  public paymentId = this.store.selectSignal(selectRouteParam(ERoutParams.PaymentId));
   public readonly profile = this.profileFacade.profile;
   public readonly isLoading = this.marketStore.isLoading;
+  public readonly isStudent = this.profileFacade.isStudent;
   public currentTypePlan = computed(() => (this.queryParams()?.['typePlan']) || null);
   public currentLessonsType = computed(() => this.queryParams()?.['lessonsType']);
   public currentLessonsFlow = computed(() => this.queryParams()?.['lessonsFlow']);
@@ -233,14 +235,8 @@ export class MarketFacade {
   }
 
   public getPayment(): void {
-    const id = this.selectRouteParams()[ERoutParams.PaymentId];
-
-    if (id) {
-      this.marketStore.loadPaymentLesson(id);
-    }
-
-    if (this.profileFacade.isStudent()) {
-      this.profileFacade.profileStore.getProfile();
+    if (this.paymentId()) {
+      this.marketStore.loadPaymentLesson(this.paymentId()!);
     }
   }
 

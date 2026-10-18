@@ -34,6 +34,7 @@ export class RatesFacade {
   public isOwner = this.profileFacade.isOwner;
   public isTeacher = this.profileFacade.isTeacher;
   public rateLoader = this.ratesStore.isReady();
+  public isReady = this.ratesStore.isReady;
 
   public readonly teachersRateList = computed<ITeacherRateGroup[]>(() => {
     const rates = this.ratesList();
@@ -68,9 +69,6 @@ export class RatesFacade {
       return 0;
     });
   });
-
-  public isLoading = this.ratesStore.isLoading;
-  public isReady = this.ratesStore.isReady;
 
   constructor() {
   }

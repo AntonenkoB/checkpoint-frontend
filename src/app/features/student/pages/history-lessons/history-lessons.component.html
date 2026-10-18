@@ -1,16 +1,15 @@
 <div class="container">
   <cp-header-secondary
-      [isBack]="true"
       [title]="'student.pages.history-lessons' | translate"
-      (back)="studentFacade.goToSettings(true)"
+      (close)="studentFacade.goToSettings(true)"
   ></cp-header-secondary>
 
 </div>
 <ion-content class="lessons-wrap">
   <div class="container">
-    @for (item of studentFacade.groupPastLessons(); track $index) {
-        @for (week of item.week; track week) {
-          @for (lesson of week.lessons; track lesson) {
+    @for (item of studentFacade.groupPastLessons(); track item.label) {
+        @for (week of item.week; track $index) {
+          @for (lesson of week.lessons; track lesson.id) {
           <div class="lessons-item">
             <div class="record-lesson">
               <div class="date">{{lesson | lessonDateTime}}</div>

@@ -14,10 +14,7 @@
       @if(lessonsFacade.isStudent()) {
         <ion-button class="cansel-btn" (click)="lessonsFacade.goToTransferringTime()">{{ "schedule.transfer" | translate}}</ion-button>
       }
-      <ion-button
-          [color]="'danger'"
-          (click)="lessonsFacade.cancelLesson(!stillDisableSlotForm.return_slot().value())"
-      >
+      <ion-button id="open-cansel-modal" [color]="'danger'">
         @if (lessonsFacade.isLoading()) {
           <ion-spinner class="spinner" name="dots" />
         } @else {
@@ -37,3 +34,23 @@
     }
   </div>
 </div>
+
+<ion-modal
+    #cancelLessonModal
+    id="cansel-modal"
+    trigger="open-cansel-modal"
+    [initialBreakpoint]="initialBreakpoint"
+    [breakpoints]="modalBreakpoints"
+>
+  <ng-template>
+    <cp-confirm-modal
+        [title]="'lessons.cansel-title' | translate"
+        [btnConfirm]="'common.censal' | translate"
+        [btnCansel]="'common.no-censal' | translate"
+        [isDelete]="true"
+        [isLoading]="lessonsFacade.isLoading()"
+        (cansel)="cancelLessonModalCansel()"
+        (confirm)="cancelLessonModalConfirm()"
+    ></cp-confirm-modal>
+  </ng-template>
+</ion-modal>

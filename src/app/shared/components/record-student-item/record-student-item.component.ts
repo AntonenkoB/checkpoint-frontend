@@ -14,6 +14,7 @@ import {TranslatePluralPipe} from "@shared/pipes/translate-plural.pipe";
 })
 export class RecordStudentItemComponent implements OnInit {
   public student = model<IUser>();
+  // check if need show amount lessons and refactoring
   public withAmountLesson = input(true);
   public select = output<IUser>()
   public lessonsAmount = computed(() =>

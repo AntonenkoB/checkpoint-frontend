@@ -29,8 +29,8 @@ export class ApiService {
     return this.executeRequest<T>('PATCH', path, body, { context });
   }
 
-  delete<T>(path: IApiUrl, params?: Record<string, any>, context?: HttpContext): Observable<T> {
-    return this.executeRequest<T>('DELETE', path, undefined, { params, context });
+  delete<T, D = unknown>(path: IApiUrl, params?: Record<string, any>, context?: HttpContext, body?: D): Observable<T> {
+    return this.executeRequest<T>('DELETE', path, body, { params, context });
   }
 
   private executeRequest<T>(
@@ -60,7 +60,7 @@ export class ApiService {
       case 'PATCH':
         return this.http.patch<T>(url, body, requestOptions).pipe(catchError(this.handleError));
       case 'DELETE':
-        return this.http.delete<T>(url, requestOptions).pipe(catchError(this.handleError));
+        return this.http.delete<T>(url, {...requestOptions, body}).pipe(catchError(this.handleError));
     }
   }
 

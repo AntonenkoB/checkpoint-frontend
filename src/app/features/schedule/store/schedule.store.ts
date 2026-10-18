@@ -14,10 +14,12 @@ import {HapticService} from "@shared/services/haptic.service";
 
 export interface ScheduleState {
   isLoading: boolean;
+  isLoadingUpdate: boolean;
 }
 
 const initialState: ScheduleState = {
   isLoading: false,
+  isLoadingUpdate: false,
 };
 
 const slotsConfig = entityConfig({
@@ -141,10 +143,10 @@ export const ScheduleStore = signalStore(
   ) => ({
     setWeekSlot: rxMethod<{ day_of_week: EDayOfWeek, slots: ITimeRange[] }>(
       pipe(
-        tap(() => patchState(store, {isLoading: true})),
+        tap(() => patchState(store, {isLoadingUpdate: true})),
         switchMap((data) => ratesService.setWeekSlot(data).pipe(
           tap(() => {
-            patchState(store, {isLoading: false});
+            patchState(store, {isLoadingUpdate: false});
             toastService.success('Графік оновлено');
             void hapticService.impact(ImpactStyle.Medium);
             store.getWeekly();
@@ -152,7 +154,7 @@ export const ScheduleStore = signalStore(
           }),
           catchError((err) => {
             console.error(err);
-            patchState(store, {isLoading: false});
+            patchState(store, {isLoadingUpdate: false});
             return of(null);
           })
         )),
@@ -179,10 +181,10 @@ export const ScheduleStore = signalStore(
 
     setIndividualWeekSlot: rxMethod<{ day_of_week: EDayOfWeek, slots: ITimeRange[] }>(
       pipe(
-        tap(() => patchState(store, {isLoading: true})),
+        tap(() => patchState(store, {isLoadingUpdate: true})),
         switchMap((data) => ratesService.setIndividualWeekSlot(data).pipe(
           tap(() => {
-            patchState(store, {isLoading: false});
+            patchState(store, {isLoadingUpdate: false});
             toastService.success('Графік оновлено');
             void hapticService.impact(ImpactStyle.Medium);
             store.getOverviewSlots();
@@ -190,7 +192,7 @@ export const ScheduleStore = signalStore(
           }),
           catchError((err) => {
             console.error(err);
-            patchState(store, {isLoading: false});
+            patchState(store, {isLoadingUpdate: false});
             return of(null);
           })
         )),
@@ -224,17 +226,17 @@ export const ScheduleStore = signalStore(
   ) => ({
     setSlots: rxMethod<{ date: string, slots: ITimeRange[] }>(
       pipe(
-        tap(() => patchState(store, {isLoading: true})),
+        tap(() => patchState(store, {isLoadingUpdate: true})),
         switchMap((data) => ratesService.setSlots(data).pipe(
           tap(() => {
-            patchState(store, {isLoading: false});
+            patchState(store, {isLoadingUpdate: false});
             toastService.success('Графік оновлено');
             void hapticService.impact(ImpactStyle.Medium);
             store.getSlots();
           }),
           catchError((err) => {
             console.error(err);
-            patchState(store, {isLoading: false});
+            patchState(store, {isLoadingUpdate: false});
             return of(null);
           })
         ))
@@ -261,18 +263,17 @@ export const ScheduleStore = signalStore(
 
     setIndividualSlots: rxMethod<{ date: string, slots: ITimeRange[] }>(
       pipe(
-        tap(() => patchState(store, {isLoading: true})),
+        tap(() => patchState(store, {isLoadingUpdate: true})),
         switchMap((data) => ratesService.setIndividualSlots(data).pipe(
           tap(() => {
-            patchState(store, {isLoading: false});
+            patchState(store, {isLoadingUpdate: false});
             toastService.success('Графік оновлено');
             void hapticService.impact(ImpactStyle.Medium);
-            store.getOverviewSlots();
             store.getIndividualSlots();
           }),
           catchError((err) => {
             console.error(err);
-            patchState(store, {isLoading: false});
+            patchState(store, {isLoadingUpdate: false});
             return of(null);
           })
         ))

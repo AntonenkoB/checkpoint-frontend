@@ -39,7 +39,6 @@ export class LoginCreatePasswordComponent {
 
   public readonly createPassword = signal<ISavePassword>({password: '', password_confirmation: ''});
   public readonly repeat = signal(false);
-  public readonly validateCreatePassword = signal(false);
 
   protected readonly LOGO_SVG = this.sanitizer.bypassSecurityTrustHtml(LOGO_SVG);
   protected readonly BACK_SVG = this.sanitizer.bypassSecurityTrustHtml(BACK_SVG);
@@ -47,15 +46,11 @@ export class LoginCreatePasswordComponent {
   constructor() {}
 
   public changePassword(password: string): void {
-    if (this.validateCreatePassword()) {
-      this.validateCreatePassword.set(false);
+    if (this.authFacade.loginFailure()) {
+      this.authFacade.clearLoginFailure();
     }
 
     this.createPassword.set({password, password_confirmation: password});
-  }
-
-  public checkValidatePassword(password: string): void {
-    this.validateCreatePassword.set(password.length < 8);
   }
 
   public goBack(): void {
@@ -63,13 +58,6 @@ export class LoginCreatePasswordComponent {
   }
 
   public send(): void {
-    const isInvalid = this.createPassword().password.length < 8;
-    this.validateCreatePassword.set(isInvalid);
-
-    if (isInvalid) {
-      return;
-    }
-
     this.authFacade.createPassword(this.createPassword(), this.repeat());
   }
 }

@@ -61,7 +61,12 @@
               }
             </div>
             <div class="salary-payout-bottom">
-              <div class="info">{{transaction.student.first_name}} {{transaction.student.last_name}}</div>
+              @if (transaction.student) {
+                <div class="info">{{transaction.student.first_name}} {{transaction.student.last_name}}</div>
+              } @else {
+                <div class="info">{{ 'users.deleted' | translate }}</div>
+              }
+
               @if (ratesFacade.isOwner()) {
                 <div class="total">{{("market.payment-type." + transaction.payment_method) | translate}} {{transaction.price_paid | priceFormat: '₴'}}</div>
               }

@@ -1,6 +1,7 @@
 import {Component, input} from "@angular/core";
 import {AvatarComponent} from "@shared/components/avatar/avatar.component";
 import {IUser} from "@models/user.model";
+import {ITimeRange} from "@schedule/models/schedule.model";
 
 @Component({
   selector: "cp-user-item-read",
@@ -12,6 +13,8 @@ import {IUser} from "@models/user.model";
 })
 export class UserItemReadComponent {
   public user = input<IUser>();
+  public timeLesson = input<ITimeRange>();
+  public withTeacher = input<IUser | null>();
 
   public getCreativeName(): string {
     return this.user()?.creative_name ?? this.user()?.first_name ?? ''

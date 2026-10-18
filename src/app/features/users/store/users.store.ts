@@ -9,7 +9,6 @@ import {IPagination} from "@models/api.models";
 import {EHeaderMenu, EUserPages, IUserUpdate} from "@users/models/user.model";
 import {RouterActions} from "../../../store/router/actions";
 import {EAppPages} from "@models/router.model";
-import {EAuthPages} from "../../auth/models/router.model";
 import {HapticService} from "@shared/services/haptic.service";
 import {ImpactStyle} from "@capacitor/haptics";
 import {getHighestRole} from "@shared/permissions/role-priority";
@@ -79,7 +78,6 @@ export const UsersStore = signalStore(
             }),
             () => {
               patchState(state, {usersLoading: false, usersLoadingMore: false});
-              store.dispatch(RouterActions.goTo({path: [EAppPages.Auth, EAuthPages.LoginIdentifier]}));
             },
           ),
         )),

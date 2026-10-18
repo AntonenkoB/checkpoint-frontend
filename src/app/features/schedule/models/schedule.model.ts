@@ -22,6 +22,13 @@ export interface IScheduleItem {
   lesson: ILesson;
   teacher?: IUser;
   student?: IUser;
+  borders?: IBorderSides;
+}
+
+export interface IBorderSides {
+  top: boolean;
+  bottom: boolean;
+  box: boolean;
 }
 
 export interface ITimeRange {

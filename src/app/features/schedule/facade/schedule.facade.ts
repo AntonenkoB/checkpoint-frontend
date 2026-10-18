@@ -5,7 +5,14 @@ import {AppState} from "@capacitor/app";
 import {EHeaderMenu, EUserPages} from "@users/models/user.model";
 import {EUserRole, IUser} from "@models/user.model";
 import {RouterActions} from "../../../store/router/actions";
-import {EDayOfWeek, ESchedulePages, IScheduleItem, IScheduleItemToDate, ITimeRange} from "../models/schedule.model";
+import {
+  EDayOfWeek,
+  ESchedulePages,
+  IBorderSides,
+  IScheduleItem,
+  IScheduleItemToDate,
+  ITimeRange
+} from "../models/schedule.model";
 import {ScheduleStore} from "@schedule/store/schedule.store";
 import {ScheduleListStore} from "@schedule/store/schedule-list.store";
 import {ProfileFacade} from "@profile/facade/profile.facade";
@@ -49,12 +56,58 @@ export class ScheduleFacade {
       return acc;
     }, {} as Record<string, IScheduleItem[]>);
 
-    return Object.entries(groupedMap)
+    const schedule = Object.entries(groupedMap)
       .map(([date, slots]) => ({ date, slots: this.uniqueByFrom(slots) }))
       .sort((a, b) => a.date.localeCompare(b.date));
+
+    // add for view lessons (borders) for admin/owner delete or refactoring latter
+    if (this.isAdmin()) {
+      const withBorders = schedule.map(day => ({
+        ...day,
+        slots: day.slots.map((slot, slotIndex) => ({
+          ...slot,
+          borders: this.getBorderSides(
+            slot.lesson === null || (slot.lesson && !slot.teacher),
+            day.slots[slotIndex - 1]
+              ? day.slots[slotIndex - 1].lesson === null || (day.slots[slotIndex - 1].lesson && !day.slots[slotIndex - 1].teacher)
+              : undefined,
+            day.slots[slotIndex + 1]
+              ? day.slots[slotIndex + 1].lesson === null || (day.slots[slotIndex + 1].lesson && !day.slots[slotIndex + 1].teacher)
+              : undefined,
+          ),
+        })),
+      }));
+      return withBorders
+    }
+
+    // only lessons to owner
+    if (this.isOwner()) {
+      const onlyLessons = schedule.map(day => ({
+        ...day,
+        slots: day.slots.filter(slot => slot.lesson),
+      }));
+
+      return onlyLessons.filter(day => day.slots.length > 0)
+    }
+
+    return schedule
   });
 
   constructor() {
+  }
+
+  private getBorderSides(
+    isActive: boolean,
+    prev: boolean | undefined,
+    next: boolean | undefined,
+  ): IBorderSides {
+    if (isActive) return { top: false, bottom: false, box: true };
+
+    return {
+      box: false,
+      top: prev === undefined,
+      bottom: next === undefined || !next,
+    };
   }
 
   public getScheduleSetting(): void {
@@ -177,8 +230,8 @@ export class ScheduleFacade {
     return slots.filter(slot => {
       if (slot.lesson !== null) return true;
 
-      // remove for admin/owner and need disabled for teacher
-      if ((this.isAdmin() || this.isOwner()) && slot.rooms_free < 1) return false;
+      // remove for admin and need disabled for teacher
+      if (this.isAdmin() && slot.rooms_free < 1) return false;
 
       if (seen.has(slot.time.from)) return false;
       seen.add(slot.time.from);

@@ -1,16 +1,29 @@
 <div class="schedule-list">
   @if (isNotificationsCount() && !scheduleFacade.isOwner()) {
     <div class="container">
-      <div class="notifications" (click)="scheduleFacade.goToNotifications()">
-        <div class="notification booked">
-          {{ scheduleFacade.notificationsCount()?.book_count! }} {{scheduleFacade.notificationsCount()?.book_count! | translatePlural: 'notification.booked'}}
-        </div>
-        <div class="notification cancelled">
-          {{ scheduleFacade.notificationsCount()?.cancel_count! }} {{scheduleFacade.notificationsCount()?.cancel_count! | translatePlural: 'notification.cancelled'}}
-        </div>
-        <div class="notification rescheduled">
-          {{ scheduleFacade.notificationsCount()?.reschedule_count! }} {{scheduleFacade.notificationsCount()?.reschedule_count! | translatePlural: 'notification.rescheduled'}}
-        </div>
+      <div class="notifications"
+           [class.bg-book]="scheduleFacade.notificationsCount()?.book_count"
+           [class.bg-cancel]="scheduleFacade.notificationsCount()?.cancel_count"
+           [class.bg-reschedule]="scheduleFacade.notificationsCount()?.reschedule_count"
+           (click)="scheduleFacade.goToNotifications()">
+
+        @if (scheduleFacade.notificationsCount()?.book_count) {
+          <div class="notification booked">
+            {{ scheduleFacade.notificationsCount().book_count }} {{scheduleFacade.notificationsCount().book_count | translatePlural: 'notification.booked'}}
+          </div>
+        }
+
+        @if (scheduleFacade.notificationsCount()?.cancel_count) {
+          <div class="notification cancelled">
+            {{ scheduleFacade.notificationsCount().cancel_count }} {{scheduleFacade.notificationsCount().cancel_count | translatePlural: 'notification.cancelled'}}
+          </div>
+        }
+
+        @if (scheduleFacade.notificationsCount()?.reschedule_count) {
+          <div class="notification rescheduled">
+            {{ scheduleFacade.notificationsCount().reschedule_count }} {{scheduleFacade.notificationsCount().reschedule_count | translatePlural: 'notification.rescheduled'}}
+          </div>
+        }
       </div>
     </div>
   }
@@ -30,27 +43,77 @@
 <!--      </ion-refresher>-->
 
       <div class="container">
-        @for (day of scheduleFacade.scheduleByDate(); track day.date) {
+        @for (day of scheduleFacade.scheduleByDate(); let dayIndex = $index; track day.date;) {
           <div class="day-item" [id]="day.date" #dayItem>
-            <div class="title day-section" >{{day.date | dayTitle}}</div>
+            <div class="day-section-title" [class.first-section]="dayIndex === 0">{{day.date | dayTitle}}</div>
 
-            @for (slot of day.slots; track slot.id) {
-              <div class="schedule-time-list">
-                <cp-user-item
-                    class="time"
-                    [disabled]="scheduleFacade.isTeacher() && !slot.lesson && slot.rooms_free === 0"
-                    [fullRooms]="slot.rooms_free === 0"
-                    [timeLesson]="slot.time"
-                    [user]="slot.lesson?.student"
-                    [showTeacher]="!scheduleFacade.isTeacher()"
-                    [withTeacher]="slot.teacher"
-                    (openUser)="scheduleFacade.selectTime($event, day.date, slot.time, slot.id)"
-                    (dotsEvent)="scheduleFacade.goToTransferringLesson(slot.lesson?.student!, getDayTitle(day.date, slot.time), slot.lesson.id)"
-                ></cp-user-item>
-              </div>
+            @if (scheduleFacade.isOwner()) {
+              @for (slot of day.slots; let slotIndex = $index; track slot.id) {
+                <div class="schedule-time-list"
+                     [class.border-top]="slotIndex === 0"
+                     [class.border-bottom]="true"
+                >
+                  <cp-user-item-read
+                      class="time"
+                      [timeLesson]="slot.time"
+                      [user]="slot.lesson?.student"
+                      [withTeacher]="slot.teacher"
+                  ></cp-user-item-read>
+                </div>
+              }
+            }
+
+            @if (scheduleFacade.isAdmin()) {
+              @for (slot of day.slots; let slotIndex = $index; track slot.id) {
+                @if (slot.teacher && slot.lesson) {
+                  <div class="schedule-time-list"
+                       [class.border-box]="slot.borders?.box"
+                       [class.border-top]="slot.borders?.top"
+                       [class.border-bottom]="slot.borders?.bottom"
+                       [class.additional-margin-top]="slot.borders?.top && slotIndex === 0"
+                       [class.additional-margin-bottom]="slotIndex === day.slots.length - 1"
+                  >
+                    <cp-user-item-read
+                      class="time"
+                      [timeLesson]="slot.time"
+                      [user]="slot.lesson?.student"
+                      [withTeacher]="slot.teacher"
+                  ></cp-user-item-read>
+                  </div>
+                } @else {
+                  <div class="schedule-time-list">
+                    <cp-user-item
+                        class="time"
+                        [disabled]="scheduleFacade.isTeacher() && !slot.lesson && slot.rooms_free === 0"
+                        [fullRooms]="slot.rooms_free === 0"
+                        [timeLesson]="slot.time"
+                        [user]="slot.lesson?.student"
+                        [showTeacher]="!scheduleFacade.isTeacher()"
+                        [withTeacher]="slot.teacher"
+                        (openUser)="handleSlot($event, day.date, slot)"
+                    ></cp-user-item>
+                  </div>
+                }
+              }
+            }
+
+            @if (scheduleFacade.isTeacher()) {
+              @for (slot of day.slots; track slot.id) {
+                <div class="schedule-time-list">
+                  <cp-user-item
+                      class="time"
+                      [disabled]="scheduleFacade.isTeacher() && !slot.lesson && slot.rooms_free === 0"
+                      [fullRooms]="slot.rooms_free === 0"
+                      [timeLesson]="slot.time"
+                      [user]="slot.lesson?.student"
+                      [showTeacher]="!scheduleFacade.isTeacher()"
+                      [withTeacher]="slot.teacher"
+                      (openUser)="handleSlot($event, day.date, slot)"
+                  ></cp-user-item>
+                </div>
+              }
             }
           </div>
-
         } @empty {
           <cp-empty-state></cp-empty-state>
         }

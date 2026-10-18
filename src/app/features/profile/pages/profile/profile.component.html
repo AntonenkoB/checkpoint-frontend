@@ -4,9 +4,8 @@
     <div class="container">
       <cp-header-secondary
           class="profile-header"
-          [isBack]="true"
           [title]="'profile.title' | translate"
-          (back)="profileFacade.goToBack()"
+          (close)="profileFacade.goToBack()"
       ></cp-header-secondary>
     </div>
 

@@ -28,6 +28,8 @@ import {ProfileStore} from '@profile/store/profile.store';
 import {PushNotificationService} from "@notifacations/services/push-notification.service";
 import {EStudentPages} from "@student/models/student.model";
 import {ToastService} from "@shared/services/toast.service";
+import {getApiErrorMessage} from "@shared/utils/error-handling.utils";
+import {TranslateService} from "@shared/services/translate.service";
 
 export type TRefreshState = 'idle' | 'pending' | 'success' | 'logout';
 
@@ -76,6 +78,7 @@ export const AuthStore = signalStore(
     store = inject(Store),
     pushService = inject(PushNotificationService),
     toastService = inject(ToastService),
+    translateService = inject(TranslateService),
   ) => ({
     clearCheckUserFailure(): void {
       patchState(state, {checkUserFailure: null});
@@ -156,7 +159,10 @@ export const AuthStore = signalStore(
             }),
             catchError((err) => {
               console.error(err);
-              patchState(state, {isLoading: false, loginFailure: 'login.invalid-password'});
+              patchState(state, {
+                isLoading: false,
+                loginFailure: getApiErrorMessage(err.errors, translateService.instant('login.invalid-password'), err.message)
+            });
               return of(null);
             }),
           ),
@@ -199,7 +205,10 @@ export const AuthStore = signalStore(
             }),
             catchError((err) => {
               console.error(err);
-              patchState(state, {isLoading: false, loginFailure: err?.message ?? null});
+              patchState(state, {
+                isLoading: false,
+                loginFailure: getApiErrorMessage(err.errors, translateService.instant('common.error-default'), err.message)
+              });
               return of(null);
             }),
           ),
@@ -269,7 +278,10 @@ export const AuthStore = signalStore(
             }),
             catchError((err) => {
               console.error(err);
-              patchState(state, {isLoading: false, forgotPasswordFailure: ''});
+              patchState(state, {
+                isLoading: false,
+                loginFailure: getApiErrorMessage(err.errors, translateService.instant('common.error-default'), err.message)
+              });
               return of(null);
             }),
           );

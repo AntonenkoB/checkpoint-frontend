@@ -17,8 +17,8 @@ export class MarketService extends ApiService {
     return this.get<IApiData<IRate[]>>(EApiEndpoints.GetIndividualRate);
   }
 
-  public getPayment(paymentId: string): Observable<IApiData<IPaymentSuccess>> {
-    return this.get<IApiData<IPaymentSuccess>>([EApiEndpoints.GetPaymentLesson, { paymentId: paymentId }]);
+  public getPayment(paymentId: string): Observable<IApiData<IPaymentInvoice>> {
+    return this.get<IApiData<IPaymentInvoice>>([EApiEndpoints.GetPaymentLesson, { paymentId: paymentId }]);
   }
 
   public purchaseLessons(data: IMarketPurchaseLessons): Observable<IApiData<IPaymentSuccess>> {

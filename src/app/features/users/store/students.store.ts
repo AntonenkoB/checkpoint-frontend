@@ -6,7 +6,7 @@ import {pipe, switchMap, tap} from "rxjs";
 import {IUser} from "@models/user.model";
 import {UserService} from "@users/services/user.service";
 import {IPagination} from "@models/api.models";
-import {EUserPages, IUserUpdate} from "@users/models/user.model";
+import {EHeaderMenu, EUserPages, IUserUpdate} from "@users/models/user.model";
 import {RouterActions} from "../../../store/router/actions";
 import {EAppPages} from "@models/router.model";
 import {HapticService} from "@shared/services/haptic.service";
@@ -113,7 +113,10 @@ export const StudentsStore = signalStore(
               patchState(state, {student, studentLoading: false});
               void hapticService.impact(ImpactStyle.Medium);
               state.loadStudents('');
-              store.dispatch(RouterActions.goTo({path: [EAppPages.Users, EUserPages.ListUsers]}));
+              store.dispatch(RouterActions.goTo({
+                path: [EAppPages.Users, EUserPages.ListUsers],
+                extras: {queryParams: {tab: EHeaderMenu.Student}}
+              }));
             },
             () => patchState(state, {studentLoading: false}),
           ),

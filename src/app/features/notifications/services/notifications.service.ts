@@ -37,6 +37,6 @@ export class NotificationsService extends ApiService {
   }
 
   public deleteDeviceTokens(token: string): Observable<IApiData<unknown>> {
-    return this.post<IApiData<unknown>>(EApiEndpoints.DeleteDeviceTokens, {token});
+    return this.delete<IApiData<unknown>>(EApiEndpoints.DeleteDeviceTokens, undefined, undefined, {token});
   }
 }

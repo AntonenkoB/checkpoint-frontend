@@ -1,6 +1,6 @@
 <div class="avatar">
   @if (src()) {
-    <img [ngSrc]="src()" alt=" " fill>
+    <img [ngSrc]="src()" alt=" " fill loading="eager">
   } @else {
     <div class="empty-avatar" [innerHTML]="EMPTY_AVATAR_SVG"></div>
   }

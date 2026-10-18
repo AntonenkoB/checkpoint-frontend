@@ -66,7 +66,10 @@
     }
   </div>
 
-  @if (!(userListFacade.activeRole() === eUserRole.Admin && activeMenu() === eHeaderMenu.Admin)) {
+  @if (
+      !(userListFacade.activeRole() === eUserRole.Admin && activeMenu() === eHeaderMenu.Admin)
+      && !(userListFacade.activeRole() === eUserRole.Owner && activeMenu() === eHeaderMenu.Schedule)
+      ) {
     <div class="container">
       <cp-buttons
           [title]="this.USER_ACTIONS_BTN[activeMenu()] | translate"

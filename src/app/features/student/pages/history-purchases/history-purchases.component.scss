@@ -5,9 +5,11 @@
     height: 100%;
 
     >.container {
+      display: flex;
+      flex-direction: column;
       padding-top: var(--spacing-24);
       padding-bottom: var(--cp-safe-area-bottom);
-      height: 100%;
+      min-height: 100%;
     }
   }
 
@@ -47,6 +49,9 @@
   }
 
   .empty-wrap {
-    height: 100%;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }

@@ -32,6 +32,7 @@
           <cp-record-student-item
               class="teacher"
               [student]="teacher"
+              [withAmountLesson]="false"
               (select)="lessonsFacade.selectTeacherToFreeLessons(teacher!)"
           ></cp-record-student-item>
         }
@@ -40,6 +41,7 @@
           <cp-record-student-item
               class="teacher"
               [student]="teacher"
+              [withAmountLesson]="false"
               (select)="lessonsFacade.selectTeacher(teacher!)"
           ></cp-record-student-item>
         }

@@ -1,6 +1,7 @@
 import {inject, Injectable} from "@angular/core";
 import {ToastController} from "@ionic/angular/standalone";
 import {TranslateService} from "@shared/services/translate.service";
+import {ONE_SECONDS} from "@models/common.model";
 
 @Injectable({
   providedIn: "root",
@@ -12,7 +13,7 @@ export class ToastService {
   async show(
     message: string,
     color: 'success' | 'danger' | 'warning' | 'primary' = 'success',
-    duration = 1500
+    duration = ONE_SECONDS
   ): Promise<void> {
     const toast = await this.toastController.create({
       // message: this.translateService.instant(message), // waiting update translate service

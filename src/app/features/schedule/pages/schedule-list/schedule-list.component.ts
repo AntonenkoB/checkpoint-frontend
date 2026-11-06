@@ -21,7 +21,7 @@ import {LoaderComponent} from "@shared/components/loader/loader.component";
 import {EmptyStateComponent} from "@shared/components/empty-state/empty-state.component";
 import {formatToDateTime} from "@shared/utils/date.utils";
 import {DayTitlePipe} from "@shared/pipes/day-title-pipe";
-import {IScheduleItem, ITimeRange} from "@schedule/models/schedule.model";
+import {EScheduleStatus, IScheduleItem, ITimeRange} from "@schedule/models/schedule.model";
 import {TranslatePluralPipe} from "@shared/pipes/translate-plural.pipe";
 import {IonContent, IonRefresher, IonRefresherContent} from "@ionic/angular/standalone";
 import {RefresherCustomEvent} from "@ionic/angular";
@@ -63,6 +63,7 @@ export class ScheduleListComponent implements OnInit {
   public profile = computed(() => this.scheduleFacade.profile())
   public studentsList = signal(this.scheduleFacade.studentsList());
   public eUserRole = EUserRole;
+  public eScheduleStatus = EScheduleStatus;
 
   public activeDate = signal<string>('');
   private isManualScrolling = false;

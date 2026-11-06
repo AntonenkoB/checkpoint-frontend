@@ -62,6 +62,7 @@ export interface IPaymentInvoice {
   payment_method?: EMarketPaymentType;
   has_receipt?: boolean;
   activation_deadline?: string;
+  total: number;
 }
 
 export interface IPaymentSuccess {

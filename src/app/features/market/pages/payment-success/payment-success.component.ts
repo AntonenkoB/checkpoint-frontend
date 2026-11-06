@@ -11,6 +11,8 @@ import {TranslatePluralPipe} from "@shared/pipes/translate-plural.pipe";
 import {takeWhile, timer} from "rxjs";
 import {take} from "rxjs/operators";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {DomSanitizer} from "@angular/platform-browser";
+import {PAYMENT_FAILED_SVG, PAYMENT_PENDING_SVG, PAYMENT_SUCCESS_SVG} from "@models/svg.models";
 
 @Component({
   selector: "cp-payment-success",
@@ -26,12 +28,17 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
   providers: [MarketFacade]
 })
 export class PaymentSuccessComponent implements OnInit {
+  public readonly sanitizer = inject(DomSanitizer);
   private readonly destroyRef = inject(DestroyRef);
   public marketFacade = inject(MarketFacade);
   public marketStore = inject(MarketStore);
-  public eMarketPlanType = EMarketPlanType;
-  public eLessonFlow = ELessonFlow;
-  public ePurchaseStatus = EPaymentStatus;
+  protected readonly eMarketPlanType = EMarketPlanType;
+  protected readonly eLessonFlow = ELessonFlow;
+  protected readonly ePurchaseStatus = EPaymentStatus;
+  protected readonly PAYMENT_PENDING_SVG = this.sanitizer.bypassSecurityTrustHtml(PAYMENT_PENDING_SVG);
+  protected readonly PAYMENT_FAILED_SVG = this.sanitizer.bypassSecurityTrustHtml(PAYMENT_FAILED_SVG);
+  protected readonly PAYMENT_SUCCESS_SVG = this.sanitizer.bypassSecurityTrustHtml(PAYMENT_SUCCESS_SVG);
+
 
   public successData = computed(() => this.marketStore.paymentSuccessData());
   public successInvoiceData = computed(() => this.marketStore.paymentInvoice());

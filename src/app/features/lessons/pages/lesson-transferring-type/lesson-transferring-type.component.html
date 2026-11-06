@@ -10,6 +10,9 @@
       }
     </div>
     <div class="lesson-date">{{lessonsFacade.lessonsStore.currentDateTime()!}}</div>
+<!--    @if (lessonsFacade.isStudent() && lessonsFacade.lessonsStore.currentUser()!) {-->
+<!--      <div class="lesson-date-last">Лишилось менше 24 годин, ми знімемо плату за цей урок при відміні чи переносі</div>-->
+<!--    }-->
     <div class="btn-wrap">
       @if(lessonsFacade.isStudent()) {
         <ion-button class="cansel-btn" (click)="lessonsFacade.goToTransferringTime()">{{ "schedule.transfer" | translate}}</ion-button>

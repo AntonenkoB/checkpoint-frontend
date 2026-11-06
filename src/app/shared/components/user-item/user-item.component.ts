@@ -31,6 +31,7 @@ export class UserItemComponent {
   public withAdditionalInfo = input(true);
   public disabled = input(false);
   public fullRooms = input(false);
+  public reserved = input(false);
   public withSalaryInfo = input(false);
   public openUser = output<number>();
   public delete = output<number | undefined>();

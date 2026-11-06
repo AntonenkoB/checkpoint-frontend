@@ -2,12 +2,13 @@ import {computed, inject, Injectable} from "@angular/core";
 import {Store} from "@ngrx/store";
 import {EAppPages} from "@models/router.model";
 import {AppState} from "@capacitor/app";
-import {EHeaderMenu, EUserPages} from "@users/models/user.model";
-import {EUserRole, IUser} from "@models/user.model";
+import {EHeaderMenu} from "@users/models/user.model";
+import {IUser} from "@models/user.model";
 import {RouterActions} from "../../../store/router/actions";
 import {
   EDayOfWeek,
   ESchedulePages,
+  EScheduleStatus,
   IBorderSides,
   IScheduleItem,
   IScheduleItemToDate,
@@ -228,7 +229,7 @@ export class ScheduleFacade {
     const seen = new Set<number>();
 
     return slots.filter(slot => {
-      if (slot.lesson !== null) return true;
+      if (slot.lesson !== null || slot.status === EScheduleStatus.Reserved) return true;
 
       // remove for admin and need disabled for teacher
       if (this.isAdmin() && slot.rooms_free < 1) return false;

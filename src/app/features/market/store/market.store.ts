@@ -21,6 +21,10 @@ import {ProfileStore} from "@profile/store/profile.store";
 import {ImpactStyle} from "@capacitor/haptics";
 import {HapticService} from "@shared/services/haptic.service";
 import {PaymentBrowserService} from "@shared/services/payment-browser.service";
+import {getApiErrorMessage} from "@shared/utils/error-handling.utils";
+import {FOUR_SECONDS} from "@models/common.model";
+import {ToastService} from "@shared/services/toast.service";
+import {TranslateService} from "@shared/services/translate.service";
 
 export interface MarketState {
   isLoading: boolean;
@@ -59,6 +63,8 @@ export const MarketStore = signalStore(
     profileStore = inject(ProfileStore),
     hapticService = inject(HapticService),
     paymentBrowser = inject(PaymentBrowserService),
+    toastService = inject(ToastService),
+    translateService = inject(TranslateService),
   ) => ({
     loadTeacherRate: rxMethod<void>(
       pipe(
@@ -193,6 +199,10 @@ export const MarketStore = signalStore(
           }),
           catchError((err) => {
             patchState(state, {isLoading: false});
+            toastService.error(
+              getApiErrorMessage(err.errors, translateService.instant('common.error-default'), err.message),
+              FOUR_SECONDS
+            );
             return of(null);
           })
         ))

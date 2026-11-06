@@ -3,7 +3,8 @@
     <div class="notification-title" [class]="action()">
       {{ notificationTitle() | translate: {
           lessons: notification()?.payload?.lessons!,
-          date: notification()?.payload?.date!
+          date: notification()?.payload?.date!,
+          period: notification()?.payload?.period!
         }
       }}
     </div>

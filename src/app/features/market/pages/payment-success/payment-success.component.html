@@ -5,8 +5,32 @@
   @if (marketFacade.isStudent()) {
     @if (successInvoiceData()?.status === ePurchaseStatus.Pending) {
       <div class="payment-pending-info">
+        <div class="icon-wrap">
+          <div class="icon" [innerHTML]="PAYMENT_PENDING_SVG"></div>
+        </div>
         <div class="title">{{"market.payment-pending-title" | translate}}</div>
         <div class="description">{{"market.payment-pending-description" | translate}}</div>
+
+        @if (successInvoiceData()?.plan?.type === eMarketPlanType.Single) {
+          <div class="description">{{
+              successInvoiceData()?.quantity ?? 0 | translatePlural: 'market.payment-success-description-single-short' : {
+                quantity: successInvoiceData()?.quantity ?? 0,
+                price: successInvoiceData()?.total!
+              }
+            }}</div>
+        }
+
+        @if (successInvoiceData()?.plan?.type === eMarketPlanType.Subscription) {
+          <div class="description">{{
+              successInvoiceData()?.quantity ?? 0 | translatePlural: 'market.payment-success-description-abonnement-short' : {
+                quantity: successInvoiceData()?.quantity ?? 0,
+                price: successInvoiceData()?.total!
+              }
+            }}</div>
+        }
+      </div>
+      <div class="btn-wrap">
+        <ion-button (click)="marketFacade.closeMarketPage()">{{"market.payment-success-btn" | translate}}</ion-button>
       </div>
     }
 
@@ -16,29 +40,39 @@
         || successInvoiceData()?.status === ePurchaseStatus.Reversed
       ) {
       <div class="payment-pending-info">
+        <div class="icon-wrap">
+          <div class="icon" [innerHTML]="PAYMENT_FAILED_SVG"></div>
+        </div>
         <div class="title">{{"market.payment-failed-title" | translate}}</div>
         <div class="description">{{"market.payment-failed-description" | translate}}</div>
+
+      </div>
+      <div class="btn-wrap">
+        <ion-button (click)="marketFacade.closeMarketPage()">{{"market.payment-failed-btn" | translate}}</ion-button>
       </div>
     }
 
     @if (successInvoiceData()?.status === ePurchaseStatus.Paid) {
       <div class="payment-success-info">
+        <div class="icon-wrap">
+          <div class="icon" [innerHTML]="PAYMENT_SUCCESS_SVG"></div>
+        </div>
         <div class="title">{{"market.payment-success-title" | translate}}</div>
 
         @if (successInvoiceData()?.plan?.type === eMarketPlanType.Single) {
           <div class="description">{{
-            successInvoiceData()?.purchase?.quantity ?? 0 | translatePlural: 'market.payment-success-description-single' : {
-              quantity: successInvoiceData()?.purchase?.quantity ?? 0,
-              price: successInvoiceData()?.purchase?.price_paid!
+            successInvoiceData()?.quantity ?? 0 | translatePlural: 'market.payment-success-description-single' : {
+              quantity: successInvoiceData()?.quantity ?? 0,
+              price: successInvoiceData()?.total!
             }
           }}</div>
         }
 
         @if (successInvoiceData()?.plan?.type === eMarketPlanType.Subscription) {
           <div class="description">{{
-            successInvoiceData()?.purchase?.quantity ?? 0 | translatePlural: 'market.payment-success-description-abonnement' : {
-              quantity: successInvoiceData()?.purchase?.quantity ?? 0,
-              price: successInvoiceData()?.purchase?.price_paid!
+            successInvoiceData()?.quantity ?? 0 | translatePlural: 'market.payment-success-description-abonnement' : {
+              quantity: successInvoiceData()?.quantity ?? 0,
+              price: successInvoiceData()?.total!
             }
           }}</div>
         }
@@ -53,10 +87,9 @@
 <!--            ></cp-record-student-item>-->
 <!--          </div>-->
 <!--        }-->
-
-        <div class="btn-wrap">
-          <ion-button (click)="marketFacade.closeMarketPage()">{{"market.payment-success-btn" | translate}}</ion-button>
-        </div>
+      </div>
+      <div class="btn-wrap">
+        <ion-button (click)="marketFacade.closeMarketPage()">{{"market.payment-success-btn" | translate}}</ion-button>
       </div>
     }
   } @else {
@@ -85,6 +118,7 @@
         }}</div>
       }
 
+      <!--   need to add teacher  -->
       @if (successData().teacher) {
         <div class="student">
           <cp-record-student-item
@@ -94,10 +128,10 @@
           ></cp-record-student-item>
         </div>
       }
+    </div>
 
-      <div class="btn-wrap">
-        <ion-button (click)="marketFacade.closeMarketPage()">{{"market.payment-success-btn" | translate}}</ion-button>
-      </div>
+    <div class="btn-wrap">
+      <ion-button (click)="marketFacade.closeMarketPage()">{{"market.payment-success-btn" | translate}}</ion-button>
     </div>
   }
 </div>

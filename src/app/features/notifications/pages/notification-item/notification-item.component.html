@@ -2,7 +2,8 @@
   <div class="notification-top">
     <div class="notification-title" [class]="action()" [innerHTML]="notificationTitle() | translate: {
           lessons: notification()?.payload?.lessons!,
-          date: notification()?.payload?.date!
+          date: notification()?.payload?.date!,
+          period: notification()?.payload?.period!
         }"></div>
     <div class="notification-time">{{notification()?.created_at | dateTimeLabel }}</div>
   </div>

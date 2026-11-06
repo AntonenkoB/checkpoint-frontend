@@ -14,20 +14,30 @@
     flex-direction: column;
     justify-content: center;
     flex: 1 1 auto;
+    align-items: center;
+  }
+
+  .icon-wrap {
+    padding-bottom: var(--spacing-80);
   }
 
   .title {
     font: var(--font-alumi-48-black);
-    padding-bottom: var(--spacing-40);
+    padding: 0 var(--spacing-20) var(--spacing-40);
+    text-transform: uppercase;
+    text-align: center;
+    white-space: pre-line;
   }
 
   .description {
     font: var(--font-open-16-regular);
     padding-bottom: var(--spacing-16);
+    text-align: center;
   }
 
   .btn-wrap {
     padding-top: var(--spacing-40);
-    padding-bottom: 120px;
+    padding-bottom: calc(var(--spacing-20) + var(--cp-safe-area-bottom));
+    min-width: 100%;
   }
 }

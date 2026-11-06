@@ -38,12 +38,13 @@
         }
       } @else {
         @for (teacher of lessonsFacade.studentTeachers(); track teacher?.id) {
-          <cp-record-student-item
-              class="teacher"
-              [student]="teacher"
-              [withAmountLesson]="false"
-              (select)="lessonsFacade.selectTeacher(teacher!)"
-          ></cp-record-student-item>
+          <cp-user-item
+              class="user-item"
+              [user]="teacher"
+              [withAdditionalInfo]="true"
+              (openUser)="lessonsFacade.selectTeacher(teacher!)"
+          >
+          </cp-user-item>
         }
       }
     </div>

@@ -17,6 +17,7 @@ export interface IScheduleItem {
   id: number;
   date: string;
   time: ITimeRange;
+  status: EScheduleStatus;
   source: EScheduleSource;
   rooms_free: number;
   lesson: ILesson;
@@ -41,6 +42,11 @@ export enum EScheduleSource {
   Manual = 'manual'
 }
 
+export enum EScheduleStatus {
+  Available = 'available',
+  Reserved = 'reserved',
+}
+
 export interface ILesson {
   id: number;
   student: IUser;
@@ -62,6 +68,8 @@ export enum EDayOfWeek {
   Sunday = 7
 }
 export const TIME_LIST: ITimeRange[] = [
+  { from: 8, to: 9 },
+  { from: 9, to: 10 },
   { from: 10, to: 11 },
   { from: 11, to: 12 },
   { from: 12, to: 13 },
@@ -73,7 +81,8 @@ export const TIME_LIST: ITimeRange[] = [
   { from: 18, to: 19 },
   { from: 19, to: 20 },
   { from: 20, to: 21 },
-  { from: 21, to: 22 }
+  { from: 21, to: 22 },
+  { from: 22, to: 23 }
 ] as const;
 
 

@@ -152,6 +152,7 @@ export enum ENotificationStatus {
 export interface INotificationPayload {
   date: string;
   time: ITimeRange;
+  period?: string;
   previous_date: string;
   previous_time: ITimeRange;
   lessons: string;

@@ -6,6 +6,7 @@ import {TimeListComponent} from "@shared/components/time-list/time-list.componen
 import {IonLabel, IonModal, IonSegment, IonSegmentButton} from "@ionic/angular/standalone";
 import {TranslatePipe} from "@shared/pipes/translate-pipe";
 import {
+  EScheduleStatus,
   EScheduleType, ITimeRange,
   SCHEDULE_TYPE_TABS,
   WEEK_SHORT_LIST
@@ -66,7 +67,7 @@ export class ScheduleComponent implements OnInit {
 
   public hasLessonsTime = computed(() => {
     const lessons = this.scheduleStore.slotsEntities().filter(
-      (item) => item.date === this.activeDate() && !!item.lesson
+      (item) => item.date === this.activeDate() && (!!item.lesson || item.status === EScheduleStatus.Reserved)
     );
 
     return lessons.flatMap((item) => item.time)

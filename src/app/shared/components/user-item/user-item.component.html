@@ -33,7 +33,9 @@
           <div class="creative-name">{{creativeName()}}</div>
           <div class="name">{{fullName()}}</div>
         } @else {
-          @if (fullRooms()) {
+          @if (reserved()) {
+            <div class="add-user">{{"schedule.reserved" | translate}}</div>
+          } @else if (fullRooms()) {
             <div class="add-user">{{"schedule.full-rooms" | translate}}</div>
           } @else {
             <div class="add-user">+ {{(timeLesson() ? "users.add-student-btn" : "users.add-teacher-btn") | translate}}</div>

@@ -142,7 +142,8 @@
     "btn-to-schedule": "Назад до розкладу",
     "btn-planing-lesson": "Запланувати урок",
     "btn-planing": "Запланувати",
-    "full-rooms": "Немає вільних кімнат"
+    "full-rooms": "Немає вільних кімнат",
+    "reserved": "Очікує підтвердження учнем"
   },
   "record": {
     "student-title": "Виберіть учня на урок",
@@ -163,24 +164,34 @@
     "one-time-lessons": "Разові уроки",
     "abonnement-lessons": "Абонемент",
     "abonnement-details": "{{total}} ₴ ({{perLesson}} ₴/урок) <br/> за {{count}} уроки на місяць",
-    "abonnement-details1": "еуіе",
     "abonnement-usage-note": "Маєш почати використовувати уроки <br/> протягом трьох місяців",
     "payment-success-title": "Оплачено!",
-    "payment-pending-title": "Оплата обробляється",
-    "payment-failed-title": "Виникла помилка",
-    "payment-pending-description": "Ще не отримали підтвердження. Повідомимо, щойно оплата пройде.",
-    "payment-failed-description": "Спробуйте зробити оплату пізніше.",
+    "payment-pending-title": "Оплата \nобробляється",
+    "payment-failed-title": "Оплата \nне пройшла",
+    "payment-pending-description": "Зазвичай це займає кілька хвилин",
+    "payment-failed-description": "Банк відхилив платіж. Перевірте картку або оплатіть іншою. Якщо суму встигли заблокувати, банк її поверне",
     "payment-success-description-single": {
       "one": "Ви придбали {{quantity}} урок за {{price}} ₴",
       "few": "Ви придбали {{quantity}} уроки за {{price}} ₴",
       "many": "Ви придбали {{quantity}} уроків за {{price}} ₴"
+    },
+    "payment-success-description-single-short": {
+      "one": "{{quantity}} урок за {{price}} ₴",
+      "few": "{{quantity}} уроки за {{price}} ₴",
+      "many": "{{quantity}} уроків за {{price}} ₴"
     },
     "payment-success-description-abonnement": {
       "one": "Ви придбали {{quantity}} абонемент за {{price}} ₴",
       "few": "Ви придбали {{quantity}} абонементи за {{price}} ₴",
       "many": "Ви придбали {{quantity}} абонементів за {{price}} ₴"
     },
+    "payment-success-description-abonnement-short": {
+      "one": "{{quantity}} абонемент за {{price}} ₴",
+      "few": "{{quantity}} абонементи за {{price}} ₴",
+      "many": "{{quantity}} абонементів за {{price}} ₴"
+    },
     "payment-success-btn": "До зустрічі",
+    "payment-failed-btn": "На головну",
     "select-teacher-to-buy": "Виберіть вашого вчителя, <br /> щоб купити уроки",
     "select-user-to-buy": "Виберіть користувача",
     "abonnement": {
@@ -304,13 +315,13 @@
       "lesson_cancelled_by_teacher": "Вчитель скасував ваш урок",
       "individual_cancelled_by_admin": "Школа скасувала ваше самостійне заняття",
       "subscription_activation_reminder": "Вам потрібно почати використовувати абонемент до {{date}}. Абонемент анулюється після закінчення терміну дії.",
-      "subscription_activation_expired": "Ви не почали використовувати абонемент до {{date}}. Відповідно до умов навчання, абонемент анульовано.",
-      "subscription_usage_reminder": "Вам потрібно використати ще {{lessons}} з абонементу до {{date}}. Уроки анулюються після закінчення терміну дії.",
-      "subscription_usage_expired": "Ви не використали {{lessons}} з абонементу до {{date}}. Відповідно до умов навчання, уроки анульовано.",
-      "lessons_activation_reminder": "Вам потрібно почати використовувати уроки до {{date}}. Уроки анулюються після закінчення терміну дії.",
-      "lessons_activation_expired": "Ви не почали використовувати уроки до {{date}}. Відповідно до умов навчання, уроки анульовано.",
-      "lessons_usage_reminder": "Вам потрібно використати ще {{lessons}} до {{date}}. Уроки анулюються після закінчення терміну дії.",
-      "lessons_usage_expired": "Ви не використали {{lessons}} до {{date}}. Відповідно до умов навчання, уроки анульовано.",
+      "subscription_activation_expired": "Ви не почали використовувати абонемент протягом {{period}}. Відповідно до умов навчання, абонемент анульовано.",
+      "subscription_usage_reminder": "Вам потрібно використати ще {{lessons}} з абонементу протягом {{period}}. Уроки анулюються після закінчення терміну дії.",
+      "subscription_usage_expired": "Ви не використали {{lessons}} з абонементу протягом {{period}}. Відповідно до умов навчання, уроки анульовано.",
+      "lessons_activation_reminder": "Вам потрібно почати використовувати уроки протягом {{period}}. Уроки анулюються після закінчення терміну дії.",
+      "lessons_activation_expired": "Ви не почали використовувати уроки протягом {{period}}. Відповідно до умов навчання, уроки анульовано.",
+      "lessons_usage_reminder": "Вам потрібно використати ще {{lessons}} протягом {{period}}. Уроки анулюються після закінчення терміну дії.",
+      "lessons_usage_expired": "Ви не використали {{lessons}} протягом {{period}}. Відповідно до умов навчання, уроки анульовано.",
       "subscription_credited": "На ваш баланс зараховано {{lessons}} з абонементу. Час бронювати заняття.",
       "lessons_credited": "На ваш баланс зараховано {{lessons}}. Час бронювати заняття."
     },

@@ -84,8 +84,9 @@
                   <div class="schedule-time-list">
                     <cp-user-item
                         class="time"
-                        [disabled]="scheduleFacade.isTeacher() && !slot.lesson && slot.rooms_free === 0"
+                        [disabled]="scheduleFacade.isTeacher() && !slot.lesson && slot.rooms_free === 0 || slot.status === eScheduleStatus.Reserved"
                         [fullRooms]="slot.rooms_free === 0"
+                        [reserved]="slot.status === eScheduleStatus.Reserved"
                         [timeLesson]="slot.time"
                         [user]="slot.lesson?.student"
                         [showTeacher]="!scheduleFacade.isTeacher()"
@@ -105,6 +106,7 @@
                       [disabled]="scheduleFacade.isTeacher() && !slot.lesson && slot.rooms_free === 0"
                       [fullRooms]="slot.rooms_free === 0"
                       [timeLesson]="slot.time"
+                      [reserved]="slot.status === eScheduleStatus.Reserved"
                       [user]="slot.lesson?.student"
                       [showTeacher]="!scheduleFacade.isTeacher()"
                       [withTeacher]="slot.teacher"

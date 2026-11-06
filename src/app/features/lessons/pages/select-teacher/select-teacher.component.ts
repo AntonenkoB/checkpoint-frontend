@@ -8,6 +8,7 @@ import {ELessonFlow} from "@lessons/models/lessons.model";
 import {IonInput, IonItem} from "@ionic/angular/standalone";
 import {debounceTime, distinctUntilChanged, Subject} from "rxjs";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {UserItemComponent} from "@shared/components/user-item/user-item.component";
 
 @Component({
   selector: "cp-select-teacher",
@@ -18,7 +19,8 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
     TranslatePipe,
     RecordStudentItemComponent,
     IonInput,
-    IonItem
+    IonItem,
+    UserItemComponent
   ],
   providers: [ScheduleFacade]
 })

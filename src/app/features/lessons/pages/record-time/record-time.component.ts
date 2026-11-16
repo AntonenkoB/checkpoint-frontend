@@ -1,4 +1,4 @@
-import {Component, computed, inject, OnInit, signal} from "@angular/core";
+import {Component, computed, effect, inject, OnInit, signal, untracked} from "@angular/core";
 import {HeaderSecondaryComponent} from "@shared/components/header-secondary/header-secondary.component";
 import {TranslatePipe} from "@shared/pipes/translate-pipe";
 import {RecordStudentItemComponent} from "@shared/components/record-student-item/record-student-item.component";
@@ -11,6 +11,7 @@ import {ITimeRange} from "@schedule/models/schedule.model";
 import {CalendarShortComponent} from "@shared/components/calendar-short/calendar-short.component";
 import {RecordTimeFacade} from "@lessons/facade/record-time.facade";
 import {ButtonsComponent} from "@shared/components/buttons/buttons.component";
+import {DayPagerSwipeComponent} from "@shared/components/day-pager-swipe/day-pager-swipe.component";
 
 @Component({
   selector: "cp-record-time",
@@ -23,7 +24,8 @@ import {ButtonsComponent} from "@shared/components/buttons/buttons.component";
     CalendarComponent,
     TimeListComponent,
     CalendarShortComponent,
-    ButtonsComponent
+    ButtonsComponent,
+    DayPagerSwipeComponent
   ],
   providers: [RecordTimeFacade]
 })
@@ -31,15 +33,33 @@ export class RecordTimeComponent implements OnInit {
   public lessonsFacade = inject(LessonsFacade);
   public recordTimeFacade = inject(RecordTimeFacade);
   private datePipe = inject(DatePipe);
-  public eLessonsType = ELessonsType;
 
-  private activeDay = signal(this.datePipe.transform(new Date(), 'yyyy-MM-dd') as string);
+  public activeDay = signal(this.datePipe.transform(new Date(), 'yyyy-MM-dd') as string);
 
   public activeTime = signal<ITimeRange[]>([]);
 
-  public disabledSlotsPrepare = computed(() =>
-    this.recordTimeFacade.getDisabledSlotsForDay(this.activeDay())
+  public isFullCalendar = computed(() =>
+    this.lessonsFacade.profileFacade.isStudent() &&
+    this.lessonsFacade.currentLessonsType() === ELessonsType.TeacherGuided
   );
+
+  public pagerSwipeDays = computed(() => {
+    const today = new Date();
+    const last = new Date(today);
+
+    if (this.isFullCalendar()) {
+      last.setMonth(last.getMonth() + 2);   // як у cp-calendar
+    } else {
+      last.setDate(last.getDate() + 7);     // 8 днів, як у cp-calendar-short
+    }
+
+    const from = this.datePipe.transform(today, 'yyyy-MM-dd') as string;
+    const to = this.datePipe.transform(last, 'yyyy-MM-dd') as string;
+
+    const days = (this.calendarActiveDays() ?? []).filter((day) => day >= from && day <= to);
+
+    return [...new Set(days)].sort();
+  });
 
   // public disabledSlotsPrepare = computed(() => {
   //   let data = [] as IScheduleItem[];
@@ -65,6 +85,13 @@ export class RecordTimeComponent implements OnInit {
   public calendarActiveDays = this.recordTimeFacade.calendarActiveDays
 
   constructor() {
+    effect(() => {
+      const firstDay = this.pagerSwipeDays()[0];
+
+      if (firstDay) {
+        untracked(() => this.changeDay(firstDay));
+      }
+    });
   }
 
   ngOnInit() {
@@ -83,14 +110,17 @@ export class RecordTimeComponent implements OnInit {
   }
 
   public selectDay(event: CustomEvent) {
-    const date = event.detail.value;
-
-    this.activeDay.set(date);
-    this.activeTime.set([]);
+    this.changeDay(event.detail.value);
   }
 
   public selectShortDay(date: string) {
+    this.changeDay(date);
+  }
 
+  public changeDay(date: string): void {
+    if (date === this.activeDay()) {
+      return;
+    }
     this.activeDay.set(date);
     this.activeTime.set([]);
   }
@@ -102,76 +132,5 @@ export class RecordTimeComponent implements OnInit {
 
   public save(): void {
     this.recordTimeFacade.bookOrTransfer(this.activeDay(), this.activeTime());
-  //   const currentSlot =
-  //     this.lessonsFacade.slots()?.filter(
-  //       slot => slot.date === this.activeDay()
-  //     ).find((slot) => slot.time.from === this.activeTime()[0].from);
-  //   const lesson_id = this.lessonsFacade.lessonsStore.currentLessonId();
-  //   const currentUser = this.lessonsFacade.lessonsStore.currentUser();
-  //
-  //   if (this.lessonsFacade.currentRecordTab() === ELessonsRecordType.Transferring) {
-  //     if (this.lessonsFacade.profileFacade.isStudent()) {
-  //
-  //       if (this.lessonsFacade.currentLessonsType() === ELessonsType.TeacherGuided) {
-  //         const data: ITransferringLesson = {
-  //           teacher_id: currentUser?.id,
-  //           lesson_id: lesson_id ?? 0,
-  //           slot_id: currentSlot?.id ?? 0
-  //         }
-  //         this.lessonsFacade.lessonsStore.transferringAsStudent(data);
-  //       } else {
-  //         const data: ITransferringLesson = {
-  //           lesson_id: lesson_id ?? 0,
-  //           slot_id: currentSlot?.id ?? 0
-  //         }
-  //         this.lessonsFacade.lessonsStore.transferringIndividualAsStudent(data);
-  //       }
-  //     }
-  //
-  //     if (this.lessonsFacade.profileFacade.isTeacher()) {
-  //       const currentSlotForTeacher =
-  //         this.lessonsFacade.scheduleStore.slotsEntities()?.filter(
-  //           slot => slot.date === this.activeDay()
-  //         ).find((slot) => slot.time.from === this.activeTime()[0].from);
-  //
-  //       const data: ITransferringLesson = {
-  //         student_id: currentUser?.id,
-  //         lesson_id: lesson_id ?? 0,
-  //         slot_id: currentSlotForTeacher?.id ?? 0
-  //       }
-  //       this.lessonsFacade.lessonsStore.transferringAsTeacher(data);
-  //     }
-  //
-  //
-  //     if (this.lessonsFacade.profileFacade.isAdmin()) {
-  //       const currentSlotForTeacher =
-  //         this.lessonsFacade.scheduleStore.slotsEntities()?.filter(
-  //           slot => slot.date === this.activeDay()
-  //         ).find((slot) => slot.time.from === this.activeTime()[0].from);
-  //
-  //       const data: ITransferringLesson = {
-  //         student_id: currentUser?.id,
-  //         lesson_id: lesson_id ?? 0,
-  //         slot_id: currentSlotForTeacher?.id ?? 0
-  //       }
-  //       this.lessonsFacade.lessonsStore.transferringIndividualAsAdmin(data);
-  //     }
-  //
-  //     return
-  //   }
-  //
-  //   const prepareDate = formatToDateTime(this.activeDay(), this.activeTime()[0].from, this.activeTime()[0].to)
-  //   this.lessonsFacade.lessonsStore.updateCurrentDateTime(prepareDate);
-  //
-  //   if (this.lessonsFacade.currentLessonsType() === ELessonsType.TeacherGuided) {
-  //     const data: ISetLesson = {
-  //       teacher_id: currentUser?.id,
-  //       slot_id: currentSlot?.id ?? 0
-  //     }
-  //
-  //     this.lessonsFacade.lessonsStore.bookAsStudent(data);
-  //   } else {
-  //     this.lessonsFacade.lessonsStore.bookIndividualAsStudent(currentSlot?.id!);
-  //   }
   }
 }

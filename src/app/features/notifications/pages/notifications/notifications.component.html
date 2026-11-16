@@ -16,8 +16,11 @@
             <cp-notification-item
                 class="cp-notification-item"
                 [notification]="notification"
+                [isStudent]="notificationsFacade.isStudent()"
                 [isLoading]="notificationsFacade.isLoading()"
                 [loadingProcessingId]="notificationsFacade.loadingProcessingId()"
+                (confirm)="notificationsFacade.confirmNotification(notification.id)"
+                (reject)="notificationsFacade.rejectNotification(notification.id)"
                 (readNotification)="notificationsFacade.readNotification(notification.id)"
             ></cp-notification-item>
           }

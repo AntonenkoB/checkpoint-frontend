@@ -22,6 +22,7 @@ import {TranslateService} from "@shared/services/translate.service";
 import {EMarketPages} from "@market/models/market.model";
 import {getApiErrorMessage} from "@shared/utils/error-handling.utils";
 import {FOUR_SECONDS} from "@models/common.model";
+import {MarketStore} from "@market/store/market.store";
 
 export interface LessonsState {
   isLoading: boolean;
@@ -30,6 +31,8 @@ export interface LessonsState {
   currentDateTime: string | null;
   currentLessonId: number | null;
   currentSlotId: number | null;
+  currentBooking: ISetLesson | null;
+  currentBookingIndividual: number | null;
 }
 
 const initialState: LessonsState = {
@@ -38,7 +41,9 @@ const initialState: LessonsState = {
   currentUser: null,
   currentDateTime: null,
   currentLessonId: null,
-  currentSlotId: null
+  currentSlotId: null,
+  currentBooking: null,
+  currentBookingIndividual: null
 };
 
 export const LessonsStore = signalStore(
@@ -118,6 +123,7 @@ export const LessonsStore = signalStore(
     studentStore = inject(StudentStore),
     scheduleStore = inject(ScheduleStore),
     profileStore = inject(ProfileStore),
+    marketStore = inject(MarketStore),
     hapticService = inject(HapticService),
     toastService = inject(ToastService),
     translateService = inject(TranslateService),
@@ -129,7 +135,8 @@ export const LessonsStore = signalStore(
           tap((response) => {
             patchState(state, {
               isLoading: false,
-              currentUser: response.data.teacher
+              currentUser: response.data.teacher,
+              currentBooking: null
             });
             void hapticService.impact(ImpactStyle.Medium);
             studentStore.getLessons();
@@ -141,6 +148,10 @@ export const LessonsStore = signalStore(
             void hapticService.impact(ImpactStyle.Heavy);
 
             if (err.status === 402) {
+              patchState(state, {
+                currentBooking: data
+              });
+
               globalStore.dispatch(RouterActions.goTo({
                 path: [EAppPages.Market, EMarketPages.PaymentType, data.teacher_id!],
                 extras: {queryParams: {lessonsFlow: ELessonFlow.Purchase}},
@@ -160,11 +171,12 @@ export const LessonsStore = signalStore(
     bookIndividualAsStudent: rxMethod<number>(
       pipe(
         tap(() => patchState(state, {isLoading: true})),
-        switchMap((data) => lessonsService.setIndividualAtStudent(data).pipe(
+        switchMap((id) => lessonsService.setIndividualAtStudent(id).pipe(
           tap((response) => {
             patchState(state, {
               isLoading: false,
-              currentUser: response.data.teacher
+              currentUser: response.data.teacher,
+              currentBookingIndividual: null
             });
             void hapticService.impact(ImpactStyle.Medium);
             studentStore.getLessons();
@@ -174,7 +186,12 @@ export const LessonsStore = signalStore(
           catchError((err) => {
             void hapticService.impact(ImpactStyle.Heavy);
             patchState(state, {isLoading: false});
+
             if (err.status === 402) {
+              patchState(state, {
+                currentBookingIndividual: id
+              });
+
               globalStore.dispatch(RouterActions.goTo({
                 path: [EAppPages.Market, EMarketPages.PaymentType, 0],
                 extras: {queryParams: {lessonsFlow: ELessonFlow.Purchase}},

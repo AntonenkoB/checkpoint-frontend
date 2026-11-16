@@ -35,6 +35,12 @@
     text-align: center;
   }
 
+  .description-booking {
+    font: var(--font-open-16-bold);
+    padding: 0 var(--spacing-32);
+    text-align: center;
+  }
+
   .btn-wrap {
     padding-top: var(--spacing-40);
     padding-bottom: calc(var(--spacing-20) + var(--cp-safe-area-bottom));

@@ -1,11 +1,9 @@
 import {Component, computed, effect, inject, OnInit, signal, ViewChild} from "@angular/core";
-import {EHeaderMenu} from "src/app/features/users/models/user.model";
-import {EUserRole} from "@models/user.model";
-
 import {TimeListComponent} from "@shared/components/time-list/time-list.component";
 import {IonLabel, IonModal, IonSegment, IonSegmentButton} from "@ionic/angular/standalone";
 import {TranslatePipe} from "@shared/pipes/translate-pipe";
 import {
+  EDayOfWeek,
   EScheduleStatus,
   EScheduleType, ITimeRange,
   SCHEDULE_TYPE_TABS,
@@ -19,6 +17,7 @@ import {DatePipe} from "@angular/common";
 import {ConfirmModalComponent} from "@shared/components/confirm-modal/confirm-modal.component";
 import {Platform} from "@ionic/angular";
 import {ButtonsComponent} from "@shared/components/buttons/buttons.component";
+import {DayPagerSwipeComponent} from "@shared/components/day-pager-swipe/day-pager-swipe.component";
 
 @Component({
   selector: "cp-schedule",
@@ -36,6 +35,7 @@ import {ButtonsComponent} from "@shared/components/buttons/buttons.component";
     ConfirmModalComponent,
     IonModal,
     ButtonsComponent,
+    DayPagerSwipeComponent,
   ]
 })
 export class ScheduleComponent implements OnInit {
@@ -50,42 +50,20 @@ export class ScheduleComponent implements OnInit {
   public initialBreakpoint = this.platform.is('desktop') ? undefined : 0.5;
 
   public profile = computed(() => this.scheduleFacade.profile());
-  public activeDay = signal(WEEK_SHORT_LIST[0].value);
-  public activeDate = signal(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
+  public activeDay = signal<EDayOfWeek>(WEEK_SHORT_LIST[0].value);
+  public activeDate = signal(this.datePipe.transform(new Date(), 'yyyy-MM-dd') as string);
   public scheduleType = signal(EScheduleType.OneTime);
-  public weekSlotsPrepare = computed(() => {
-    const entities = this.scheduleStore.weeklyEntities();
+  public weekSlotsPrepare = computed(() => this.weekSlotsFor(this.activeDay()));
 
-    return entities
-      .filter(slot => slot.day_of_week === this.activeDay())
-      .flatMap(item => item.time);
-  });
+  public readonly weekPagerSwipeDays = WEEK_SHORT_LIST.map((day) => String(day.value));
 
   public recordedDays = computed(() => {
     return this.scheduleStore.slotsEntities().flatMap((item) => item.date)
   });
 
-  public hasLessonsTime = computed(() => {
-    const lessons = this.scheduleStore.slotsEntities().filter(
-      (item) => item.date === this.activeDate() && (!!item.lesson || item.status === EScheduleStatus.Reserved)
-    );
+  public readonly pagerSwipeDays = this.buildPagerSwipeDays();
 
-    return lessons.flatMap((item) => item.time)
-  });
-
-  public daySlotsPrepare = computed(() => {
-    const entities = this.scheduleStore.slotsEntities();
-    const seen = new Set<number>();
-
-    return entities
-      .filter(slot => slot.date === this.activeDate())
-      .flatMap(item => {
-        if (seen.has(item.time.from)) return [];
-
-        seen.add(item.time.from);
-        return item.time;
-      });
-  });
+  public daySlotsPrepare = computed(() => this.daySlotsFor(this.activeDate()));
 
   public daySlots = signal(this.daySlotsPrepare());
 
@@ -159,16 +137,20 @@ export class ScheduleComponent implements OnInit {
       return
     }
 
-    const date = event.detail.value;
+    this.changeDate(event.detail.value);
+  }
 
+  public canChangeDay = (): boolean => {
+    if (this.checkDirtySlots()) {
+      void this.confirmChangeModal.present();
+      return false;
+    }
+    return true;
+  };
+
+  public changeDate(date: string): void {
     this.activeDate.set(date);
-    const entities = this.scheduleStore.slotsEntities();
-
-    const data = entities
-      .filter(slot => slot.date === this.activeDate())
-      .flatMap(item => item.time);
-
-    this.daySlots.set(data);
+    this.daySlots.set(this.daySlotsFor(date));
   }
 
   public selectWeekDay(event: CustomEvent): void {
@@ -181,8 +163,12 @@ export class ScheduleComponent implements OnInit {
       return
     }
 
-    this.activeDay.set(event.detail.value);
-    this.prepareWeekDay();
+    this.changeWeekDay(event.detail.value);
+  }
+
+  public changeWeekDay(day: EDayOfWeek | string): void {
+    this.activeDay.set(Number(day) as EDayOfWeek);
+    this.daySlots.set(this.weekSlotsFor(this.activeDay()));
   }
 
   public selectTime(time: ITimeRange): void {
@@ -236,13 +222,43 @@ export class ScheduleComponent implements OnInit {
     }
   }
 
-  private prepareWeekDay(): void {
-    const entities = this.scheduleStore.weeklyEntities();
-    const slots = entities
-      .filter(slot => slot.day_of_week === this.activeDay())
-      .flatMap(item => item.time);
+  public daySlotsFor(date: string): ITimeRange[] {
+    const seen = new Set<number>();
 
-    this.daySlots.set(slots);
+    return this.scheduleStore.slotsEntities()
+      .filter(slot => slot.date === date)
+      .flatMap(item => {
+        if (seen.has(item.time.from)) return [];
+
+        seen.add(item.time.from);
+        return item.time;
+      });
+  }
+
+  public hasLessonsFor(date: string): ITimeRange[] {
+    return this.scheduleStore.slotsEntities()
+      .filter((item) => item.date === date && (!!item.lesson || item.status === EScheduleStatus.Reserved))
+      .flatMap((item) => item.time);
+  }
+
+  private buildPagerSwipeDays(): string[] {
+    const days: string[] = [];
+    const current = new Date();
+    const end = new Date();
+    end.setMonth(end.getMonth() + 2);
+
+    while (current <= end) {
+      days.push(this.datePipe.transform(current, 'yyyy-MM-dd') as string);
+      current.setDate(current.getDate() + 1);
+    }
+
+    return days;
+  }
+
+  public weekSlotsFor(day: EDayOfWeek | string): ITimeRange[] {
+    return this.scheduleStore.weeklyEntities()
+      .filter(slot => slot.day_of_week === Number(day))
+      .flatMap(item => item.time);
   }
 
   private checkDirtySlots(): boolean {

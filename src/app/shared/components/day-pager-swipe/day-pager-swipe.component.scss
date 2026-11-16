@@ -1,0 +1,32 @@
+:host {
+  display: block;
+  position: relative;
+  width: 100%;
+  overflow-x: clip;
+  touch-action: pan-y;
+  min-height: 100%;
+
+  .day-pager-swipe-panel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+
+    &[data-position="-1"] {
+      transform: translateX(-100%);
+    }
+
+    &[data-position="1"] {
+      transform: translateX(100%);
+    }
+
+    &.is-current {
+      position: relative;
+    }
+  }
+
+  &.is-dragging .day-pager-swipe-panel {
+    pointer-events: none;
+    will-change: transform, opacity;
+  }
+}

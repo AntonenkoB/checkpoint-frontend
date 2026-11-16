@@ -10,6 +10,7 @@ export class NotificationsFacade {
   private notificationsStore = inject(NotificationsStore);
 
   public activeRole = this.profileFacade.activeRole;
+  public isStudent = this.profileFacade.isStudent;
   public notifications = this.notificationsStore.notifications
   public isLoading = this.notificationsStore.isLoading;
   public loadingProcessingId = this.notificationsStore.loadingProcessingId;
@@ -34,6 +35,14 @@ export class NotificationsFacade {
 
   public readNotification(id: number): void {
     this.notificationsStore.readNotification(id);
+  }
+
+  public confirmNotification(id: number): void {
+    this.notificationsStore.confirmNotification(id);
+  }
+
+  public rejectNotification(id: number): void {
+    this.notificationsStore.rejectNotification(id);
   }
 
   public toBackPage(): void {

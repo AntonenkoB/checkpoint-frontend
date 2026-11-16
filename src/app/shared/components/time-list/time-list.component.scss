@@ -7,4 +7,10 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 12px;
   }
+
+  .time-item {
+    &.hide-inactive-slot {
+      display: none;
+    }
+  }
 }

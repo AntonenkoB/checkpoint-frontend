@@ -170,6 +170,7 @@
     "payment-failed-title": "Оплата \nне пройшла",
     "payment-pending-description": "Зазвичай це займає кілька хвилин",
     "payment-failed-description": "Банк відхилив платіж. Перевірте картку або оплатіть іншою. Якщо суму встигли заблокувати, банк її поверне",
+    "payment-with-booking": "Відбувається запис на урок...",
     "payment-success-description-single": {
       "one": "Ви придбали {{quantity}} урок за {{price}} ₴",
       "few": "Ви придбали {{quantity}} уроки за {{price}} ₴",

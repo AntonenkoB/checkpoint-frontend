@@ -1,7 +1,7 @@
 import {Component, computed, input, output, Signal} from "@angular/core";
 import {LessonDateTimePipe} from "@shared/pipes/lesson-date-time-pipe";
 import {UserItemReadComponent} from "@shared/components/user-item-read/user-item-read.component";
-import {ENotificationStatus, INotification} from "@notifacations/models/notifications.model";
+import {ENotificationAction, ENotificationStatus, INotification} from "@notifacations/models/notifications.model";
 import {getNotificationAction} from "@shared/utils/notifications.utils";
 import {TranslatePipe} from "@shared/pipes/translate-pipe";
 import {IonButton, IonSpinner} from "@ionic/angular/standalone";
@@ -27,7 +27,10 @@ import {DateTimeLabelPipe} from "@shared/pipes/date-time-label-pipe";
 export class NotificationItemComponent {
   public notification = input<INotification>();
   public isLoading = input<boolean>(false);
+  public isStudent = input<boolean>(false);
   public loadingProcessingId = input<number>(0);
+  public confirm = output<number>();
+  public reject = output<number>();
   public readNotification = output<number>();
 
   public action = computed(() => getNotificationAction(this.notification()?.type!));
@@ -35,4 +38,5 @@ export class NotificationItemComponent {
     `notification.type.${this.notification()?.type}`
   );
   protected readonly eNotificationStatus = ENotificationStatus;
+  protected readonly eNotificationAction = ENotificationAction;
 }

@@ -14,11 +14,12 @@
     }
   </div>
 
-  @if (lessonsFacade.profileFacade.isStudent() && lessonsFacade.currentLessonsType() === eLessonsType.TeacherGuided) {
+  @if (isFullCalendar()) {
     <div class="record-calendar">
       <cp-calendar
           [disableEmpty]="true"
           [activeDays]="calendarActiveDays()"
+          [scheduleDay]="activeDay()"
           (selectDay)="selectDay($event)"
       ></cp-calendar>
     </div>
@@ -26,22 +27,35 @@
     <div class="container record-calendar-short">
       <cp-calendar-short
           [activeDays]="calendarActiveDays()"
+          [selectedDay]="activeDay()"
           (selectDay)="selectShortDay($event)"
       ></cp-calendar-short>
     </div>
   }
 
-  <div class="container record-time-list">
-    <cp-time-list
-        [disabledSlots]="disabledSlotsPrepare()"
-        [activeSlots]="activeTime()"
-        [onlyOne]="true"
-        (selectTime)="selectedTime($event)"
-    ></cp-time-list>
+  <div class="record-time-list">
+    <cp-day-pager-swipe
+        [days]="pagerSwipeDays()"
+        [activeDay]="activeDay()"
+        (activeDayChange)="changeDay($event)"
+    >
+      <ng-template let-day>
+        <div class="container">
+          <cp-time-list
+              [disabledSlots]="recordTimeFacade.getDisabledSlotsForDay(day)"
+              [activeSlots]="day === activeDay() ? activeTime() : []"
+              [isHideInactive]="lessonsFacade.isStudent()"
+              [onlyOne]="true"
+              (selectTime)="selectedTime($event)"
+          ></cp-time-list>
+        </div>
+      </ng-template>
+    </cp-day-pager-swipe>
   </div>
   <div class="container">
     <cp-buttons
         [title]="'schedule.btn-planing' | translate"
+        [disabled]="!activeTime().length"
         [isLoader]="recordTimeFacade.isLoading()"
         (submit)="save()"
     ></cp-buttons>

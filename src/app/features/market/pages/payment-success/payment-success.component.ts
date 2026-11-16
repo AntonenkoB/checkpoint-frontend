@@ -1,4 +1,4 @@
-import {Component, computed, DestroyRef, inject, OnInit} from "@angular/core";
+import {Component, computed, DestroyRef, effect, inject, OnInit, untracked} from "@angular/core";
 import {HeaderSecondaryComponent} from "@shared/components/header-secondary/header-secondary.component";
 import {IonButton} from "@ionic/angular/standalone";
 import {RecordStudentItemComponent} from "@shared/components/record-student-item/record-student-item.component";
@@ -13,6 +13,7 @@ import {take} from "rxjs/operators";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {DomSanitizer} from "@angular/platform-browser";
 import {PAYMENT_FAILED_SVG, PAYMENT_PENDING_SVG, PAYMENT_SUCCESS_SVG} from "@models/svg.models";
+import {LessonsStore} from "@lessons/store/lessons.store";
 
 @Component({
   selector: "cp-payment-success",
@@ -32,6 +33,7 @@ export class PaymentSuccessComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
   public marketFacade = inject(MarketFacade);
   public marketStore = inject(MarketStore);
+  public lessonsStore = inject(LessonsStore);
   protected readonly eMarketPlanType = EMarketPlanType;
   protected readonly eLessonFlow = ELessonFlow;
   protected readonly ePurchaseStatus = EPaymentStatus;
@@ -42,6 +44,18 @@ export class PaymentSuccessComponent implements OnInit {
 
   public successData = computed(() => this.marketStore.paymentSuccessData());
   public successInvoiceData = computed(() => this.marketStore.paymentInvoice());
+  public withBooking = computed(() => this.lessonsStore.currentBooking() || this.lessonsStore.currentBookingIndividual());
+
+  constructor() {
+    effect(() => {
+      const invoice = this.successInvoiceData();
+      const isPaid = invoice?.id === +this.marketFacade.paymentId()! && invoice.status === EPaymentStatus.Paid;
+
+      if (isPaid) {
+        untracked(() => this.marketFacade.bookingLesson());
+      }
+    });
+  }
 
   ngOnInit() {
     this.marketFacade.getPayment();
@@ -53,6 +67,10 @@ export class PaymentSuccessComponent implements OnInit {
         takeUntilDestroyed(this.destroyRef),
       ).subscribe(() => this.marketFacade.getPayment());
     }
+  }
+
+  public ionViewDidEnter(): void {
+    this.marketFacade.openPendingPayment();
   }
 
   private isPaymentFinished(): boolean {

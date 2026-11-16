@@ -4,7 +4,7 @@
       [bntStyle]="'btn-fill'"
       [disabledTabs]="disabledTabs()"
       [tabList]="nextWeek()"
-      [activeTab]="nextWeek()[0].value"
+      [activeTab]="selectedDay() ?? nextWeek()[0].value"
       (segmentChange)="selectDay.emit($event)"
   ></cp-tabs>
 </div>

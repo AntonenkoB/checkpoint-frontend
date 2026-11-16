@@ -77,6 +77,10 @@
           }}</div>
         }
 
+        @if (withBooking()) {
+          <div class="description-booking">{{"market.payment-with-booking" | translate}}</div>
+        }
+
             <!--   need to add teacher  -->
 <!--        @if (successInvoiceData().teacher) {-->
 <!--          <div class="student">-->
@@ -88,9 +92,12 @@
 <!--          </div>-->
 <!--        }-->
       </div>
-      <div class="btn-wrap">
-        <ion-button (click)="marketFacade.closeMarketPage()">{{"market.payment-success-btn" | translate}}</ion-button>
-      </div>
+
+      @if (!withBooking()) {
+        <div class="btn-wrap">
+          <ion-button (click)="marketFacade.closeMarketPage()">{{"market.payment-success-btn" | translate}}</ion-button>
+        </div>
+      }
     }
   } @else {
     <div class="payment-success-info">

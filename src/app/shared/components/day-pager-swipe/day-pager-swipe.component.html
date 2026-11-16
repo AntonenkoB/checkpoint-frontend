@@ -1,0 +1,14 @@
+@for (slot of slots(); track slot.day) {
+  <div
+      class="day-pager-swipe-panel"
+      [class.is-current]="slot.position === 0"
+      [attr.data-position]="slot.position"
+      [attr.aria-hidden]="slot.position !== 0"
+      [attr.inert]="slot.position !== 0 ? '' : null"
+  >
+    <ng-container
+        [ngTemplateOutlet]="panelTemplate()"
+        [ngTemplateOutletContext]="{ $implicit: slot.day }"
+    ></ng-container>
+  </div>
+}

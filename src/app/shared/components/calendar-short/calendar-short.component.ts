@@ -13,6 +13,7 @@ import {DatePipe} from "@angular/common";
 export class CalendarShortComponent implements OnInit {
   private datePipe = inject(DatePipe);
   public activeDays = input<string[]>();
+  public selectedDay = input<string>();
   public selectDay = output<string>();
 
   public nextWeek = computed(() => {

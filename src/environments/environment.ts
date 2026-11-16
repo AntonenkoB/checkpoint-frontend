@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
   apiUrl: 'https://dev.checkpoint.kiev.ua/api/v1',
-  releaseVersion: '1.0.5-dev.26698031'
+  releaseVersion: '1.0.5-dev.27531475'
 };

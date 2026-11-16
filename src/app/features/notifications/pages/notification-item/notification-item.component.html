@@ -26,13 +26,27 @@
   </div>
   @if (notification()?.status === eNotificationStatus.Unread) {
     <div class="notification-buttons">
-      <ion-button class="notification-btn" (click)="readNotification.emit(notification()?.id!)">
-        @if (isLoading() && loadingProcessingId() === notification()?.id) {
-          <ion-spinner class="spinner" name="dots" />
-        } @else {
-          {{ "common.ok" | translate }}
-        }
-      </ion-button>
+      @if (isStudent() && action() === eNotificationAction.Booked) {
+        <ion-button class="notification-btn confirm" (click)="confirm.emit(notification()?.id!)">
+          @if (isLoading() && loadingProcessingId() === notification()?.id) {
+            <ion-spinner class="spinner" name="dots" />
+          } @else {
+            {{ "notification.agree" | translate }}
+          }
+        </ion-button>
+
+        <div class="notification-btn reject" (click)="reject.emit(notification()?.id!)">
+          {{ "notification.disagree" | translate }}
+        </div>
+      } @else {
+        <ion-button class="notification-btn" (click)="readNotification.emit(notification()?.id!)">
+          @if (isLoading() && loadingProcessingId() === notification()?.id) {
+            <ion-spinner class="spinner" name="dots" />
+          } @else {
+            {{ "common.ok" | translate }}
+          }
+        </ion-button>
+      }
     </div>
   }
 </div>

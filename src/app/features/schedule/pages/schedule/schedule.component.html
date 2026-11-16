@@ -40,21 +40,52 @@
       <cp-calendar
           [activeDays]="recordedDays()"
           [isDirty]="isDirty()"
+          [scheduleDay]="activeDate()"
           (selectDay)="selectDay($event)"
       ></cp-calendar>
     </div>
   }
 
   <div class="time-list-wrap">
-    <div class="container">
-      <cp-time-list
-          class="schedule-time-list"
-          [activeSlots]="daySlots()"
-          [hasLessons]="scheduleType() === eScheduleType.OneTime ? hasLessonsTime() : []"
-          (selectTime)="selectTime($event)"
-          (unselectTime)="unselectTime($event)"
-      ></cp-time-list>
-    </div>
+    @if (scheduleType() === eScheduleType.OneTime) {
+      <cp-day-pager-swipe
+          [days]="pagerSwipeDays"
+          [activeDay]="activeDate()"
+          [canChange]="canChangeDay"
+          (activeDayChange)="changeDate($event)"
+      >
+        <ng-template let-day>
+          <div class="container">
+            <cp-time-list
+                class="schedule-time-list"
+                [activeSlots]="day === activeDate() ? daySlots() : daySlotsFor(day)"
+                [hasLessons]="hasLessonsFor(day)"
+                (selectTime)="selectTime($event)"
+                (unselectTime)="unselectTime($event)"
+            ></cp-time-list>
+          </div>
+        </ng-template>
+      </cp-day-pager-swipe>
+    } @else {
+      <cp-day-pager-swipe
+          [days]="weekPagerSwipeDays"
+          [activeDay]="'' + activeDay()"
+          [canChange]="canChangeDay"
+          (activeDayChange)="changeWeekDay($event)"
+      >
+        <ng-template let-day>
+          <div class="container">
+            <cp-time-list
+                class="schedule-time-list"
+                [activeSlots]="+day === activeDay() ? daySlots() : weekSlotsFor(day)"
+                [hasLessons]="[]"
+                (selectTime)="selectTime($event)"
+                (unselectTime)="unselectTime($event)"
+            ></cp-time-list>
+          </div>
+        </ng-template>
+      </cp-day-pager-swipe>
+    }
   </div>
 
   <div class="buttons container">

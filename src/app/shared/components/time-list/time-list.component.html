@@ -2,6 +2,7 @@
   @for (time of TIME_LIST; track time) {
     <cp-time
         class="time-item"
+        [class.hide-inactive-slot]="isHideInactive() && disabledSlots()?.every(slot => slot.from !== time.from)"
         [time]="time"
         [isDisabled]="disabledSlots()?.every(slot => slot.from !== time.from) ?? false"
         [isActive]="activeSlots()?.some(slot => slot.from === time.from) ?? false"

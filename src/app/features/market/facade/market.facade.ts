@@ -234,6 +234,12 @@ export class MarketFacade {
     return rawPrice.toLocaleString('uk-UA');
   }
 
+  public openPendingPayment(): void {
+    if (this.isStudent()) {
+      this.marketStore.openPendingPayment();
+    }
+  }
+
   public getPayment(): void {
     if (this.paymentId()) {
       this.marketStore.loadPaymentLesson(this.paymentId()!);
@@ -250,6 +256,16 @@ export class MarketFacade {
       }))
     } else {
       this.goToStudentMain()
+    }
+  }
+
+  public bookingLesson(): void {
+    if (!!this.lessonsStore.currentBooking()) {
+      this.lessonsStore.bookAsStudent(this.lessonsStore.currentBooking()!)
+    }
+
+    if (!!this.lessonsStore.currentBookingIndividual()) {
+      this.lessonsStore.bookIndividualAsStudent(this.lessonsStore.currentBookingIndividual()!)
     }
   }
 

@@ -70,4 +70,18 @@
       }
     }
   }
+
+  .notification-btn {
+    &.reject {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font: var(--font-alumi-42-black);
+      min-height: 74px;
+      width: 100%;
+      text-align: center;
+      text-transform: uppercase;
+    }
+  }
 }

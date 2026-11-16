@@ -2,7 +2,7 @@ import {inject, computed} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {patchState, signalStore, withComputed, withMethods, withState} from '@ngrx/signals';
 import {rxMethod} from "@ngrx/signals/rxjs-interop";
-import {catchError, from, map, of, pipe, switchMap, tap} from "rxjs";
+import {catchError, map, of, pipe, switchMap, tap} from "rxjs";
 import {withEntities} from "@ngrx/signals/entities";
 import {
   EMarketPages,
@@ -31,6 +31,8 @@ export interface MarketState {
   teacherRate: IRate[];
   paymentSuccessData: IPaymentSuccess;
   paymentInvoice: IPaymentInvoice | null;
+  /** Сторінка оплати, яку треба відкрити, коли payment-success повністю показано */
+  pendingPaymentUrl: string | null;
 }
 
 const initialState: MarketState = {
@@ -38,6 +40,7 @@ const initialState: MarketState = {
   teacherRate: [],
   paymentSuccessData: {} as IPaymentSuccess,
   paymentInvoice: null,
+  pendingPaymentUrl: null,
 };
 
 export const MarketStore = signalStore(
@@ -135,20 +138,14 @@ export const MarketStore = signalStore(
         tap(() => patchState(state, {isLoading: true})),
         switchMap((data) => marketService.paymentLessons(data).pipe(
           map(response => response.data),
-          switchMap((invoice) => from(paymentBrowser.open(invoice.page_url)).pipe(
-            tap(() => {
-              patchState(state, {isLoading: false, paymentInvoice: invoice})
-              void hapticService.impact(ImpactStyle.Medium);
-              store.dispatch(RouterActions.goTo({
-                path: [EAppPages.Market, EMarketPages.PaymentSuccess, invoice.id],
-              }));
-            }),
-            catchError((err) => {
-              console.error(err);
-              patchState(state, {isLoading: false});
-              return of(null);
-            }),
-          )),
+          tap((invoice) => {
+            patchState(state, {isLoading: false, paymentInvoice: invoice, pendingPaymentUrl: invoice.page_url});
+            void hapticService.impact(ImpactStyle.Medium);
+
+            store.dispatch(RouterActions.goTo({
+              path: [EAppPages.Market, EMarketPages.PaymentSuccess, invoice.id],
+            }));
+          }),
           catchError((err) => {
             console.error(err);
             patchState(state, {isLoading: false});
@@ -157,6 +154,17 @@ export const MarketStore = signalStore(
         ))
       )
     ),
+    /** Відкрити сторінку оплати один раз: повернення на payment-success не відкриє її вдруге */
+    openPendingPayment(): void {
+      const url = state.pendingPaymentUrl();
+
+      if (!url) {
+        return;
+      }
+
+      patchState(state, {pendingPaymentUrl: null});
+      paymentBrowser.open(url).catch((err) => console.error(err));
+    },
     loadPaymentLesson: rxMethod<string>(
       pipe(
         tap(() => patchState(state, {isLoading: true})),

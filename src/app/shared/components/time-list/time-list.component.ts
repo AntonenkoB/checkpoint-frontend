@@ -14,9 +14,10 @@ export class TimeListComponent implements OnInit {
   public activeSlots = model<ITimeRange[]>()
   public hasLessons = input<ITimeRange[]>()
   public disabledSlots = input<ITimeRange[]>()
-  public onlyOne = input<boolean>()
-  public selectTime = output<ITimeRange>()
-  public unselectTime = output<ITimeRange>()
+  public onlyOne = input<boolean>();
+  public isHideInactive = input<boolean>(false);
+  public selectTime = output<ITimeRange>();
+  public unselectTime = output<ITimeRange>();
 
   public TIME_LIST = TIME_LIST;
 
